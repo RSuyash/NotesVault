@@ -52,11 +52,11 @@ The project will be divided into the following phases:
                         - [x] Implement navigation links.
         *   **PHP Backend:**
             *   **Microfeatures:**
-                - [ ] Create simple PHP scripts to handle API requests (fetching content, saving data).
+                - [x] Create simple PHP scripts to handle API requests (fetching content, saving data).
                     *   **Tasks:**
-                        - [ ] Create an `api` directory inside the `backend` directory.
-                        - [ ] Create a `config.php` file for database connection settings.
-                        - [ ] Create PHP files for each API endpoint (e.g., `getContent.php`, `saveContent.php`).
+                        - [x] Create an `api` directory inside the `backend` directory.
+                        - [x] Create a `config.php` file for database connection settings.
+                        - [x] Create PHP files for each API endpoint (e.g., `getContent.php`, `saveContent.php`).
                 - [ ] Implement basic API endpoints (e.g., `/api/content`, `/api/content/{id}`).
                     *   **Tasks:**
                         - [ ] Define the request methods (GET, POST, PUT, DELETE) for each endpoint.
