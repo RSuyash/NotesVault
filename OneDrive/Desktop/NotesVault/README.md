@@ -57,11 +57,11 @@ The project will be divided into the following phases:
                         - [x] Create an `api` directory inside the `backend` directory.
                         - [x] Create a `config.php` file for database connection settings.
                         - [x] Create PHP files for each API endpoint (e.g., `getContent.php`, `saveContent.php`).
-                - [ ] Implement basic API endpoints (e.g., `/api/content`, `/api/content/{id}`).
+                - [x] Implement basic API endpoints (e.g., `/api/content`, `/api/content/{id}`).
                     *   **Tasks:**
-                        - [ ] Define the request methods (GET, POST, PUT, DELETE) for each endpoint.
-                        - [ ] Implement the logic for handling each request.
-                        - [ ] Return data in JSON format.
+                        - [x] Define the request methods (GET, POST, PUT, DELETE) for each endpoint.
+                        - [x] Implement the logic for handling each request.
+                        - [x] Return data in JSON format.
                 - [ ] Implement basic error handling.
                     *   **Tasks:**
                         - [ ] Return appropriate HTTP status codes (e.g., 404 Not Found, 500 Internal Server Error).
