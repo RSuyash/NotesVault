@@ -1,43 +1,54 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, status # Added status
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import os # Import os
-from dotenv import load_dotenv # Import load_dotenv
+from pydantic import BaseModel, EmailStr # Added EmailStr
+import os
+from dotenv import load_dotenv
+
+# --- Password Hashing Imports ---
+from passlib.context import CryptContext
 
 # --- Google Auth Imports ---
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 
 # --- Load Environment Variables ---
-load_dotenv() # Load variables from .env file
+load_dotenv()
 
 # --- Configuration ---
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 if not GOOGLE_CLIENT_ID:
-    print("ERROR: GOOGLE_CLIENT_ID environment variable not set.")
-    # In a real app, you might want to exit or raise a more specific configuration error
-    # For now, we'll let the google_auth endpoint fail if it's missing.
+    print("WARNING: GOOGLE_CLIENT_ID environment variable not set. Google Sign-In will fail.")
+
+# Password Hashing Context
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # --- Pydantic Models ---
 class TopicRequest(BaseModel):
     topic: str
 
 class GoogleToken(BaseModel):
-    credential: str # This holds the JWT ID token from the frontend
+    credential: str
+
+# Models for Standard Auth
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr # Use EmailStr for validation
+    password: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 # --- Initialize FastAPI App ---
 app = FastAPI()
 
 # --- CORS Middleware ---
-# Define allowed origins (consider loading from env vars too)
 allowed_origins = [
-    "http://localhost:5173", # React dev server
+    "http://localhost:5173",
     "http://127.0.0.1:5173",
     # Add your production frontend URL here (e.g., os.getenv("FRONTEND_URL"))
 ]
-# Filter out None values if loading from env vars
 origins = [origin for origin in allowed_origins if origin]
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -47,56 +58,108 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- Utility Functions ---
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
 # --- API Endpoints ---
 
 @app.get("/")
 async def root():
     return {"message": "NotesVault Backend is running"}
 
+# --- Standard Auth Endpoints ---
+
+@app.post("/api/auth/signup", status_code=status.HTTP_201_CREATED) # Add status code
+async def signup(user: UserCreate):
+    """
+    Handles user sign up with email and password.
+    Hashes password before (placeholder) saving.
+    """
+    # --- TODO: Database Interaction ---
+    # 1. Check if user with this email already exists in the database.
+    # 2. If yes, raise HTTPException(status_code=400, detail="Email already registered")
+    # ---------------------------------
+
+    hashed_password = get_password_hash(user.password)
+
+    # --- TODO: Database Interaction ---
+    # 3. Create new user record in the database with user.name, user.email, hashed_password
+    # 4. Handle potential database errors.
+    # ---------------------------------
+
+    print(f"Signup attempt: Email={user.email}, Name={user.name}") # Don't log password
+    print(f"Password hash: {hashed_password}") # For debugging only, remove in prod
+
+    # Placeholder response - In real app, might return user info (without password)
+    # or potentially auto-login and return a session token.
+    return {"success": True, "message": "Signup successful (placeholder)", "email": user.email}
+
+
+@app.post("/api/auth/login")
+async def login(user_login: UserLogin):
+    """
+    Handles user login with email and password.
+    Verifies password against stored hash (placeholder).
+    """
+    # --- TODO: Database Interaction ---
+    # 1. Find user by email (user_login.email) in the database.
+    # 2. If user not found, raise HTTPException(status_code=401, detail="Incorrect email or password")
+    # 3. Get the stored hashed_password for that user.
+    # ---------------------------------
+
+    # Placeholder: Assume we fetched user and their hash
+    # Replace these with actual DB lookup results
+    stored_hashed_password = get_password_hash("dummy_password_for_now") # Replace with hash from DB
+    user_found = True # Replace with DB lookup result
+
+    if not user_found or not verify_password(user_login.password, stored_hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"}, # Standard practice for auth errors
+        )
+
+    # --- TODO: Session Management ---
+    # 1. If password is correct, create a session token (e.g., JWT).
+    # 2. Return the token to the frontend.
+    # ---------------------------------
+
+    print(f"Login successful: Email={user_login.email}")
+
+    # Placeholder response - In real app, return an access token
+    return {"success": True, "message": "Login successful (placeholder)", "access_token": "dummy_token", "token_type": "bearer"}
+
+
+# --- Other Endpoints ---
+
 @app.post("/api/generate")
 async def generate_notes(request: TopicRequest):
-    # Placeholder logic: Just return a dummy response
-    print(f"Received topic: {request.topic}") # Log received topic
+    print(f"Received topic: {request.topic}")
     dummy_markdown = f"# Dummy Response for: {request.topic}\n\nThis is placeholder content generated by the backend."
     return {"success": True, "markdown": dummy_markdown}
 
 @app.post("/api/auth/google")
 async def google_auth(token: GoogleToken):
-    """
-    Receives Google ID token from frontend, verifies it,
-    and (placeholder) returns user info.
-    """
     if not GOOGLE_CLIENT_ID:
          raise HTTPException(status_code=500, detail="Server configuration error: Google Client ID not set.")
-
     try:
-        # Verify the ID token.
         idinfo = id_token.verify_oauth2_token(
             token.credential, google_requests.Request(), GOOGLE_CLIENT_ID
         )
-
-        # ID token is valid. Get user information.
         userid = idinfo['sub']
         email = idinfo.get('email')
         name = idinfo.get('name')
         picture = idinfo.get('picture')
-
         print(f"Google Auth Success: UserID={userid}, Email={email}, Name={name}")
-
         # --- TODO: Database Interaction & Session Management ---
-
-        # Placeholder: Return verified user info
         return {
-            "success": True,
-            "message": "Google Sign-In Successful (Backend Verification)",
-            "user_info": {
-                "google_id": userid,
-                "email": email,
-                "name": name,
-                "picture": picture
-            }
+            "success": True, "message": "Google Sign-In Successful (Backend Verification)",
+            "user_info": {"google_id": userid, "email": email, "name": name, "picture": picture}
         }
-
     except ValueError as e:
         print(f"Google Auth Error: Invalid token - {e}")
         raise HTTPException(status_code=401, detail=f"Invalid Google token: {e}")
