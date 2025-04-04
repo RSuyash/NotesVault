@@ -1,0 +1,71 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - master # Or 'main', depending on your default branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Use a standard Linux runner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # --- Frontend Build ---
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Specify your Node.js version
+
+    - name: Install Frontend Dependencies
+      working-directory: ./notesvault-react-mvp # Specify frontend directory
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: ./notesvault-react-mvp # Specify frontend directory
+      # Set the production backend URL during build (using placeholder for now)
+      # You might adjust this if your PHP API path is different
+      run: VITE_BACKEND_URL=/api npm run build
+      # Note: We use /api assuming PHP scripts are in public_html/api
+      # If your final PHP API URL is different, adjust this build command accordingly.
+
+    # --- Prepare Deployment Files ---
+    # Create a temporary directory to gather all files for deployment
+    - name: Create deployment package directory
+      run: mkdir deployment_package
+
+    # Copy built frontend files
+    - name: Copy frontend build to deployment package
+      run: cp -r ./notesvault-react-mvp/dist/* ./deployment_package/
+
+    # Copy PHP API files
+    - name: Copy PHP API to deployment package
+      run: cp -r ./api ./deployment_package/
+
+    # --- Configure PHP Database ---
+    # Replace placeholders in config.php with secrets
+    # IMPORTANT: Ensure config.php in repo uses distinct placeholders
+    - name: Configure api/config.php
+      run: |
+        sed -i 's/YOUR_DATABASE_USERNAME/${{ secrets.DB_USER }}/g' ./deployment_package/api/config.php
+        sed -i 's/YOUR_DATABASE_PASSWORD/${{ secrets.DB_PASS }}/g' ./deployment_package/api/config.php
+        sed -i 's/YOUR_DATABASE_NAME/${{ secrets.DB_NAME }}/g' ./deployment_package/api/config.php
+        # Add sed command for frontend URL if needed in config.php
+
+    # --- Deploy via FTP ---
+    - name: FTP Deploy Action
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deployment_package/ # Deploy contents of this temp dir
+        server-dir: ./domains/notesvault.in/public_html/ # Target directory on server
+        # Options:
+        # exclude: | # Optional: exclude files/dirs
+        #   **/.git*
+        #   **/.git*/**
+        #   **/node_modules/**
+        dangerous-clean-slate: true # IMPORTANT: Deletes everything in server-dir first! Use with caution. Set to false if you have other files there you want to keep.
