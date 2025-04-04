@@ -1,0 +1,33 @@
+.listContainer {
+  padding: 20px;
+  max-width: 800px; /* Limit width */
+  margin: 20px auto; /* Center the container */
+  background-color: #f4f4f4; /* Light grey background for the container */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.listContainer h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.groupList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.error {
+  color: #d9534f; /* Red color for errors */
+  font-weight: bold;
+}
