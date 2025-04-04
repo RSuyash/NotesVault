@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'; // Removed useState, useEffect
+import { useRef } from 'react'; // Removed useState, useEffect
 import styles from './HeroSection.module.css';
 import { useMousePositionEffect } from '../../hooks/useMousePositionEffect'; // Import the custom hook
 

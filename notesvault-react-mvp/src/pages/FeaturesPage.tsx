@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './FeaturesPage.module.css';
 import FeaturesOverviewSection from '../features/home/FeaturesOverviewSection'; // Import the section component
 

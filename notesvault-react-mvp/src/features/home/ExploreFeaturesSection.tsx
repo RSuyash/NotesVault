@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'; // Import useRef
+import { useRef } from 'react'; // Import useRef
 import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
 import styles from './ExploreFeaturesSection.module.css';
 import { useMousePositionEffect } from '../../hooks/useMousePositionEffect'; // Import hook

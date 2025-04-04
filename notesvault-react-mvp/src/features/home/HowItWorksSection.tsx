@@ -1,4 +1,3 @@
-import React from 'react';
 import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
 import styles from './HowItWorksSection.module.css';
 
