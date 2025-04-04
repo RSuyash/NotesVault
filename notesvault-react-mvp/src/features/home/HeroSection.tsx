@@ -1,0 +1,50 @@
+import React, { useRef } from 'react'; // Removed useState, useEffect
+import styles from './HeroSection.module.css';
+import { useMousePositionEffect } from '../../hooks/useMousePositionEffect'; // Import the custom hook
+
+const HeroSection = () => {
+  const heroRef = useRef<HTMLElement>(null); // Ref for the section element
+  useMousePositionEffect(heroRef); // Apply the effect using the hook
+
+  // No need for dynamicStyles state management here anymore
+
+  return (
+    // Pass the ref to the section
+    <section
+      ref={heroRef}
+      className={styles.heroSection}
+      // No inline style needed as the hook sets custom properties directly
+    >
+      {/* Remove the generic container, flexbox handles centering */}
+      <div className={styles.heroContent}> {/* Add specific content wrapper */}
+        {/* Existing content... */}
+        <h2
+          className={`${styles.title} ${styles.animatedItem}`}
+          style={{ animationName: styles.fadeInUp, animationDelay: '0.1s' }}
+        >
+          Unlock Your Academic Potential with AI-Powered Notes
+        </h2>
+        <p
+          className={`${styles.subtitle} ${styles.animatedItem}`}
+          style={{ animationName: styles.fadeInUp, animationDelay: '0.3s' }}
+        >
+          Transform your study process. NotesVault intelligently generates comprehensive notes from topics or syllabi, freeing up your time to focus on understanding.
+        </p>
+        <div
+          className={`${styles.ctaContainer} ${styles.animatedItem}`}
+          style={{ animationName: styles.fadeInUp, animationDelay: '0.5s' }}
+      >
+        <a href="#signup" className={styles.primaryButton}>
+          Get Started Free
+        </a>
+        <a href="#login" className={styles.secondaryButton}>
+            Login
+          </a>
+        </div>
+        {/* Spotlight pseudo-element will be added via CSS */}
+      </div> {/* Close heroContent */}
+    </section>
+  );
+};
+
+export default HeroSection;

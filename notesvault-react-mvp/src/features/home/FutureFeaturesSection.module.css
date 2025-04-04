@@ -1,0 +1,63 @@
+.futureFeaturesSection {
+  padding: 5rem 1.5rem; /* Consistent padding */
+  margin: 3rem 0; /* Consistent margin */
+  text-align: center;
+  background-color: var(--color-background-secondary); /* Use variable */
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 2.2rem; /* Consistent title size */
+  font-weight: 700;
+  color: var(--color-text-primary); /* Use variable */
+  margin-bottom: 4rem; /* Consistent spacing */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Consistent grid */
+  gap: 2.5rem; /* Consistent gap */
+  max-width: 700px; /* Adjust width for 2 items */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gridItem {
+  background-color: var(--color-surface); /* Use variable */
+  padding: 2.5rem 1.5rem;
+  border-radius: 10px; /* Consistent radius */
+  box-shadow: 0 5px 15px var(--color-shadow); /* Consistent shadow */
+  border: 1px solid var(--color-border);
+  opacity: 0.8; /* Adjust opacity */
+  /* Remove hover effect for future items */
+}
+
+.iconContainer {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Background colors set inline */
+}
+
+.icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  /* Colors set inline */
+}
+
+.itemTitle {
+  font-size: 1.25rem; /* Consistent title */
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-text-primary); /* Use variable */
+}
+
+.itemText {
+  font-size: 0.95rem; /* Consistent text */
+  color: var(--color-text-secondary); /* Use variable */
+  line-height: 1.6;
+}

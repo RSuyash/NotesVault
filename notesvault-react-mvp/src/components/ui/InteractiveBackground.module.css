@@ -1,0 +1,10 @@
+.canvasBackground {
+  position: fixed; /* Fix position behind everything */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure it's behind all other content */
+  pointer-events: none; /* Allow clicks to pass through */
+  /* Background color set by body theme */
+}

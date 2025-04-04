@@ -1,0 +1,70 @@
+.howItWorksSection {
+  padding: 5rem 1.5rem; /* More padding */
+  margin: 3rem 0; /* More margin */
+  background-color: var(--color-background-secondary); /* Use variable */
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.2rem; /* Increase size */
+  font-weight: 700;
+  color: var(--color-text-primary); /* Use variable */
+  margin-bottom: 4rem; /* Even more space */
+}
+
+.grid {
+  display: grid;
+  /* Adjust grid columns for better spacing */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem; /* Increase gap */
+  text-align: center;
+  max-width: 1000px; /* Limit overall width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gridItem {
+  background-color: var(--color-surface); /* Use variable */
+  padding: 2.5rem 1.5rem;
+  border-radius: 10px; /* Slightly more rounded */
+  box-shadow: 0 5px 15px var(--color-shadow); /* Adjust shadow */
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.gridItem:hover {
+    transform: translateY(-4px); /* Slightly less lift */
+    box-shadow: 0 8px 20px var(--color-shadow-hover); /* Adjust hover shadow */
+}
+
+.iconContainer {
+    /* Container to style the icon background */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Circular background */
+    margin: 0 auto 1.5rem auto; /* Center and add margin below */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Background colors set inline */
+}
+
+.icon {
+  width: 1.75rem; /* Icon size relative to container */
+  height: 1.75rem;
+  /* Colors set inline */
+}
+
+.itemTitle {
+  font-size: 1.25rem; /* Slightly larger */
+  font-weight: 600;
+  margin-bottom: 0.75rem; /* Adjust spacing */
+  color: var(--color-text-primary); /* Use variable */
+}
+
+.itemText {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary); /* Use variable */
+  line-height: 1.6;
+}

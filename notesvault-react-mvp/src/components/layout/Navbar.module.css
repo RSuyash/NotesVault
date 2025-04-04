@@ -1,0 +1,123 @@
+.navbar {
+  background-color: var(--color-surface);
+  /* Use a more subtle border instead of shadow for minimalism */
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.8rem 0; /* Adjust padding slightly */
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute space between items */
+}
+
+.logo {
+  height: 32px; /* Adjust logo height as needed */
+  width: auto;
+  margin-right: 0.5rem; /* Space between logo and text */
+  vertical-align: middle; /* Align logo with text */
+}
+
+.brandText {
+  font-size: 1.4rem; /* Adjust text size */
+  font-weight: 600; /* Slightly less bold than before */
+  color: var(--color-text-primary); /* Use primary text color */
+  vertical-align: middle;
+}
+
+.brandLink {
+text-decoration: none; /* Remove underline from brand link */
+color: inherit; /* Inherit color from .brand */
+}
+
+/* Navigation Links Container - Adjust spacing if needed */
+/* Add a wrapper for brand and nav links to group them */
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Increase space between brand/logo and nav links */
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navLink {
+color: var(--color-text-secondary);
+text-decoration: none;
+font-weight: 500;
+padding: 0.25rem 0; /* Add padding for hover effect */
+position: relative;
+transition: color 0.2s ease;
+}
+
+.navLink::after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+background-color: var(--color-primary);
+transition: width 0.3s ease;
+}
+
+.navLink:hover {
+color: var(--color-text-primary);
+}
+
+.navLink:hover::after {
+width: 100%;
+}
+
+/* Auth Links Container */
+.authLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Space between login/signup */
+}
+
+/* Style Signup as a button */
+.signupButton {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 0.4rem 1rem; /* Button padding */
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.signupButton:hover {
+  background-color: var(--color-primary-darker);
+  text-decoration: none;
+  color: #ffffff;
+}
+
+/* Theme Toggle Button - Adjust spacing if needed */
+.themeToggle {
+  /* margin-left: auto; */ /* Removed, justify-content handles spacing */
+  background: none;
+  border: 1px solid transparent; /* Make border transparent initially */
+  color: var(--color-text-muted); /* Use muted color */
+  padding: 0.3rem 0.5rem; /* Slightly smaller padding */
+  border-radius: 50%; /* Make it circular */
+  cursor: pointer;
+  font-size: 1.1rem; /* Adjust size */
+  line-height: 1;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.themeToggle:hover {
+  background-color: var(--color-background-secondary);
+  color: var(--color-text-primary); /* Darker color on hover */
+  border-color: transparent; /* Keep border transparent */
+}

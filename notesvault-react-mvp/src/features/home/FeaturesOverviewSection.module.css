@@ -1,0 +1,191 @@
+.featuresOverviewSection {
+  padding: 5rem 1.5rem;
+  position: relative;
+  overflow: hidden; /* Keep spotlight/background contained */
+  z-index: 1;
+  border-top: 1px solid var(--color-border);
+  /* Default background is transparent */
+  background-color: transparent;
+}
+
+/* Modifier to remove top border when needed (e.g., on Features page) */
+.noTopBorder {
+  border-top: none;
+}
+
+/* Style for Gradient Background */
+.gradientBackground {
+    background: linear-gradient(135deg, var(--color-primary-lighter), color-mix(in srgb, var(--color-background) 50%, var(--color-primary-lighter)));
+    /* Adjust gradient as needed */
+}
+
+/* Style for Matrix Background (Placeholder - actual matrix is canvas) */
+/* We might apply this class just to trigger the hook */
+.matrixBackground {
+    /* No specific background needed here, canvas handles it */
+    /* But we need position relative for the canvas if it were nested */
+}
+
+
+/* Spotlight effect CSS (copied and adapted from Hero) */
+.featuresOverviewSection::before {
+    content: '';
+    position: absolute;
+    left: var(--mouse-x, -999px); /* Default off-screen */
+    top: var(--mouse-y, -999px);
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Behind content */
+    width: 350px;
+    height: 350px;
+    background: radial-gradient( /* Use primary color */
+      circle,
+      var(--color-spotlight) 0%,
+      var(--color-spotlight-fade1) 40%,
+      var(--color-spotlight-fade2) 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.featuresOverviewSection:hover::before {
+    opacity: 1;
+}
+
+/* Spotlight effect (Optional - can add later if desired for this section) */
+/*
+.featuresOverviewSection::before {
+    content: '';
+    position: absolute;
+    left: var(--mouse-x);
+    top: var(--mouse-y);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.1) 0%,
+      rgba(245, 158, 11, 0.03) 40%,
+      rgba(247, 247, 247, 0) 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.featuresOverviewSection:hover::before {
+    opacity: 1;
+}
+*/
+
+.title {
+  text-align: center;
+  font-size: 2.3rem; /* Slightly larger */
+  font-weight: 700;
+  line-height: 1.3; /* Adjust line spacing */
+  color: var(--color-text-primary); /* Use standard text color */
+  /* Removed background gradient properties */
+  padding: 0; /* Remove padding */
+  border-radius: 0; /* Remove border-radius */
+  display: block; /* Ensure it takes full width for centering */
+  margin-bottom: 3rem; /* Keep margin */
+}
+
+/* Keyframes for the subtle gradient shift - adjusted for new size */
+@keyframes subtleGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 640px) {
+  .title {
+    font-size: 1.8rem; /* Reduce font size on mobile */
+    margin-bottom: 2.5rem; /* Adjust margin on mobile */
+  }
+}
+
+.grid {
+  display: grid;
+  /* Using 3 columns now */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  text-align: center;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gridItem {
+  background-color: var(--color-surface);
+  position: relative; /* Needed for absolute positioning of tag */
+  overflow: hidden; /* Keep tag contained if needed */
+  padding: 2rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px var(--color-shadow);
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.gridItem:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px var(--color-shadow-hover); /* Refined hover shadow */
+}
+
+.iconContainer {
+    width: 50px; /* Smaller icon container */
+    height: 50px;
+    border-radius: 8px; /* Squarish rounded */
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+  width: 1.5rem; /* Smaller icon */
+  height: 1.5rem;
+}
+
+.itemTitleWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center title and tag */
+    gap: 0.5rem; /* Space between title and tag */
+    margin-bottom: 0.75rem;
+}
+
+.itemTitle {
+  font-size: 1.15rem; /* Slightly smaller title */
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0; /* Remove bottom margin as wrapper handles it */
+}
+
+.itemText {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.statusTag {
+  display: inline-block;
+  position: absolute; /* Position the tag */
+  top: 0.75rem; /* Adjust position from top */
+  right: 0.75rem; /* Adjust position from right */
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background-color: var(--color-background-secondary);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+  z-index: 2; /* Ensure tag is above potential pseudo-elements */
+}

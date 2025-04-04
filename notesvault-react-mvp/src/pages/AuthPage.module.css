@@ -1,0 +1,78 @@
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px - 73px); /* Adjust based on nav/footer */
+  padding: 2rem 1.5rem;
+}
+
+.authBox {
+  background-color: var(--color-surface);
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px var(--color-shadow-hover); /* Slightly stronger shadow */
+  border: 1px solid var(--color-border);
+  width: 100%;
+  max-width: 450px; /* Limit form width */
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* Space between form elements */
+  text-align: left; /* Align labels left */
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem; /* Space between label and input */
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.input {
+  /* Inherits base styles from index.css */
+  /* Add any specific overrides if needed */
+}
+
+.submitButton {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.8rem; /* Adjust padding */
+  margin-top: 0.5rem; /* Space above button */
+  /* Inherits base styles from index.css */
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--color-primary-darker);
+}
+
+.switchLink {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.switchLink a {
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.switchLink a:hover {
+  text-decoration: underline;
+}

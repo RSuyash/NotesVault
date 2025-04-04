@@ -1,0 +1,166 @@
+.heroSection {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 4rem 1.5rem; /* Adjust padding as needed with vh */
+  background-color: var(--color-surface);
+  /* Remove margin and border-radius if it's meant to be the very first full-screen element */
+  /* margin: 0; */
+  /* border-radius: 0; */
+  /* border: 1px solid var(--color-border); */ /* Optional border */
+  z-index: 1;
+  /* --- Viewport Height & Centering --- */
+  min-height: calc(100vh - 60px); /* Adjust 60px based on actual Navbar height */
+  display: flex; /* Use flexbox */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally (though text-align handles text) */
+}
+
+/* Inner container for content, needed with flexbox */
+.heroContent {
+  max-width: 750px; /* Adjust max-width as needed */
+}
+
+/* Spotlight pseudo-element */
+.heroSection::before {
+    content: '';
+    position: absolute;
+    left: var(--mouse-x);
+    top: var(--mouse-y);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      circle,
+      var(--color-spotlight) 0%,
+      var(--color-spotlight-fade1) 40%,
+      var(--color-spotlight-fade2) 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+/* Show spotlight when mouse is over the section */
+.heroSection:hover::before {
+    opacity: 1;
+}
+
+.title {
+  font-size: 3.2rem; /* Slightly larger */
+  font-weight: 800; /* Bolder */
+  color: var(--color-text-primary); /* Use variable */
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.subtitle {
+  font-size: 1.15rem; /* Slightly larger */
+  color: var(--color-text-secondary);
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.ctaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background-color: var(--color-primary); /* Use variable */
+  color: #ffffff; /* Keep white text */
+  font-weight: 600;
+  padding: 0.8rem 2rem; /* Adjust padding */
+  border-radius: 8px; /* Slightly more rounded */
+  border: 1px solid transparent;
+  transition: color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+/* Animated background pseudo-element for primary button */
+.primaryButton::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid1), var(--gradient-mid2), var(--gradient-end)); /* Use variables */
+  background-size: 300% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out, background-position 0.6s ease-in-out;
+  animation: initialPulse 2.5s ease-out 1s 1 forwards;
+}
+
+.primaryButton:hover {
+  color: #ffffff;
+  transform: scale(1.03);
+  text-decoration: none;
+}
+
+.primaryButton:hover::before {
+  opacity: 1;
+  background-position: -100% 0;
+  animation: gradientShift 5s ease-in-out infinite;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--color-primary); /* Use variable */
+  font-weight: 600;
+  padding: 0.8rem 2rem; /* Match primary button padding */
+  border-radius: 8px; /* Match primary button radius */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  border: 1px solid var(--color-primary); /* Use variable */
+}
+
+.secondaryButton:hover {
+  background-color: var(--color-primary-lighter); /* Use variable */
+  color: var(--color-primary-darker); /* Use variable */
+  border-color: var(--color-primary-darker); /* Use variable */
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+
+/* --- Keyframe Animations --- */
+
+/* For element entrance */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* For continuous button background gradient shift */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* For initial button pulse effect */
+@keyframes initialPulse {
+  0% { opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+/* Helper class for entrance animation */
+.animatedItem {
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}

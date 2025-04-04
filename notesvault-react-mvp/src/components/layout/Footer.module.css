@@ -1,0 +1,59 @@
+.footer {
+  text-align: center;
+  padding: 1.5rem 0; /* More vertical padding */
+  margin-top: 3rem; /* More space above footer */
+  background-color: var(--color-background-secondary); /* Use variable */
+  border-top: 1px solid var(--color-border); /* Use variable */
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column; /* Stack on small screens */
+  align-items: center;
+  gap: 0.75rem; /* Space between copyright and nav */
+}
+
+@media (min-width: 768px) { /* On medium screens and up */
+  .footerContent {
+    flex-direction: row; /* Row layout */
+    justify-content: space-between; /* Space items out */
+  }
+}
+
+.copyright { /* Renamed from .text */
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  text-align: center; /* Center on small screens */
+}
+
+@media (min-width: 768px) {
+  .copyright {
+    text-align: left; /* Align left on larger screens */
+  }
+}
+
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  justify-content: center; /* Center links on small screens */
+  gap: 1rem 1.5rem; /* Row and column gap */
+}
+
+@media (min-width: 768px) {
+  .footerNav {
+    justify-content: flex-end; /* Align right on larger screens */
+  }
+}
+
+.footerLink {
+  color: var(--color-text-secondary); /* Slightly darker than muted */
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}

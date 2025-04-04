@@ -1,0 +1,86 @@
+.generatorSection {
+  padding: 5rem 1.5rem;
+  margin: 3rem 0;
+  background-color: var(--color-surface);
+  border-radius: 12px; /* Consistent radius */
+  border: 1px solid var(--color-border);
+  box-shadow: 0 5px 15px var(--color-shadow); /* Add consistent shadow */
+}
+
+.title {
+  text-align: center;
+  font-size: 2.2rem; /* Consistent title size */
+  font-weight: 700;
+  color: var(--color-text-primary); /* Use variable */
+  margin-bottom: 4rem; /* Consistent spacing */
+}
+
+.inputContainer {
+  max-width: 700px; /* Slightly wider container */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem; /* More space below input group */
+}
+
+@media (min-width: 640px) {
+  .inputGroup {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.inputField {
+  flex-grow: 1;
+  /* Use global styles from index.css */
+  padding: 12px 15px; /* Slightly larger padding */
+  font-size: 1rem; /* Standard font size */
+}
+
+.generateButton {
+  background-color: var(--color-primary); /* Use variable */
+  color: #ffffff; /* Keep white */
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 12px 25px; /* Match input padding, adjust horizontal */
+  font-size: 1rem; /* Standard font size */
+  /* Use global styles from index.css */
+}
+
+.generateButton:hover:not(:disabled) {
+  background-color: var(--color-primary-darker); /* Use variable */
+}
+
+.outputArea {
+  background-color: var(--color-background-secondary); /* Use variable */
+  padding: 1.5rem 2rem;
+  border-radius: 10px; /* Consistent radius */
+  border: 1px solid var(--color-border); /* Use variable */
+  min-height: 200px; /* Standard min height */
+  margin-top: 2rem; /* Consistent margin */
+}
+
+.loadingText,
+.errorText,
+.placeholderText {
+  text-align: center;
+  color: var(--color-text-muted); /* Use variable */
+  padding: 3rem 0; /* More padding */
+  font-size: 0.95rem; /* Slightly smaller placeholder text */
+}
+
+.errorText {
+  color: var(--color-error); /* Use variable */
+  font-weight: 600;
+}
+
+.markdownOutput {
+  /* Uses .prose styles from index.css */
+  /* Add specific overrides if needed */
+  padding: 0.5rem; /* Add some internal padding */
+}

@@ -1,0 +1,64 @@
+.pageContainer {
+  padding: 4rem 1.5rem; /* Standard padding */
+  min-height: calc(100vh - 60px - 73px); /* Ensure footer doesn't overlap */
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1rem;
+}
+
+.content {
+  max-width: 800px; /* Limit content width */
+  margin: 0 auto; /* Center content */
+  background-color: var(--color-surface); /* Optional: Card background */
+  padding: 2rem; /* Optional: Padding inside card */
+  border-radius: 8px; /* Optional: Rounded corners */
+  border: 1px solid var(--color-border); /* Optional: Border */
+  box-shadow: 0 2px 8px var(--color-shadow); /* Optional: Shadow */
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.content h2:first-of-type {
+    margin-top: 0; /* Remove top margin for the first h2 */
+}
+
+.content p {
+  margin-bottom: 1.2rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
+.content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* List styling within content */
+.content ul,
+.content ol {
+  padding-left: 1.5rem; /* Add indentation */
+  margin-bottom: 1.2rem; /* Consistent bottom margin */
+}
+
+.content li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+.content a:hover {
+  color: var(--color-primary-darker);
+}

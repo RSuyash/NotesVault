@@ -1,0 +1,5 @@
+# Ignore configuration file containing secrets
+config/config.php
+
+# Ignore Composer dependencies
+vendor/

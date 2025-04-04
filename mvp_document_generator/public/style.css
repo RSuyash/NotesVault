@@ -1,0 +1,65 @@
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+#generatorForm {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#generatorForm label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#generatorForm input[type="text"] {
+    width: calc(100% - 120px); /* Adjust width considering button */
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#generatorForm button {
+    padding: 8px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#generatorForm button:hover {
+    background-color: #4cae4c;
+}
+
+#outputArea {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 100px;
+    white-space: pre-wrap; /* Preserve whitespace and line breaks in Markdown */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#outputArea.loading {
+    color: #888;
+}
+
+#outputArea.error {
+    color: #d9534f;
+    font-weight: bold;
+}
