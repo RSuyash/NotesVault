@@ -50,10 +50,13 @@
   color: var(--color-text-secondary); /* Slightly darker than muted */
   font-size: 0.9rem;
   text-decoration: none;
-  transition: color 0.2s ease;
+  padding-left: 0.5rem; /* Added horizontal padding */
+  padding-right: 0.5rem; /* Added horizontal padding */
+  border-radius: 4px; /* Added border radius */
+  transition: color 0.2s ease, background-color 0.2s ease; /* Added background-color to transition */
 }
 
 .footerLink:hover {
   color: var(--color-primary);
-  text-decoration: underline;
+  background-color: var(--color-border); /* Added subtle background on hover */
 }

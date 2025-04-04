@@ -22,22 +22,22 @@ const HeroSection = () => {
           className={`${styles.title} ${styles.animatedItem}`}
           style={{ animationName: styles.fadeInUp, animationDelay: '0.1s' }}
         >
-          Unlock Your Academic Potential with AI-Powered Notes
+          Stop Drowning in Notes. Start Understanding Faster with AI.
         </h2>
         <p
           className={`${styles.subtitle} ${styles.animatedItem}`}
           style={{ animationName: styles.fadeInUp, animationDelay: '0.3s' }}
         >
-          Transform your study process. NotesVault intelligently generates comprehensive notes from topics or syllabi, freeing up your time to focus on understanding.
+          NotesVault transforms your syllabus or topics into clear, concise, AI-generated notes, freeing up hours so you can focus on what truly matters - learning.
         </p>
         <div
           className={`${styles.ctaContainer} ${styles.animatedItem}`}
           style={{ animationName: styles.fadeInUp, animationDelay: '0.5s' }}
       >
-        <a href="#signup" className={styles.primaryButton}>
+        <a href="signup" className={styles.primaryButton}>
           Get Started Free
         </a>
-        <a href="#login" className={styles.secondaryButton}>
+        <a href="login" className={styles.secondaryButton}>
             Login
           </a>
         </div>

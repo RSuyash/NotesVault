@@ -33,43 +33,49 @@ const FeaturesOverviewSection: React.FC<FeaturesOverviewProps> = ({
       <div className="container">
         {/* Conditionally render the title */}
         {!hideTitle && (
-            <h3 className={styles.title}>Everything You Need to Study Smarter</h3>
+            <h3 className={styles.title}>Your AI-Powered Study Toolkit</h3>
         )}
         <div className={styles.grid}>
 
           {/* Item 1: AI Document Generation */}
           <div className={styles.gridItem}>
+            {/* Reverted structure: Icon first, then text */}
             <div className={styles.iconContainer} style={{ backgroundColor: 'var(--color-primary-lighter)' }}>
               <PlaceholderIcon iconType="brain" className={styles.icon} style={{ color: 'var(--color-primary)' }} />
             </div>
-             <div className={styles.itemTitleWrapper}>
-                 <h4 className={styles.itemTitle}>AI Note Generation</h4>
-             </div>
-            <p className={styles.itemText}>Submit a topic or syllabus, and let our AI generate comprehensive, structured study notes in minutes.</p>
+            {/* Removed textContent wrapper */}
+            <div className={styles.itemTitleWrapper}>
+                <h4 className={styles.itemTitle}>AI Note Generation</h4>
+            </div>
+            <p className={styles.itemText}>Get clear, concise notes generated instantly from complex topics or lengthy syllabi. Save time, gain clarity.</p>
           </div>
 
           {/* Item 2: Knowledge Graph */}
           <div className={styles.gridItem}>
+            {/* Reverted structure: Icon first, then text */}
              <span className={styles.statusTag}>Coming Soon</span>
             <div className={styles.iconContainer} style={{ backgroundColor: '#fffbeb' }}>
               <PlaceholderIcon iconType="graph" className={styles.icon} style={{ color: '#f59e0b' }} />
             </div>
+            {/* Removed textContent wrapper */}
             <div className={styles.itemTitleWrapper}>
                 <h4 className={styles.itemTitle}>Knowledge Graph</h4>
             </div>
-            <p className={styles.itemText}>Visualize connections between concepts to understand the bigger picture and discover new insights.</p>
+            <p className={styles.itemText}>See the connections between ideas. Navigate complex subjects visually and grasp relationships effortlessly.</p>
           </div>
 
           {/* Item 3: Flash Cards */}
           <div className={styles.gridItem}>
+            {/* Reverted structure: Icon first, then text */}
             <span className={styles.statusTag}>Coming Soon</span>
              <div className={styles.iconContainer} style={{ backgroundColor: '#fdf2f8' }}>
               <PlaceholderIcon iconType="cards" className={styles.icon} style={{ color: '#ec4899' }} />
             </div>
-             <div className={styles.itemTitleWrapper}>
+            {/* Removed textContent wrapper */}
+            <div className={styles.itemTitleWrapper}>
                 <h4 className={styles.itemTitle}>Automatic Flash Cards</h4>
-             </div>
-            <p className={styles.itemText}>Reinforce your learning and ace exams with automatically generated flashcards from your notes.</p>
+            </div>
+            <p className={styles.itemText}>Master key concepts with ease. Turn your notes into interactive flashcards for effortless revision anytime, anywhere.</p>
           </div>
 
         </div>

@@ -1,0 +1,68 @@
+/* BlogPage.module.css */
+
+.pageContainer {
+  max-width: 900px; /* Adjust as needed */
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: var(--background-color, #ffffff); /* Use theme variable or fallback */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 2.5rem; /* Match SimplePage title size */
+  font-weight: 700;
+  color: var(--primary-text-color, #333); /* Use theme variable or fallback */
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 2px solid var(--accent-color, #eee); /* Use theme variable or fallback */
+  padding-bottom: 0.5rem;
+}
+
+.postList {
+  display: grid;
+  gap: 2rem; /* Spacing between posts */
+}
+
+.postItem {
+  background-color: var(--card-background, #f9f9f9); /* Use theme variable or fallback */
+  border: 1px solid var(--border-color, #e0e0e0); /* Use theme variable or fallback */
+  border-radius: 6px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.postItem:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+
+.postTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--secondary-text-color, #555); /* Use theme variable or fallback */
+  margin-bottom: 0.75rem;
+}
+
+.postTeaser {
+  font-size: 1rem;
+  color: var(--tertiary-text-color, #666); /* Use theme variable or fallback */
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.readMoreLink {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--link-color, #007bff); /* Use theme variable or fallback */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.readMoreLink:hover {
+  color: var(--link-hover-color, #0056b3); /* Use theme variable or fallback */
+  text-decoration: underline;
+}

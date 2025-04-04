@@ -116,7 +116,7 @@
   /* Using 3 columns now */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2.5rem;
-  text-align: center;
+  text-align: center; /* Reverted from left */
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
@@ -131,6 +131,7 @@
   box-shadow: 0 2px 8px var(--color-shadow);
   border: 1px solid var(--color-border);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  text-align: center; /* Added back */
 }
 
 .gridItem:hover {
@@ -139,24 +140,29 @@
 }
 
 .iconContainer {
-    width: 50px; /* Smaller icon container */
+    width: 50px; /* Specific width */
     height: 50px;
     border-radius: 8px; /* Squarish rounded */
-    margin: 0 auto 1.5rem auto;
+    margin: 0 auto 1.5rem auto; /* Restored */
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Removed flex-shrink and margin-right */
 }
+
+
+/* Removed .textContent rule */
 
 .icon {
   width: 1.5rem; /* Smaller icon */
   height: 1.5rem;
 }
 
+/* Re-added .itemTitleWrapper */
 .itemTitleWrapper {
     display: flex;
     align-items: center;
-    justify-content: center; /* Center title and tag */
+    justify-content: center; /* Restored */
     gap: 0.5rem; /* Space between title and tag */
     margin-bottom: 0.75rem;
 }
@@ -172,6 +178,7 @@
   font-size: 0.95rem;
   color: var(--color-text-secondary);
   line-height: 1.6;
+/* Removed .textContent block */
 }
 
 .statusTag {

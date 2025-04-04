@@ -1,40 +1,78 @@
-import { Link } from 'react-router-dom'; // Import Link
+import { useState } from 'react'; // Import useState
+import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { useTheme } from '../../context/ThemeContext';
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
+  const { theme, toggleTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Close mobile menu when a link is clicked
+  const handleLinkClick = () => {
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        {/* Wrapper for left-aligned items */}
+        {/* Left side: Brand */}
         <div className={styles.navLeft}>
-          <Link to="/" className={styles.brandLink}>
-            {/* Add logo image */}
+          <Link to="/" className={styles.brandLink} onClick={handleLinkClick}>
             <img src="/logo.png" alt="NotesVault Logo" className={styles.logo} />
-            <span className={styles.brandText}>NotesVault</span> {/* Wrap text for styling */}
+            <span className={styles.brandText}>NotesVault</span>
           </Link>
-          <div className={styles.navLinks}>
-            <Link to="/features" className={styles.navLink}>Features</Link>
-            {/* Add About/Contact later if desired */}
-          </div>
-          {/* Separate div for Auth links */}
-          <div className={styles.authLinks}>
-             <Link to="/login" className={styles.navLink}>Login</Link>
-             <Link to="/signup" className={styles.signupButton}>Sign Up</Link> {/* Style differently */}
+        </div>
+
+        {/* Center: Main navigation links (conditionally displayed/styled) */}
+        <div className={`${styles.navLinks} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+          <Link to="/features" className={styles.navLink} onClick={handleLinkClick}>Features</Link>
+          <Link to="/pricing" className={styles.navLink} onClick={handleLinkClick}>Pricing</Link>
+          <Link to="/blog" className={styles.navLink} onClick={handleLinkClick}>Blog</Link>
+          {/* Add other main links here if needed */}
+          {/* Mobile only: Show auth links inside the menu */}
+          <div className={styles.mobileAuthLinks}>
+             <Link to="/login" className={styles.navLink} onClick={handleLinkClick}>Login</Link>
+             <Link to="/signup" className={`${styles.navLink} ${styles.mobileSignupButton}`} onClick={handleLinkClick}>Sign Up</Link>
           </div>
         </div>
 
-        {/* Theme Toggle Button (keep to the right) */}
-        <button
-          onClick={toggleTheme}
-          className={styles.themeToggle} // Add a specific class for styling
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {/* Simple text/emoji toggle for now, can use icons later */}
-          {theme === 'light' ? '🌙' : '☀️'}
-        </button>
+        {/* Right side: Theme toggle, Desktop Auth links, and Hamburger */}
+        <div className={styles.navRight}>
+           {/* Auth links visible only on desktop */}
+           <div className={styles.desktopAuthLinks}>
+             <Link to="/login" className={styles.navLink}>Login</Link>
+             <Link to="/signup" className={styles.signupButton}>Sign Up</Link>
+           </div>
+           {/* Theme toggle */}
+           <button
+             onClick={toggleTheme}
+             className={styles.themeToggle}
+             aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+           >
+             {theme === 'light' ? '🌙' : '☀️'}
+           </button>
+           {/* Hamburger Button */}
+           <button
+             className={styles.hamburgerButton}
+             onClick={toggleMobileMenu}
+             aria-label="Toggle navigation menu"
+             aria-expanded={isMobileMenuOpen}
+           >
+             {/* Simple SVG for hamburger icon */}
+             <svg viewBox="0 0 100 80" width="20" height="20" fill="var(--color-text-primary)">
+               <rect width="100" height="15" rx="8"></rect>
+               <rect y="30" width="100" height="15" rx="8"></rect>
+               <rect y="60" width="100" height="15" rx="8"></rect>
+             </svg>
+             {/* Or use text: &#9776; */}
+           </button>
+        </div>
       </div>
     </nav>
   );

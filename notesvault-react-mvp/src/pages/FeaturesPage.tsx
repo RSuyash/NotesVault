@@ -1,5 +1,7 @@
 import styles from './FeaturesPage.module.css';
 import FeaturesOverviewSection from '../features/home/FeaturesOverviewSection'; // Import the section component
+import WhyNotesVaultSection from '../features/features-page/WhyNotesVaultSection';
+import FeaturesCTASection from '../features/features-page/FeaturesCTASection';
 
 const FeaturesPage = () => {
   return (
@@ -10,6 +12,11 @@ const FeaturesPage = () => {
       <div className={styles.featuresSectionWrapper}>
         <FeaturesOverviewSection applySpotlightEffect={false} hideTitle={true} noTopBorder={true} />
       </div>
+
+      <hr className={styles.separator} />
+      <WhyNotesVaultSection />
+      <hr className={styles.separator} />
+      <FeaturesCTASection />
 
       {/*
         // Old list implementation removed:

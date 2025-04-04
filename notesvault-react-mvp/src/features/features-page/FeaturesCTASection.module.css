@@ -1,0 +1,101 @@
+.ctaSection {
+    padding: 5rem 2rem;
+    background-color: var(--primary-color-light); /* Match FeaturesOverview or use a distinct CTA background */
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.headline {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color); /* Or white if background is dark */
+    margin-bottom: 1rem;
+}
+
+.subHeadline {
+    font-size: 1.2rem;
+    color: var(--text-muted); /* Adjust color based on background */
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Primary Button Style (Copied from HeroSection) --- */
+.primaryButton {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background-color: var(--color-primary); /* Use variable */
+  color: #ffffff; /* Keep white text */
+  font-weight: 600;
+  padding: 0.8rem 2rem; /* Adjust padding */
+  border-radius: 8px; /* Slightly more rounded */
+  border: 1px solid transparent;
+  transition: color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  cursor: pointer; /* Added for better UX */
+}
+
+/* Animated background pseudo-element for primary button */
+.primaryButton::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid1), var(--gradient-mid2), var(--gradient-end)); /* Use variables */
+  background-size: 300% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out, background-position 0.6s ease-in-out;
+  animation: initialPulse 2.5s ease-out 1s 1 forwards;
+}
+
+.primaryButton:hover {
+  color: #ffffff;
+  transform: scale(1.03);
+  text-decoration: none;
+}
+
+.primaryButton:hover::before {
+  opacity: 1;
+  background-position: -100% 0;
+  animation: gradientShift 5s ease-in-out infinite;
+}
+
+
+/* --- Keyframe Animations (Copied from HeroSection) --- */
+
+/* For continuous button background gradient shift */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* For initial button pulse effect */
+@keyframes initialPulse {
+  0% { opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ctaSection {
+        padding: 4rem 1rem;
+    }
+
+    .headline {
+        font-size: 2rem;
+    }
+
+    .subHeadline {
+        font-size: 1rem;
+    }
+
+    /* Optional: Adjust button padding on smaller screens */
+    .primaryButton {
+        padding: 0.7rem 1.5rem;
+    }
+}

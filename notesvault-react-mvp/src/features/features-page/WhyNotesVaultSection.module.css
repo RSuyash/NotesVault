@@ -1,0 +1,80 @@
+.whyNotesVaultSection {
+    padding: 4rem 2rem;
+    background-color: var(--background-alt); /* Or a slightly different shade */
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+}
+
+.pointsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.point {
+    background-color: var(--background-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center; /* Reverted from left */
+    /* Removed display: flex and align-items: flex-start */
+}
+
+.point h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.point p {
+    font-size: 1rem;
+    color: var(--text-muted);
+
+/* Removed .textContent rule */
+
+    line-height: 1.6;
+}
+/* Added iconContainer styles */
+.iconContainer {
+    width: 50px; /* Consistent size */
+    height: 50px;
+    border-radius: 8px;
+    margin: 0 auto 1.5rem auto; /* Restored */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Removed flex-shrink and margin-right */
+    /* Add a background or border if desired */
+    /* background-color: var(--color-surface-alt); */
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .whyNotesVaultSection {
+        padding: 3rem 1rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .pointsContainer {
+        grid-template-columns: 1fr; /* Stack points on smaller screens */
+    }
+}

@@ -16,7 +16,7 @@
 .content {
   max-width: 800px; /* Limit content width */
   margin: 0 auto; /* Center content */
-  background-color: var(--color-surface); /* Optional: Card background */
+  background-color: color-mix(in srgb, var(--color-surface) 95%, transparent); /* Optional: Card background */
   padding: 2rem; /* Optional: Padding inside card */
   border-radius: 8px; /* Optional: Rounded corners */
   border: 1px solid var(--color-border); /* Optional: Border */

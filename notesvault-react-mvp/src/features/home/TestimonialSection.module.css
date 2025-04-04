@@ -1,0 +1,93 @@
+/* notesvault-react-mvp/src/features/home/TestimonialSection.module.css */
+.testimonialSection {
+  padding: 4rem 2rem;
+  background-color: var(--background-light); /* Or a slightly different shade */
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+}
+
+.testimonialsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.testimonialCard {
+  background-color: var(--background-card);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  flex: 1 1 300px; /* Allow cards to grow and shrink, base width 300px */
+  max-width: 450px; /* Prevent cards from becoming too wide */
+  text-align: center; /* Reverted from left */
+  border: 1px solid var(--border-color);
+  /* Removed display: flex and align-items: flex-start */
+}
+
+.quote {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  /* Removed position relative, padding-left */
+}
+
+/* Removed .quote::before pseudo-element */
+
+
+.attribution {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+
+/* Removed .textContent rule */
+
+  /* Removed text-align: center; Inherits from card */
+}
+/* Added iconContainer styles */
+.iconContainer {
+    width: 50px; /* Consistent size */
+    height: 50px;
+    border-radius: 8px;
+    margin: 0 auto 1.5rem auto; /* Restored */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Removed flex-shrink and margin-right */
+    /* Add a background or border if desired */
+    /* background-color: var(--color-surface-alt); */
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .testimonialSection {
+    padding: 3rem 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .testimonialsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .testimonialCard {
+     max-width: 90%;
+  }
+}

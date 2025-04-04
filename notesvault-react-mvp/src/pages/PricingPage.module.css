@@ -1,0 +1,163 @@
+/* PricingPage.module.css */
+
+.pricingPageContainer {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-color); /* Assuming CSS variables are set globally */
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--primary-color); /* Use theme color */
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  color: var(--text-secondary-color); /* Lighter text color */
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Slightly wider min */
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch; /* Make cards same height */
+}
+
+.pricingCard {
+  background-color: var(--card-bg-color); /* Use theme color */
+  border: 1px solid var(--border-color); /* Use theme color */
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; Removed as controls are simpler now */
+}
+
+.pricingCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pricingCard.highlight {
+  border-color: var(--primary-color); /* Highlight border */
+  box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.2); /* Highlight shadow */
+}
+
+.tierTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Container for price elements */
+.priceContainer {
+  margin-bottom: 1.5rem;
+  min-height: 60px; /* Ensure space even if only one element */
+  display: flex;
+  flex-direction: column; /* Stack price and tag */
+  align-items: center; /* Center align price elements */
+  gap: 0.5rem; /* Space between strikethrough and tag */
+}
+
+/* Style for the main price display (Free or Strikethrough) */
+.priceValue {
+  font-size: 1.8rem; /* Slightly smaller than original .price */
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+/* Original price class, kept for the 'Free' tier */
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Strikethrough style for placeholder prices */
+.strikethrough {
+  text-decoration: line-through;
+  color: var(--text-secondary-color); /* Grey out struck price */
+  font-size: 1.5rem; /* Make struck price smaller */
+}
+
+/* "Currently Free!" tag */
+.freeTag {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-left: 0.5rem; /* Space from strikethrough if inline */
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem; /* Reduced margin */
+  text-align: left;
+  flex-grow: 1; /* Allow list to grow */
+}
+
+.featuresList li {
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.featuresList li::before {
+  content: '✓'; /* Checkmark icon */
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* .extraDetails and .extraDetails.expanded removed */
+
+/* Container for bottom controls */
+.cardControls {
+  margin-top: auto; /* Pushes controls to the bottom */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between toggle and CTA */
+}
+
+
+/* .detailsToggle removed */
+
+
+/* Removed .comingSoon as it's not used in the new TSX */
+
+.ctaButton {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none; /* For Link component */
+  display: inline-block; /* For Link component */
+  width: 100%; /* Make button full width of card */
+  box-sizing: border-box; /* Include padding in width */
+  text-align: center; /* Ensure text is centered */
+}
+
+.ctaButton:hover {
+  background-color: var(--primary-hover-color); /* Darker shade on hover */
+  transform: scale(1.02);
+}
+
+/* Removed .disabled styles as they are not needed now */
