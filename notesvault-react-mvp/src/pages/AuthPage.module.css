@@ -2,15 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 60px - 73px); /* Adjust based on nav/footer */
+  min-height: calc(100vh - 60px - 73px); /* Adjust based on nav/footer height */
   padding: 2rem 1.5rem;
+  /* Assuming a global background is set elsewhere (e.g., index.css or App.tsx) */
 }
 
 .authBox {
   background-color: var(--color-surface);
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px var(--color-shadow-hover); /* Slightly stronger shadow */
+  padding: 2.5rem; /* Adjusted padding */
+  border-radius: 10px; /* Slightly smaller radius */
+  box-shadow: 0 4px 15px var(--color-shadow-hover); /* Softer shadow */
   border: 1px solid var(--color-border);
   width: 100%;
   max-width: 450px; /* Limit form width */
@@ -45,34 +46,109 @@
 
 .input {
   /* Inherits base styles from index.css */
-  /* Add any specific overrides if needed */
+  transition: border-color 0.2s ease-in-out; /* Added transition */
+}
+
+.input:focus {
+  outline: none; /* Remove default outline */
+  border-color: var(--color-primary); /* Highlight focus with primary color */
+  box-shadow: 0 0 0 2px var(--color-primary-transparent); /* Optional: subtle glow */
 }
 
 .submitButton {
   background-color: var(--color-primary);
   color: #ffffff;
   font-weight: 600;
-  padding: 0.8rem; /* Adjust padding */
+  padding: 0.8rem;
   margin-top: 0.5rem; /* Space above button */
-  /* Inherits base styles from index.css */
+  border: none; /* Ensure no default border */
+  border-radius: var(--border-radius-medium); /* Consistent radius */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition */
+  /* Inherits base font styles etc. from index.css */
 }
 
 .submitButton:hover:not(:disabled) {
   background-color: var(--color-primary-darker);
+  box-shadow: 0 2px 5px var(--color-shadow); /* Subtle hover shadow */
 }
+
+.submitButton:disabled {
+  background-color: var(--color-disabled);
+  cursor: not-allowed;
+}
+
+/* New Google Button Style */
+.googleButton {
+  display: flex; /* To align icon and text */
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: #ffffff; /* White background */
+  color: var(--color-text-secondary); /* Greyish text */
+  font-weight: 500;
+  padding: 0.75rem; /* Slightly adjusted padding */
+  margin-top: 1rem; /* Space above button */
+  border: 1px solid var(--color-border); /* Grey border */
+  border-radius: var(--border-radius-medium); /* Consistent radius */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* Added transition */
+  width: 100%; /* Make it full width like submit */
+}
+
+.googleButton:hover:not(:disabled) {
+  background-color: var(--color-surface-hover); /* Subtle hover background */
+  border-color: var(--color-border-hover);
+}
+
+.googleButton:disabled {
+  background-color: var(--color-surface-disabled);
+  color: var(--color-text-disabled);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+/* Optional: Add a placeholder for Google icon if needed */
+.googleButton::before {
+  content: 'G'; /* Placeholder */
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-primary); /* Or Google colors */
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  margin-right: 5px; /* Adjust spacing */
+}
+
 
 .switchLink {
   margin-top: 1.5rem;
   font-size: 0.9rem;
   color: var(--color-text-muted);
+  text-align: center; /* Ensure centered text */
 }
 
 .switchLink a {
   color: var(--color-primary);
   font-weight: 500;
   text-decoration: none;
+  transition: color 0.2s ease-in-out; /* Added transition */
 }
 
 .switchLink a:hover {
   text-decoration: underline;
+  color: var(--color-primary-darker); /* Slightly darken on hover */
+}
+
+/* Optional: Error Message Styling */
+.errorMessage {
+    color: var(--color-error);
+    font-size: 0.85rem;
+    margin-top: -0.75rem; /* Pull up slightly below the input */
+    margin-bottom: 0.5rem;
+    text-align: left;
+    min-height: 1.2em; /* Reserve space to prevent layout shifts */
 }

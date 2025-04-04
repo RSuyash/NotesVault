@@ -1,0 +1,9 @@
+# Ignore virtual environment
+venv/
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore sensitive configuration files
+config/google_client_secret.json
+.env

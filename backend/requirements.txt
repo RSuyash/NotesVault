@@ -6,3 +6,4 @@ google-generativeai # For AI integration later
 fastapi-cors # Already included via middleware, but good practice to list
 celery # For background tasks later
 redis # For Celery broker/backend later
+google-auth # For Google ID token verification
