@@ -3,7 +3,7 @@ uvicorn[standard] # For running the server
 pydantic
 python-dotenv # For environment variables later
 google-generativeai # For AI integration later
-fastapi-cors # Already included via middleware, but good practice to list
+fastapi-cors # For CORS middleware
 celery # For background tasks later
 redis # For Celery broker/backend later
 google-auth # For Google ID token verification
