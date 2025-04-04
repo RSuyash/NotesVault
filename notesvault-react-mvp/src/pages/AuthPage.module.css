@@ -1,154 +1,151 @@
+/* --- Base Container --- */
 .authContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 60px - 73px); /* Adjust based on nav/footer height */
-  padding: 2rem 1.5rem;
-  /* Assuming a global background is set elsewhere (e.g., index.css or App.tsx) */
+  padding: 3rem 1.5rem; /* Increased vertical padding */
+  /* Background should ideally be set globally, maybe a subtle gradient or texture */
+  /* background: linear-gradient(135deg, var(--color-background-alt) 0%, var(--color-background) 100%); */
 }
 
+/* --- Auth Box Styling --- */
 .authBox {
   background-color: var(--color-surface);
-  padding: 2.5rem; /* Adjusted padding */
-  border-radius: 10px; /* Slightly smaller radius */
-  box-shadow: 0 4px 15px var(--color-shadow-hover); /* Softer shadow */
-  border: 1px solid var(--color-border);
+  padding: 2.5rem 3rem; /* More horizontal padding */
+  border-radius: 12px; /* Slightly larger radius */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+  border: 1px solid var(--color-border-subtle); /* Softer border */
   width: 100%;
-  max-width: 450px; /* Limit form width */
+  max-width: 420px; /* Slightly adjusted max-width */
   text-align: center;
+  transition: box-shadow 0.3s ease; /* Add transition for potential hover effects */
 }
 
+/* Optional: Add slight scale effect on hover for the box */
+/* .authBox:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+} */
+
+/* --- Title --- */
 .title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.25rem; /* Larger title */
+  font-weight: 700; /* Keep bold */
   color: var(--color-text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem; /* More space below title */
+  letter-spacing: -0.5px; /* Subtle letter spacing */
 }
 
+/* --- Form Layout --- */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; /* Space between form elements */
-  text-align: left; /* Align labels left */
+  gap: 1.5rem; /* Increased gap between input groups */
+  text-align: left;
 }
 
+/* --- Input Grouping --- */
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem; /* Space between label and input */
+  gap: 0.5rem; /* Increased gap between label and input */
 }
 
+/* --- Labels --- */
 .label {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.875rem; /* Slightly smaller label */
+  font-weight: 600; /* Bolder label */
   color: var(--color-text-secondary);
+  padding-left: 0.25rem; /* Small indent */
 }
 
+/* --- Input Fields --- */
 .input {
   /* Inherits base styles from index.css */
-  transition: border-color 0.2s ease-in-out; /* Added transition */
+  padding: 0.8rem 1rem; /* More padding */
+  border: 1px solid var(--color-border); /* Standard border */
+  border-radius: var(--border-radius-large); /* Larger radius */
+  background-color: var(--color-background); /* Slightly different background */
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .input:focus {
-  outline: none; /* Remove default outline */
-  border-color: var(--color-primary); /* Highlight focus with primary color */
-  box-shadow: 0 0 0 2px var(--color-primary-transparent); /* Optional: subtle glow */
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-transparent); /* Slightly larger focus ring */
 }
 
+/* --- Submit Button --- */
 .submitButton {
-  background-color: var(--color-primary);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-darker) 100%); /* Gradient background */
   color: #ffffff;
   font-weight: 600;
-  padding: 0.8rem;
-  margin-top: 0.5rem; /* Space above button */
-  border: none; /* Ensure no default border */
-  border-radius: var(--border-radius-medium); /* Consistent radius */
+  font-size: 1rem;
+  padding: 0.9rem 1.5rem; /* Increased padding */
+  margin-top: 1rem; /* More space above button */
+  border: none;
+  border-radius: var(--border-radius-large); /* Match input radius */
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition */
-  /* Inherits base font styles etc. from index.css */
+  transition: all 0.3s ease; /* Smooth transition for hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  letter-spacing: 0.5px;
 }
 
 .submitButton:hover:not(:disabled) {
-  background-color: var(--color-primary-darker);
-  box-shadow: 0 2px 5px var(--color-shadow); /* Subtle hover shadow */
+  background: linear-gradient(90deg, var(--color-primary-darker) 0%, var(--color-primary) 100%); /* Reverse gradient on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
 }
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0px); /* Press down effect */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 
 .submitButton:disabled {
-  background-color: var(--color-disabled);
+  background: var(--color-disabled); /* Use gradient for disabled too? Maybe just flat color */
+  /* background-color: var(--color-disabled); */
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
-/* New Google Button Style */
-.googleButton {
-  display: flex; /* To align icon and text */
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  background-color: #ffffff; /* White background */
-  color: var(--color-text-secondary); /* Greyish text */
-  font-weight: 500;
-  padding: 0.75rem; /* Slightly adjusted padding */
-  margin-top: 1rem; /* Space above button */
-  border: 1px solid var(--color-border); /* Grey border */
-  border-radius: var(--border-radius-medium); /* Consistent radius */
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* Added transition */
-  width: 100%; /* Make it full width like submit */
-}
-
-.googleButton:hover:not(:disabled) {
-  background-color: var(--color-surface-hover); /* Subtle hover background */
-  border-color: var(--color-border-hover);
-}
-
-.googleButton:disabled {
-  background-color: var(--color-surface-disabled);
-  color: var(--color-text-disabled);
-  border-color: var(--color-border);
-  cursor: not-allowed;
-}
-
-/* Optional: Add a placeholder for Google icon if needed */
-.googleButton::before {
-  content: 'G'; /* Placeholder */
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  line-height: 18px;
-  text-align: center;
-  font-weight: bold;
-  color: var(--color-primary); /* Or Google colors */
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  margin-right: 5px; /* Adjust spacing */
-}
+/* --- Removed Google Button Styles --- */
+/* .googleButton, .googleButton:hover, .googleButton:disabled, .googleButton::before { ... } */
+/* Removed .divider style as well, assuming it was only for Google button */
 
 
+/* --- Switch Link (Login/Sign Up) --- */
 .switchLink {
-  margin-top: 1.5rem;
+  margin-top: 2rem; /* More space above link */
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  text-align: center; /* Ensure centered text */
+  text-align: center;
 }
 
 .switchLink a {
   color: var(--color-primary);
-  font-weight: 500;
+  font-weight: 600; /* Bolder link */
   text-decoration: none;
-  transition: color 0.2s ease-in-out; /* Added transition */
+  transition: color 0.2s ease-in-out, text-decoration 0.2s ease;
 }
 
 .switchLink a:hover {
   text-decoration: underline;
-  color: var(--color-primary-darker); /* Slightly darken on hover */
+  color: var(--color-primary-darker);
 }
 
-/* Optional: Error Message Styling */
+/* --- Error Message Styling (Keep as is or adjust) --- */
 .errorMessage {
     color: var(--color-error);
     font-size: 0.85rem;
     margin-top: -0.75rem; /* Pull up slightly below the input */
     margin-bottom: 0.5rem;
+    padding-left: 0.25rem; /* Align with label */
     text-align: left;
-    min-height: 1.2em; /* Reserve space to prevent layout shifts */
+    min-height: 1.2em; /* Reserve space */
 }
