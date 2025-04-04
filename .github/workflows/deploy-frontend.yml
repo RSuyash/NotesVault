@@ -29,9 +29,9 @@ jobs:
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.89.116.133.48 }}
-          username: ${{ secrets.u322272751 }}
-          password: ${{ secrets.notesvaultBharat@108 }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           local-dir: ./notesvault-react-mvp/dist/
           server-dir: public_html/ # Adjust if your Hostinger path is different
           exclude: |
