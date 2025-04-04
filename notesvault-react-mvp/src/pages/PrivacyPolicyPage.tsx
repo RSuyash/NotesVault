@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './SimplePage.module.css'; // Use generic simple page style
 
 const PrivacyPolicyPage = () => {

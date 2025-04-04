@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './AuthPage.module.css'; // Use shared auth page style
 
 const SignupPage = () => {
