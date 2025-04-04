@@ -62,7 +62,7 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }} # Use existing secret name
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }} # Use existing secret name
         local-dir: ./deployment_package/ # Deploy contents of this temp dir
-        server-dir: public_html/ # Target directory without leading ./
+        server-dir: / # Target the root directory the FTP user lands in
         # Options:
         # exclude: | # Optional: exclude files/dirs
         #   **/.git*
