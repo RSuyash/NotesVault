@@ -62,12 +62,18 @@ jobs:
     # Replace placeholders in config.php with secrets
     # IMPORTANT: Ensure config.php in repo uses distinct placeholders
     - name: Configure api/config.php
+      env:
+        DB_HOST_SECRET: ${{ secrets.DB_HOST }}
+        DB_USER_SECRET: ${{ secrets.DB_USER }}
+        DB_PASS_SECRET: ${{ secrets.DB_PASS }}
+        DB_NAME_SECRET: ${{ secrets.DB_NAME }}
+        JWT_SECRET_KEY_SECRET: ${{ secrets.JWT_SECRET_KEY }}
       run: |
-        sed -i "s|define('DB_HOST', '.*');|define('DB_HOST', '${{ secrets.DB_HOST }}');|g" ./deployment_package/api/config.php # Add replacement for DB_HOST
-        sed -i "s|define('DB_USER', '.*');|define('DB_USER', '${{ secrets.DB_USER }}');|g" ./deployment_package/api/config.php
-        sed -i "s|define('DB_PASS', '.*');|define('DB_PASS', '${{ secrets.DB_PASS }}');|g" ./deployment_package/api/config.php
-        sed -i "s|define('DB_NAME', '.*');|define('DB_NAME', '${{ secrets.DB_NAME }}');|g" ./deployment_package/api/config.php
-        sed -i "s|define('JWT_SECRET_KEY', '.*');|define('JWT_SECRET_KEY', '${{ secrets.JWT_SECRET_KEY }}');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_HOST', '.*');|define('DB_HOST', '$DB_HOST_SECRET');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_USER', '.*');|define('DB_USER', '$DB_USER_SECRET');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_PASS', '.*');|define('DB_PASS', '$DB_PASS_SECRET');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_NAME', '.*');|define('DB_NAME', '$DB_NAME_SECRET');|g" ./deployment_package/api/config.php
+        sed -i "s|define('JWT_SECRET_KEY', '.*');|define('JWT_SECRET_KEY', '$JWT_SECRET_KEY_SECRET');|g" ./deployment_package/api/config.php
 
         # Add sed command for frontend URL if needed in config.php
 
