@@ -21,6 +21,14 @@ require_once __DIR__ . '/vendor/firebase/php-jwt/Key.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+// Check if JWT Secret Key is defined *after* config include and JWT lib includes
+if (!defined('JWT_SECRET_KEY') || empty(JWT_SECRET_KEY)) {
+    error_log("Login Error: JWT_SECRET_KEY is not defined or empty. Check config.php and the key file.");
+    // Send JSON response immediately
+    sendJsonResponse(['success' => false, 'error' => 'Server configuration error preventing login. Please contact support.'], 500);
+    // The sendJsonResponse function includes an exit, so script stops here.
+}
+
 // Wrap subsequent logic in try-catch
 try {
 
