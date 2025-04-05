@@ -15,8 +15,8 @@ const LoginPage = () => {
     console.log('Submitting Login:', { email }); // Don't log password
 
     try {
-      // Assuming login.php is at /api/login.php relative to the domain root
-      const response = await fetch(`/api/login.php`, {
+      // Assuming login.php is at /notesvault/api/login.php
+      const response = await fetch(`/notesvault/api/login.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

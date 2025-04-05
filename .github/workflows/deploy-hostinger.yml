@@ -52,6 +52,8 @@ jobs:
         sed -i 's/YOUR_DATABASE_USERNAME/${{ secrets.DB_USER }}/g' ./deployment_package/api/config.php
         sed -i 's/YOUR_DATABASE_PASSWORD/${{ secrets.DB_PASS }}/g' ./deployment_package/api/config.php
         sed -i 's/YOUR_DATABASE_NAME/${{ secrets.DB_NAME }}/g' ./deployment_package/api/config.php
+        sed -i 's/YOUR_SUPER_SECRET_RANDOM_KEY_REPLACE_ME/${{ secrets.JWT_SECRET_KEY }}/g' ./deployment_package/api/config.php
+
         # Add sed command for frontend URL if needed in config.php
 
     # --- Deploy via FTP ---

@@ -30,8 +30,8 @@ const SignupPage = () => {
     console.log('Submitting Signup:', { name, email }); // Don't log passwords
 
     try {
-      // Assuming signup.php is at /api/signup.php relative to the domain root
-      const response = await fetch(`/api/signup.php`, {
+      // Assuming signup.php is at /notesvault/api/signup.php
+      const response = await fetch(`/notesvault/api/signup.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

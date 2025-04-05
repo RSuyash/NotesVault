@@ -15,6 +15,13 @@ $allowed_origins = [
     "https://notesvault.in" // Replace with your actual frontend domain
 ];
 
+// --- JWT Configuration ---
+// IMPORTANT: Replace with a strong, randomly generated secret key!
+// You can generate one using online tools or PHP's random_bytes function
+define('JWT_SECRET_KEY', 'YOUR_SUPER_SECRET_RANDOM_KEY_REPLACE_ME');
+define('JWT_EXPIRATION_TIME', 3600); // Token valid for 1 hour (in seconds)
+
+
 // --- Database Connection Function (using MySQLi) ---
 function getDbConnection() {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);

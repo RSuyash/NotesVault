@@ -24,7 +24,8 @@ const Navbar = () => {
         {/* Left side: Brand */}
         <div className={styles.navLeft}>
           <Link to="/" className={styles.brandLink} onClick={handleLinkClick}>
-            <img src="/logo.png" alt="NotesVault Logo" className={styles.logo} />
+            {/* Prepend BASE_URL for correct path in subdirectories */}
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="NotesVault Logo" className={styles.logo} />
             <span className={styles.brandText}>NotesVault</span>
           </Link>
         </div>

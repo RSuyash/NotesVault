@@ -4,6 +4,7 @@ require_once 'config.php';
 // Handle CORS and OPTIONS request
 handleCors($allowed_origins);
 
+
 // Only allow POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendJsonResponse(['success' => false, 'error' => 'Method Not Allowed'], 405);
