@@ -17,6 +17,7 @@ import CopyrightPolicyPage from './pages/CopyrightPolicyPage'; // Import new pag
 import TermsOfServicePage from './pages/TermsOfServicePage'; // Import new page
 import PricingPage from './pages/PricingPage'; // Import new page
 import BlogPage from './pages/BlogPage'; // Import new page
+import DashboardPage from './pages/DashboardPage'; // Import Dashboard page
 
 function App() {
   return (
@@ -37,7 +38,8 @@ function App() {
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          {/* Add routes for Dashboard etc. later */}
+          <Route path="/dashboard" element={<DashboardPage />} /> {/* Add Dashboard route */}
+          {/* Add other protected routes later */}
         </Routes>
       </main>
       <Footer />
