@@ -1,4 +1,3 @@
-# Temporary change to force re-upload
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
