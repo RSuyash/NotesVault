@@ -44,6 +44,11 @@ jobs:
     - name: Copy PHP API to deployment package
       run: cp -r ./api ./deployment_package/
 
+
+    # Copy .htaccess file
+    - name: Copy .htaccess to deployment package
+      run: cp ./.htaccess ./deployment_package/
+
     # --- Configure PHP Database ---
     # Replace placeholders in config.php with secrets
     # IMPORTANT: Ensure config.php in repo uses distinct placeholders
