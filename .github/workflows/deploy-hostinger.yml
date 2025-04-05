@@ -98,3 +98,4 @@ jobs:
         local-dir: ./deploy_staging/
         server-dir: /public_html/
         # dangerous-clean-slate: true # Removed to prevent accidental deletion of non-repo files
+        dangerous-skip-temporary-update-check: true # Added to prevent 'Temporary hidden file exists' error
