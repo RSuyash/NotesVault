@@ -32,9 +32,9 @@ jobs:
     - name: Deploy Frontend + .htaccess to Hostinger
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         protocol: ftp # Or ftps, sftp depending on your Hostinger setup
         port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
         local-dir: ./notesvault-react-mvp/dist/ # Source directory (now includes .htaccess)
@@ -51,9 +51,9 @@ jobs:
     - name: Deploy API to Hostinger
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         protocol: ftp # Or ftps, sftp depending on your Hostinger setup
         port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
         local-dir: ./api/ # Source directory
