@@ -63,6 +63,7 @@ jobs:
     # IMPORTANT: Ensure config.php in repo uses distinct placeholders
     - name: Configure api/config.php
       run: |
+        sed -i "s|define('DB_HOST', '.*');|define('DB_HOST', '${{ secrets.DB_HOST }}');|g" ./deployment_package/api/config.php # Add replacement for DB_HOST
         sed -i "s|define('DB_USER', '.*');|define('DB_USER', '${{ secrets.DB_USER }}');|g" ./deployment_package/api/config.php
         sed -i "s|define('DB_PASS', '.*');|define('DB_PASS', '${{ secrets.DB_PASS }}');|g" ./deployment_package/api/config.php
         sed -i "s|define('DB_NAME', '.*');|define('DB_NAME', '${{ secrets.DB_NAME }}');|g" ./deployment_package/api/config.php
