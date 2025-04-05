@@ -17,20 +17,20 @@ require_once __DIR__ . '/vendor/firebase/php-jwt/SignatureInvalidException.php';
 require_once __DIR__ . '/vendor/firebase/php-jwt/JWT.php';
 require_once __DIR__ . '/vendor/firebase/php-jwt/Key.php';
 
+// Use statements must be at the top level
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-
-// Handle CORS and OPTIONS request
-handleCors($allowed_origins);
-
-// Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    sendJsonResponse(['success' => false, 'error' => 'Method Not Allowed'], 405);
-}
-
-// Wrap main logic in try-catch for unexpected errors
+// Wrap subsequent logic in try-catch
 try {
+
+    // Handle CORS and OPTIONS request
+    handleCors($allowed_origins); // Note: handleCors already calls exit on OPTIONS
+
+    // Only allow POST requests
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        sendJsonResponse(['success' => false, 'error' => 'Method Not Allowed'], 405);
+    }
     // Get input data
     $input = json_decode(file_get_contents('php://input'), true);
 
