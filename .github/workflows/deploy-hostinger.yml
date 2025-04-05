@@ -88,4 +88,4 @@ jobs:
         # No exclude needed, deploying the whole package
         log-level: verbose # Add verbose logging for debugging file uploads
 
-        # dangerous-clean-slate: true # Avoid clean slate to prevent deletion errors
+        dangerous-clean-slate: false # Explicitly disable deleting extraneous server files
