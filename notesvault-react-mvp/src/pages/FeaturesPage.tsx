@@ -1,7 +1,7 @@
 import styles from './FeaturesPage.module.css';
-import FeaturesOverviewSection from '../features/home/FeaturesOverviewSection'; // Import the section component
-import WhyNotesVaultSection from '../features/features-page/WhyNotesVaultSection';
-import FeaturesCTASection from '../features/features-page/FeaturesCTASection';
+import FeaturesOverviewSection from '../features/home/FeaturesOverviewSection.js'; // Import the section component
+import WhyNotesVaultSection from '../features/features-page/WhyNotesVaultSection.js';
+import FeaturesCTASection from '../features/features-page/FeaturesCTASection.js';
 
 const FeaturesPage = () => {
   return (

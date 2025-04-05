@@ -1,6 +1,6 @@
 import { useRef } from 'react'; // Removed useState, useEffect
 import styles from './HeroSection.module.css';
-import { useMousePositionEffect } from '../../hooks/useMousePositionEffect'; // Import the custom hook
+import { useMousePositionEffect } from '../../hooks/useMousePositionEffect.js'; // Import the custom hook
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLElement>(null); // Ref for the section element

@@ -1,4 +1,4 @@
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
+import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js';
 import styles from './FutureFeaturesSection.module.css'; // Import CSS Module
 
 const FutureFeaturesSection = () => {

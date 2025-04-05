@@ -1,7 +1,7 @@
 import { useRef } from 'react'; // Import useRef
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
+import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js';
 import styles from './BenefitsSection.module.css';
-import { useMousePositionEffect } from '../../hooks/useMousePositionEffect'; // Import hook
+import { useMousePositionEffect } from '../../hooks/useMousePositionEffect.js'; // Import hook
 
 const BenefitsSection = () => {
   const sectionRef = useRef<HTMLElement>(null); // Create ref

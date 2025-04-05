@@ -1,5 +1,5 @@
 import React from 'react';
-import { StudyGroup } from '../../types/studyGroup';
+import { StudyGroup } from '../../types/studyGroup.js';
 import styles from './StudyGroupListItem.module.css'; // Create this CSS module next
 
 interface StudyGroupListItemProps {

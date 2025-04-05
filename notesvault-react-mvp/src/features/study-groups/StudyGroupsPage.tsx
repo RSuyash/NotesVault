@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import StudyGroupList from './StudyGroupList';
-import StudyGroupDetail from './StudyGroupDetail';
+import StudyGroupList from './StudyGroupList.js';
+import StudyGroupDetail from './StudyGroupDetail.js';
 // import styles from './StudyGroupsPage.module.css'; // Optional: Add page-level styles if needed
 
 const StudyGroupsPage: React.FC = () => {

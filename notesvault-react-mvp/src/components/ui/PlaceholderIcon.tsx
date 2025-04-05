@@ -44,3 +44,4 @@ const PlaceholderIcon: React.FC<PlaceholderIconProps> = ({
 };
 
 export default PlaceholderIcon;
+export type { IconType }; // Export the type

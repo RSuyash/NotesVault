@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Sidebar from './Sidebar.js'; // Using .js extension as required
 import DashboardHeader from './DashboardHeader.js'; // Using .js extension as required
 // import styles from './DashboardLayout.module.css'; // Uncomment if you have/create this CSS module

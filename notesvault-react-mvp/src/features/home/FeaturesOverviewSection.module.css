@@ -150,6 +150,17 @@
     /* Removed flex-shrink and margin-right */
 }
 
+/* Specific Icon Colors */
+.iconContainerNotes { background-color: var(--color-primary-lighter); }
+.iconNotes { color: var(--color-primary); }
+
+.iconContainerGraph { background-color: #fffbeb; } /* Consider using CSS variables if these colors are reused */
+.iconGraph { color: #f59e0b; }
+
+.iconContainerCards { background-color: #fdf2f8; }
+.iconCards { color: #ec4899; }
+
+
 
 /* Removed .textContent rule */
 

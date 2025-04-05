@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './WhyNotesVaultSection.module.css';
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
+import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js';
 
 const WhyNotesVaultSection: React.FC = () => {
   return (

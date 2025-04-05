@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StudyGroup, StudyGroupMember } from '../../types/studyGroup';
-import * as studyGroupApi from '../../services/studyGroupApi';
+import { StudyGroup, StudyGroupMember } from '../../types/studyGroup.js';
+import * as studyGroupApi from '../../services/studyGroupApi.js';
 import styles from './StudyGroupDetail.module.css'; // Create this CSS module next
 
 interface StudyGroupDetailProps {

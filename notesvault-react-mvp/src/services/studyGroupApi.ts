@@ -4,7 +4,7 @@ import {
   CreateStudyGroupData,
   UpdateStudyGroupData,
   AddMemberData,
-} from '../types/studyGroup';
+} from '../types/studyGroup.js';
 
 // TODO: Move this to environment configuration (.env)
 // Example: const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost/api'; // Adjust '/api' if needed

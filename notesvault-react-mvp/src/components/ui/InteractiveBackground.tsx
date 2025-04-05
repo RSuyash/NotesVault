@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './InteractiveBackground.module.css';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.js';
 
 // Define structure for interaction points
 interface InteractionPoint {

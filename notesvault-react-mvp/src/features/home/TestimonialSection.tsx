@@ -1,6 +1,6 @@
 // notesvault-react-mvp/src/features/home/TestimonialSection.tsx
 import React from 'react';
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
+import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js';
 import styles from './TestimonialSection.module.css';
 
 const TestimonialSection: React.FC = () => {

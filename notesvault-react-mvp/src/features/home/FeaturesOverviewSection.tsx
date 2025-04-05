@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon';
+import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js'; // Added .js extension
 import styles from './FeaturesOverviewSection.module.css';
-import { useMousePositionEffect } from '../../hooks/useMousePositionEffect';
+import { useMousePositionEffect } from '../../hooks/useMousePositionEffect.js'; // Added .js extension
+import FeatureItem, { type Feature } from './FeatureItem.js'; // Import FeatureItem and Feature type
 
 // Define props for the component
 interface FeaturesOverviewProps {
@@ -9,6 +10,37 @@ interface FeaturesOverviewProps {
   hideTitle?: boolean;
   noTopBorder?: boolean; // New prop to control top border
 }
+// Define the feature data structure
+const featuresData: Feature[] = [
+  {
+    id: 'notes',
+    title: 'AI Note Generation',
+    description: 'Get clear, concise notes generated instantly from complex topics or lengthy syllabi. Save time, gain clarity.',
+    iconType: 'brain',
+    iconBgColorClass: 'iconContainerNotes',
+    iconColorClass: 'iconNotes',
+    status: null,
+  },
+  {
+    id: 'graph',
+    title: 'Knowledge Graph',
+    description: 'See the connections between ideas. Navigate complex subjects visually and grasp relationships effortlessly.',
+    iconType: 'graph',
+    iconBgColorClass: 'iconContainerGraph',
+    iconColorClass: 'iconGraph',
+    status: 'Coming Soon',
+  },
+  {
+    id: 'cards',
+    title: 'Automatic Flash Cards',
+    description: 'Master key concepts with ease. Turn your notes into interactive flashcards for effortless revision anytime, anywhere.',
+    iconType: 'cards',
+    iconBgColorClass: 'iconContainerCards',
+    iconColorClass: 'iconCards',
+    status: 'Coming Soon',
+  },
+];
+
 
 const FeaturesOverviewSection: React.FC<FeaturesOverviewProps> = ({
   applySpotlightEffect = false,
@@ -37,46 +69,10 @@ const FeaturesOverviewSection: React.FC<FeaturesOverviewProps> = ({
         )}
         <div className={styles.grid}>
 
-          {/* Item 1: AI Document Generation */}
-          <div className={styles.gridItem}>
-            {/* Reverted structure: Icon first, then text */}
-            <div className={styles.iconContainer} style={{ backgroundColor: 'var(--color-primary-lighter)' }}>
-              <PlaceholderIcon iconType="brain" className={styles.icon} style={{ color: 'var(--color-primary)' }} />
-            </div>
-            {/* Removed textContent wrapper */}
-            <div className={styles.itemTitleWrapper}>
-                <h4 className={styles.itemTitle}>AI Note Generation</h4>
-            </div>
-            <p className={styles.itemText}>Get clear, concise notes generated instantly from complex topics or lengthy syllabi. Save time, gain clarity.</p>
-          </div>
-
-          {/* Item 2: Knowledge Graph */}
-          <div className={styles.gridItem}>
-            {/* Reverted structure: Icon first, then text */}
-             <span className={styles.statusTag}>Coming Soon</span>
-            <div className={styles.iconContainer} style={{ backgroundColor: '#fffbeb' }}>
-              <PlaceholderIcon iconType="graph" className={styles.icon} style={{ color: '#f59e0b' }} />
-            </div>
-            {/* Removed textContent wrapper */}
-            <div className={styles.itemTitleWrapper}>
-                <h4 className={styles.itemTitle}>Knowledge Graph</h4>
-            </div>
-            <p className={styles.itemText}>See the connections between ideas. Navigate complex subjects visually and grasp relationships effortlessly.</p>
-          </div>
-
-          {/* Item 3: Flash Cards */}
-          <div className={styles.gridItem}>
-            {/* Reverted structure: Icon first, then text */}
-            <span className={styles.statusTag}>Coming Soon</span>
-             <div className={styles.iconContainer} style={{ backgroundColor: '#fdf2f8' }}>
-              <PlaceholderIcon iconType="cards" className={styles.icon} style={{ color: '#ec4899' }} />
-            </div>
-            {/* Removed textContent wrapper */}
-            <div className={styles.itemTitleWrapper}>
-                <h4 className={styles.itemTitle}>Automatic Flash Cards</h4>
-            </div>
-            <p className={styles.itemText}>Master key concepts with ease. Turn your notes into interactive flashcards for effortless revision anytime, anywhere.</p>
-          </div>
+          {/* Map over featuresData to render FeatureItem components */}
+          {featuresData.map((feature) => (
+            <FeatureItem key={feature.id} feature={feature} styles={styles} />
+          ))}
 
         </div>
       </div>
