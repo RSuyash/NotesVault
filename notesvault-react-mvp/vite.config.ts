@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({ // Use function form to access command
-  base: command === 'build' ? '/notesvault/' : '/', // Set base path for build
+export default defineConfig({ // Remove function form and conditional base
+  base: '/', // Always use root-relative paths
   plugins: [react()],
   server: {
     proxy: {
@@ -16,4 +16,4 @@ export default defineConfig(({ command }) => ({ // Use function form to access c
       }
     }
   }
-}));
+});
