@@ -26,6 +26,9 @@ jobs:
       run: npm run build
       working-directory: ./notesvault-react-mvp
 
+    - name: Copy .htaccess to dist folder # Ensure .htaccess is included with frontend build artifacts
+      run: cp .htaccess ./notesvault-react-mvp/dist/
+
     - name: Create Production Config for API
       run: |
         echo "<?php" > api/config.prod.php
