@@ -1,4 +1,7 @@
 <?php
+// Start output buffering immediately
+if (ob_get_level() == 0) { ob_start(); }
+
 // Ensure errors are not displayed in the output, breaking JSON
 error_reporting(0);
 ini_set('display_errors', 0);

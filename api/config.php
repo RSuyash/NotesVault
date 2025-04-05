@@ -1,4 +1,10 @@
 <?php
+// Start output buffering immediately
+if (ob_get_level() == 0) { ob_start(); }
+
+// Ensure errors are not displayed in the output, breaking JSON
+error_reporting(0);
+ini_set('display_errors', 0);
 // Database Configuration
 // IMPORTANT: Replace placeholders with your actual Hostinger MySQL credentials
 
@@ -59,10 +65,17 @@ function handleCors($allowed_origins) {
 
 // --- JSON Response Function ---
 function sendJsonResponse($data, $statusCode = 200) {
-    header('Content-Type: application/json');
+    // Clean any previous output buffer to prevent corruption
+    if (ob_get_level() > 0) {
+        ob_end_clean(); // Discard buffer content
+    }
+    // Ensure buffering is started again if needed, though exit should prevent issues
+    if (ob_get_level() == 0) { ob_start(); }
+
+    header('Content-Type: application/json; charset=utf-8'); // Specify charset
     http_response_code($statusCode);
-    echo json_encode($data);
-    exit;
+    echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); // Add flags for better encoding/readability
+    exit; // Terminate script execution
 }
 
 ?>
