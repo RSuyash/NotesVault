@@ -31,7 +31,8 @@ const SignupPage = () => {
 
     try {
       // Assuming signup.php is at /notesvault/api/signup.php
-      const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/signup.php`;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'; // Fallback just in case
+      const apiUrl = `${apiBaseUrl}/signup.php`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
