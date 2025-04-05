@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import PlaceholderIcon from '../../components/ui/PlaceholderIcon.js'; // Added .js extension
+
 import styles from './FeaturesOverviewSection.module.css';
 import { useMousePositionEffect } from '../../hooks/useMousePositionEffect.js'; // Added .js extension
 import FeatureItem, { type Feature } from './FeatureItem.js'; // Import FeatureItem and Feature type
