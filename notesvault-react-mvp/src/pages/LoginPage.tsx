@@ -20,13 +20,14 @@ const LoginPage = () => {
 
     try {
       // Assuming login.php is at /notesvault/api/login.php
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
-    if (!baseUrl) {
-      console.error('Error: VITE_API_BASE_URL is not defined!');
-      // Optionally set an error state here to inform the user
-      return; // Prevent API call
-    }
-      const apiUrl = `${baseUrl}/login.php`;
+      // Temporarily hardcoding for diagnostic purposes
+      const apiUrl = 'https://notesvault.in/api/login.php';
+      // const baseUrl = import.meta.env.VITE_API_BASE_URL;
+      // if (!baseUrl) {
+      //   console.error('Error: VITE_API_BASE_URL is not defined!');
+      //   return; // Prevent API call
+      // }
+      // const apiUrl = `${baseUrl}/login.php`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
