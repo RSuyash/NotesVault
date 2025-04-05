@@ -80,20 +80,6 @@ jobs:
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         local-dir: ./deployment_package/ # Source is the root of the package
         server-dir: /public_html/ # Target the web root
-        exclude: | # Exclude the api directory and other standard ignores
-          **/api/**
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-        # dangerous-clean-slate: true # Avoid clean slate to prevent deletion errors
+        # No exclude needed, deploying the whole package
 
-    # --- Deploy API via FTP (Overwrite Only) ---
-    - name: FTP Deploy API
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        local-dir: ./deployment_package/api/ # Source is only the api directory
-        server-dir: /public_html/api/ # Target the api directory specifically
-        # No clean-slate, just upload/overwrite
+        # dangerous-clean-slate: true # Avoid clean slate to prevent deletion errors
