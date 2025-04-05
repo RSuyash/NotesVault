@@ -75,4 +75,3 @@ jobs:
         local-dir: ./deploy_staging/ # Source: The staging directory
         server-dir: /public_html/ # Destination: Server root
         # Use clean slate to ensure server matches staging directory exactly
-        dangerous-clean-slate: true
