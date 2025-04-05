@@ -101,9 +101,6 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  /* text-decoration: underline; */ /* Removed globally - Add specifically where needed */
-}
 
 button {
   cursor: pointer;

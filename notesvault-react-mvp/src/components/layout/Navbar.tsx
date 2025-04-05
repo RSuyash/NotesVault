@@ -1,11 +1,15 @@
-import { useState } from 'react'; // Import useState
-import { Link } from 'react-router-dom';
+import React from 'react';
+
+import { useState, useEffect } from 'react'; // Import useState and useEffect
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import styles from './Navbar.module.css';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.js';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // State for auth status
+  const navigate = useNavigate(); // Hook for navigation
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -16,6 +20,20 @@ const Navbar = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
     }
+  };
+
+  // Check auth status on component mount and potentially on storage change
+  // For simplicity, we check on mount. A more robust solution might listen to storage events.
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    setIsAuthenticated(!!token);
+  }, []); // Empty dependency array means this runs once on mount
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setIsAuthenticated(false); // Update state
+    setIsMobileMenuOpen(false); // Close mobile menu if open
+    navigate('/login'); // Redirect to login
   };
 
   return (
@@ -38,8 +56,17 @@ const Navbar = () => {
           {/* Add other main links here if needed */}
           {/* Mobile only: Show auth links inside the menu */}
           <div className={styles.mobileAuthLinks}>
-             <Link to="/login" className={styles.navLink} onClick={handleLinkClick}>Login</Link>
-             <Link to="/signup" className={`${styles.navLink} ${styles.mobileSignupButton}`} onClick={handleLinkClick}>Sign Up</Link>
+             {isAuthenticated ? (
+               <>
+                 <Link to="/dashboard" className={styles.navLink} onClick={handleLinkClick}>Dashboard</Link>
+                 <button onClick={handleLogout} className={`${styles.navLink} ${styles.mobileSignupButton}`}>Logout</button>
+               </>
+             ) : (
+               <>
+                 <Link to="/login" className={styles.navLink} onClick={handleLinkClick}>Login</Link>
+                 <Link to="/signup" className={`${styles.navLink} ${styles.mobileSignupButton}`} onClick={handleLinkClick}>Sign Up</Link>
+               </>
+             )}
           </div>
         </div>
 
@@ -47,8 +74,17 @@ const Navbar = () => {
         <div className={styles.navRight}>
            {/* Auth links visible only on desktop */}
            <div className={styles.desktopAuthLinks}>
-             <Link to="/login" className={styles.navLink}>Login</Link>
-             <Link to="/signup" className={styles.signupButton}>Sign Up</Link>
+             {isAuthenticated ? (
+                <>
+                  <Link to="/dashboard" className={styles.navLink}>Dashboard</Link>
+                  <button onClick={handleLogout} className={styles.signupButton}>Logout</button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className={styles.navLink}>Login</Link>
+                  <Link to="/signup" className={styles.signupButton}>Sign Up</Link>
+                </>
+              )}
            </div>
            {/* Theme toggle */}
            <button

@@ -1,23 +1,26 @@
+import React from 'react';
+
 import { Routes, Route } from 'react-router-dom'; // Import routing components
 
 // Layout Components
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
+import Navbar from './components/layout/Navbar.js';
+import Footer from './components/layout/Footer.js';
 // import InteractiveBackground from './components/ui/InteractiveBackground'; // Remove global background
 
 // Page Components
-import HomePage from './pages/HomePage';
-import FeaturesPage from './pages/FeaturesPage';
-import LoginPage from './pages/LoginPage'; // Import new page
-import SignupPage from './pages/SignupPage'; // Import new page
-import AboutPage from './pages/AboutPage'; // Import new page
-import ContactPage from './pages/ContactPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import CopyrightPolicyPage from './pages/CopyrightPolicyPage'; // Import new page
-import TermsOfServicePage from './pages/TermsOfServicePage'; // Import new page
-import PricingPage from './pages/PricingPage'; // Import new page
-import BlogPage from './pages/BlogPage'; // Import new page
-import DashboardPage from './pages/DashboardPage'; // Import Dashboard page
+import HomePage from './pages/HomePage.js';
+import FeaturesPage from './pages/FeaturesPage.js';
+import LoginPage from './pages/LoginPage.js'; // Import new page
+import SignupPage from './pages/SignupPage.js'; // Import new page
+import AboutPage from './pages/AboutPage.js'; // Import new page
+import ContactPage from './pages/ContactPage.js';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage.js';
+import CopyrightPolicyPage from './pages/CopyrightPolicyPage.js'; // Import new page
+import TermsOfServicePage from './pages/TermsOfServicePage.js'; // Import new page
+import PricingPage from './pages/PricingPage.js'; // Import new page
+import BlogPage from './pages/BlogPage.js'; // Import new page
+import DashboardPage from './pages/DashboardPage.js'; // Import Dashboard page
+import ProtectedRoute from './components/auth/ProtectedRoute.js'; // Import ProtectedRoute
 
 function App() {
   return (
@@ -38,7 +41,14 @@ function App() {
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} /> {/* Add Dashboard route */}
+          <Route
+            path="/dashboard/*" // Use /* to allow nested routes within the dashboard later
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
           {/* Add other protected routes later */}
         </Routes>
       </main>
