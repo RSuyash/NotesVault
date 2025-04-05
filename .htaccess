@@ -10,13 +10,13 @@
   # Do not rewrite requests for the API directory
   RewriteRule ^api/ - [L]
 
-  # --- React App Rule (Handles SPA routing in /notesvault/) ---
-  # If the request is NOT for an existing file
-  RewriteCond %{REQUEST_FILENAME} !-f
-  # And the request is NOT for an existing directory
-  RewriteCond %{REQUEST_FILENAME} !-d
-  # Then rewrite the request to the React app's entry point in the subdirectory
-  # This allows requests like /notesvault/dashboard to be handled by React Router
+  # --- React App Rule ---
+  # If the request is for an existing file or directory, serve it directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Otherwise, rewrite the request to index.html for SPA routing
   RewriteRule ^ /index.html [L]
 
   # Note: Requests for existing files/directories (like /api/*, /notesvault/assets/*, /notesvault/logo.png)
