@@ -87,5 +87,6 @@ jobs:
         local-dir: ./deployment_package/ # Source is the root of the package
         server-dir: /public_html/ # Target the web root
         # No exclude needed, deploying the whole package
+        log-level: verbose # Add verbose logging for debugging file uploads
 
         # dangerous-clean-slate: true # Avoid clean slate to prevent deletion errors
