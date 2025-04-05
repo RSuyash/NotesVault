@@ -1,4 +1,23 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ /index.html [L]
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Optional: Redirect HTTP to HTTPS (Uncomment if needed)
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # --- API Rule (Relative to RewriteBase) ---
+  # Do not rewrite requests for the API directory
+  # IMPORTANT: Ensures calls to /api/login.php, /api/signup.php etc. reach the PHP backend
+  RewriteRule ^api/ - [L]
+
+  # --- React App Rule ---
+  # If the request is NOT for an existing file within this directory
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # And the request is NOT for an existing directory within this directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # Then rewrite the request (relative to RewriteBase) to index.html
+  # This allows React Router to handle frontend routing for paths like /login, /features etc.
+  RewriteRule ^ /index.html [L]
+
+</IfModule>
