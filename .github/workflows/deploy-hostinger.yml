@@ -3,7 +3,8 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - master # Or your main deployment branch
+      - master # Trigger on master branch
+      - main   # Also trigger on main branch
 
 jobs:
   build-and-deploy:
