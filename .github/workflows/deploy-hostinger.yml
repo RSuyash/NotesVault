@@ -42,21 +42,20 @@ jobs:
 
     # --- Prepare Deployment Files ---
     # Create a temporary directory to gather all files for deployment
-    - name: Create deployment package directory
-      run: mkdir deployment_package
+    # Files will be copied directly into the 'deploy' directory
 
     # Copy built frontend files into a 'notesvault' subdirectory
-    - name: Copy frontend build to deployment package root
-      run: cp -r ./notesvault-react-mvp/dist/* ./deployment_package/
+    - name: Copy frontend build to deploy directory
+      run: mkdir -p deploy && cp -r ./notesvault-react-mvp/dist/* ./deploy/
 
     # Copy PHP API files
-    - name: Copy PHP API to deployment package
-      run: cp -r ./api ./deployment_package/
+    - name: Copy PHP API to deploy directory
+      run: cp -r ./api ./deploy/
 
 
     # Copy .htaccess file
-    - name: Copy .htaccess to deployment package
-      run: cp ./.htaccess ./deployment_package/
+    - name: Copy .htaccess to deploy directory
+      run: cp ./.htaccess ./deploy/
 
     # --- Configure PHP Database ---
     # Replace placeholders in config.php with secrets
@@ -69,11 +68,11 @@ jobs:
         DB_NAME_SECRET: ${{ secrets.DB_NAME }}
         JWT_SECRET_KEY_SECRET: ${{ secrets.JWT_SECRET_KEY }}
       run: |
-        perl -pi -e 's{define\(\x27DB_HOST\x27, \x27.*\x27\);}{define(\x27DB_HOST\x27, \x27$ENV{DB_HOST_SECRET}\x27);}' ./deployment_package/api/config.php
-        perl -pi -e 's{define\(\x27DB_USER\x27, \x27.*\x27\);}{define(\x27DB_USER\x27, \x27$ENV{DB_USER_SECRET}\x27);}' ./deployment_package/api/config.php
-        perl -pi -e 's{define\(\x27DB_PASS\x27, \x27.*\x27\);}{define(\x27DB_PASS\x27, \x27$ENV{DB_PASS_SECRET}\x27);}' ./deployment_package/api/config.php
-        perl -pi -e 's{define\(\x27DB_NAME\x27, \x27.*\x27\);}{define(\x27DB_NAME\x27, \x27$ENV{DB_NAME_SECRET}\x27);}' ./deployment_package/api/config.php
-        perl -pi -e 's{define\(\x27JWT_SECRET_KEY\x27, \x27.*\x27\);}{define(\x27JWT_SECRET_KEY\x27, \x27$ENV{JWT_SECRET_KEY_SECRET}\x27);}' ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27DB_HOST\x27, \x27.*\x27\);}{define(\x27DB_HOST\x27, \x27$ENV{DB_HOST_SECRET}\x27);}' ./deploy/api/config.php
+        perl -pi -e 's{define\(\x27DB_USER\x27, \x27.*\x27\);}{define(\x27DB_USER\x27, \x27$ENV{DB_USER_SECRET}\x27);}' ./deploy/api/config.php
+        perl -pi -e 's{define\(\x27DB_PASS\x27, \x27.*\x27\);}{define(\x27DB_PASS\x27, \x27$ENV{DB_PASS_SECRET}\x27);}' ./deploy/api/config.php
+        perl -pi -e 's{define\(\x27DB_NAME\x27, \x27.*\x27\);}{define(\x27DB_NAME\x27, \x27$ENV{DB_NAME_SECRET}\x27);}' ./deploy/api/config.php
+        perl -pi -e 's{define\(\x27JWT_SECRET_KEY\x27, \x27.*\x27\);}{define(\x27JWT_SECRET_KEY\x27, \x27$ENV{JWT_SECRET_KEY_SECRET}\x27);}' ./deploy/api/config.php
 
         # Add sed command for frontend URL if needed in config.php
 
@@ -84,7 +83,7 @@ jobs:
         server: ${{ secrets.HOSTINGER_FTP_SERVER }}
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        local-dir: ./deployment_package/ # Source is the root of the package
+        local-dir: ./deploy/ # Source is the deploy directory
         server-dir: /public_html/ # Target the web root
         # No exclude needed, deploying the whole package
         log-level: verbose # Add verbose logging for debugging file uploads
