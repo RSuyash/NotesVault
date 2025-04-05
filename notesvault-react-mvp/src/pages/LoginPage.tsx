@@ -1,4 +1,6 @@
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 import styles from './AuthPage.module.css';
 
 // Removed BACKEND_URL constant, assuming API is relative path
@@ -6,6 +8,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const [error, setError] = useState<string | null>(null); // To display errors
 
   const handleStandardLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -16,7 +20,8 @@ const LoginPage = () => {
 
     try {
       // Assuming login.php is at /notesvault/api/login.php
-      const response = await fetch(`/notesvault/api/login.php`, {
+      const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/login.php`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,13 +33,17 @@ const LoginPage = () => {
 
       if (response.ok && data.success) {
         console.log('Login Success:', data);
-        // TODO: Handle successful login
-        // 1. Store the access token (data.access_token) securely (e.g., localStorage, context)
-        // 2. Update application state to reflect logged-in status
-        // 3. Redirect user to dashboard (e.g., using useNavigate from react-router-dom)
-        alert(`Login Successful (Placeholder)! Token: ${data.access_token}`);
-        // Example: localStorage.setItem('authToken', data.access_token);
-        // Example: navigate('/dashboard');
+        // Handle successful login
+        // 1. Store the access token
+        localStorage.setItem('authToken', data.access_token);
+        console.log('Token stored:', data.access_token); // For debugging
+
+        // 2. TODO: Update global application state if needed (e.g., using Context API or Zustand/Redux)
+
+        // 3. Redirect user to dashboard
+        // Assuming your dashboard route is '/dashboard'
+        // Make sure this route exists in your App router setup
+        navigate('/dashboard');
       } else {
         // Handle backend errors (e.g., incorrect password, user not found)
         // PHP script likely returns 'error' field instead of 'detail'
@@ -45,7 +54,12 @@ const LoginPage = () => {
     } catch (err) {
       // Handle network errors or other fetch issues
       console.error('Login Request Error:', err);
-      setError('Login failed. Could not connect to the server.');
+      // Check if the error is the JSON parsing error specifically
+      if (err instanceof SyntaxError) {
+           setError('Login failed. Received an invalid response from the server.');
+      } else {
+           setError('Login failed. Could not connect to the server.');
+      }
     } finally {
       setIsLoading(false); // Stop loading indicator
     }

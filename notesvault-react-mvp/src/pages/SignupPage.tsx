@@ -31,7 +31,8 @@ const SignupPage = () => {
 
     try {
       // Assuming signup.php is at /notesvault/api/signup.php
-      const response = await fetch(`/notesvault/api/signup.php`, {
+      const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/signup.php`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

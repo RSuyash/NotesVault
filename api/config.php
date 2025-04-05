@@ -3,9 +3,9 @@
 // IMPORTANT: Replace placeholders with your actual Hostinger MySQL credentials
 
 define('DB_HOST', 'localhost'); // Usually 'localhost' on Hostinger shared hosting
-define('DB_USER', 'YOUR_DATABASE_USERNAME'); // Replace with your DB username
-define('DB_PASS', 'YOUR_DATABASE_PASSWORD'); // Replace with your DB password
-define('DB_NAME', 'YOUR_DATABASE_NAME');   // Replace with your DB name
+define('DB_USER', 'root'); // Standard XAMPP user // Replace with your DB username
+define('DB_PASS', ''); // Standard XAMPP password (empty) // Replace with your DB password
+define('DB_NAME', 'notesvault_local');   // Your local database name   // Replace with your DB name
 
 // Optional: Define allowed origins for CORS (adjust as needed)
 // Ensure your frontend domain is included for production
@@ -18,7 +18,7 @@ $allowed_origins = [
 // --- JWT Configuration ---
 // IMPORTANT: Replace with a strong, randomly generated secret key!
 // You can generate one using online tools or PHP's random_bytes function
-define('JWT_SECRET_KEY', 'YOUR_SUPER_SECRET_RANDOM_KEY_REPLACE_ME');
+define('JWT_SECRET_KEY', 'local_dev_secret_key_please_replace_if_needed'); // Temporary key for local dev
 define('JWT_EXPIRATION_TIME', 3600); // Token valid for 1 hour (in seconds)
 
 

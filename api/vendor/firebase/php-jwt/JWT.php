@@ -1,4 +1,4 @@
-<![CDATA[<?php
+<?php
 
 declare(strict_types=1);
 
@@ -642,4 +642,4 @@ class JWT
         return $components;
     }
 }
-]]>
+?>

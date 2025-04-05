@@ -1,4 +1,8 @@
-<![CDATA[<?php
+<?php
+// Suppress notices and warnings for local debugging (remove for production)
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+
+
 require_once 'config.php';
 
 // --- IMPORTANT: Ensure JWT library is uploaded ---
@@ -38,6 +42,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL) || empty($password)) {
 }
 
 // Get DB connection
+    error_log("Login Error: Failed to get DB connection."); // Log specific error
+
 $conn = getDbConnection();
 if (!$conn) {
     sendJsonResponse(['success' => false, 'error' => 'Database connection error'], 500);
@@ -121,4 +127,4 @@ if (password_verify($password, $user['password_hash'])) {
     sendJsonResponse(['success' => false, 'error' => 'Incorrect email or password'], 401);
 }
 
-?>]]>
+?>
