@@ -22,14 +22,11 @@ jobs:
       run: npm ci
       working-directory: ./notesvault-react-mvp
 
-    - name: Build React App
+    - name: Build React App # Output goes to notesvault-react-mvp/dist
       run: npm run build
       working-directory: ./notesvault-react-mvp
 
-    - name: Copy .htaccess to dist folder
-      run: cp .htaccess ./notesvault-react-mvp/dist/
-
-    - name: Deploy Frontend + .htaccess to Hostinger
+    - name: Deploy Project Files to Hostinger
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -37,30 +34,40 @@ jobs:
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         protocol: ftp # Or ftps, sftp depending on your Hostinger setup
         port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
-        local-dir: ./notesvault-react-mvp/dist/ # Source directory (now includes .htaccess)
-        server-dir: /public_html/ # Destination base directory on server
-        # Use dangerous-clean-slate: true if you want the action to remove files
-        # on the server that are NOT in the local-dir being uploaded.
-        # USE WITH CAUTION as it can delete unexpected files if paths are wrong.
-        # dangerous-clean-slate: true
-        exclude: | # Exclude patterns relative to local-dir
+        local-dir: ./ # Deploy from the project root
+        server-dir: /public_html/ # Deploy to public_html on server
+        # IMPORTANT: Ensure dangerous-clean-slate is false or omitted (default is false)
+        exclude: | # Exclude patterns relative to local-dir (project root)
           **/.git*
           **/.git*/**
+          **/.github/**
           **/node_modules/**
-
-    - name: Deploy API to Hostinger
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        protocol: ftp # Or ftps, sftp depending on your Hostinger setup
-        port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
-        local-dir: ./api/ # Source directory
-        server-dir: /public_html/api/ # Destination directory on server
-        exclude: | # Exclude patterns relative to local-dir
-          **/config.prod.php
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/logs/** # Exclude logs directory if present
+          ./notesvault-react-mvp/src/**
+          ./notesvault-react-mvp/public/**
+          ./notesvault-react-mvp/node_modules/**
+          ./notesvault-react-mvp/.gitignore
+          ./notesvault-react-mvp/package.json
+          ./notesvault-react-mvp/package-lock.json
+          ./notesvault-react-mvp/tsconfig.json
+          ./notesvault-react-mvp/tsconfig.app.json
+          ./notesvault-react-mvp/tsconfig.node.json
+          ./notesvault-react-mvp/vite.config.ts
+          ./notesvault-react-mvp/README.md
+          ./notesvault-react-mvp/postcss.config.cjs
+          ./notesvault-react-mvp/tailwind.config.js
+          ./notesvault-react-mvp/eslint.config.js
+          ./api/config.prod.php # Prevent accidental upload if it exists locally
+          ./api/logs/**
+          ./backend/** # Exclude python backend if not needed on Hostinger
+          ./Architecture/**
+          ./Features/**
+          ./Finance/**
+          ./mvp_document_generator/**
+          ./MVP_Planning/**
+          ./Planning/**
+          ./Process/**
+          ./Technology/**
+          ./README.md
+          ./vercel.json # Not needed for Hostinger
+          ./JWT_SECRET_KEY # Should be ignored by .gitignore anyway, but good to be explicit
+          # Add any other files/dirs not needed on the server
