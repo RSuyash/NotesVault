@@ -3,10 +3,10 @@
   padding: 2rem 1.5rem; /* Reduced top/bottom padding */
   min-height: calc(100vh - 60px - 73px);
   /* Add flexbox for centering */
-  display: flex;
+  display: flex; /* Keep flex if needed for other layout aspects */
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* Removed justify-content: center; */
+  /* Removed align-items: center; */
 }
 
 .title {
@@ -56,7 +56,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1100px; /* Match container width */
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
@@ -103,7 +102,64 @@
 
 .dashboardContent {
   width: 100%;
-  max-width: 1100px; /* Match container width */
   margin-top: 1rem;
   text-align: left; /* Adjust as needed */
+}
+
+/* Dashboard Feature Grid */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Redesigned Dashboard Header */
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.menuButton {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.menuButton:hover {
+  background-color: var(--color-background-secondary);
+  border-radius: 6px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.createButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.createButton:hover {
+  background-color: var(--color-primary-darker);
 }

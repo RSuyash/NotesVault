@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'; // Import useLoca
 import Navbar from './components/layout/Navbar.js';
 import Footer from './components/layout/Footer.js';
 // import InteractiveBackground from './components/ui/InteractiveBackground'; // Remove global background
+import DashboardLayout from './components/layout/DashboardLayout.js';
 
 // Page Components
 import HomePage from './pages/HomePage.js';
@@ -42,15 +43,20 @@ function App() {
           <Route path="/terms" element={<TermsOfServicePage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          {/* Define Dashboard Layout Route */}
           <Route
-            path="/dashboard/*" // Use /* to allow nested routes within the dashboard later
+            path="/dashboard" // Base path for dashboard layout
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <DashboardLayout /> {/* Render the layout */}
               </ProtectedRoute>
             }
-          />
-          {/* Add other protected routes later */}
+          >
+            {/* Nested Dashboard Routes - Rendered via Outlet in DashboardLayout */}
+            <Route index element={<DashboardPage />} /> {/* Default dashboard page at /dashboard */}
+            {/* Add other nested dashboard routes here, e.g., <Route path="settings" element={<SettingsPage />} /> */}
+          </Route>
+          {/* Add other top-level protected routes later if needed */}
         </Routes>
       </main>
       {!isDashboardRoute && <Footer />} {/* Conditionally render Footer */}

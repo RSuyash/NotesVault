@@ -40,16 +40,28 @@ const LoginPage = () => {
 
       if (response.ok && data.success) {
         console.log('Login Success:', data);
-        // Handle successful login
         // 1. Store the access token
         localStorage.setItem('authToken', data.access_token);
-        console.log('Token stored:', data.access_token); // For debugging
+        console.log('Token stored:', data.access_token);
 
-        // 2. TODO: Update global application state if needed (e.g., using Context API or Zustand/Redux)
+        try {
+          const profileResponse = await fetch('https://notesvault.in/api/user.php', {
+            headers: {
+              'Authorization': `Bearer ${data.access_token}`,
+            },
+          });
+          const profileData = await profileResponse.json();
+          if (profileResponse.ok && profileData.success) {
+            const username = profileData.username || profileData.name || 'User';
+            localStorage.setItem('username', username);
+            console.log('Fetched username:', username);
+          } else {
+            console.warn('Failed to fetch user profile:', profileData.error);
+          }
+        } catch (profileErr) {
+          console.error('Error fetching user profile:', profileErr);
+        }
 
-        // 3. Redirect user to dashboard
-        // Assuming your dashboard route is '/dashboard'
-        // Make sure this route exists in your App router setup
         navigate('/dashboard');
       } else {
         // Handle backend errors (e.g., incorrect password, user not found)
