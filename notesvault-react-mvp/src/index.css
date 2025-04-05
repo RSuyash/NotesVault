@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Define CSS Variables for Theming */
 :root {
   /* Light Mode Palette */
