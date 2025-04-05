@@ -82,7 +82,7 @@ jobs:
         server-dir: /public_html/ # Target the web root
         exclude: | # Exclude the api directory from this step
           **/api/**
-        dangerous-clean-slate: true # Clean the target dir before uploading React files
+        # dangerous-clean-slate: true # Avoid clean slate to prevent deletion errors
 
     # --- Deploy API via FTP (Overwrite Only) ---
     - name: FTP Deploy API
