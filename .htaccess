@@ -1,4 +1,6 @@
 <IfModule mod_rewrite.c>
+  # --- TEST RULE ---
+  RewriteRule ^test-redirect$ https://www.google.com/ [L,R=301]
   RewriteEngine On
   RewriteBase /
 
