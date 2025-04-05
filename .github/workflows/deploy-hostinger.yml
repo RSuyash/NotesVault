@@ -1,6 +1,7 @@
 name: Deploy to Hostinger
 
 on:
+  workflow_dispatch: # Allows manual triggering
   push:
     branches:
       - master
