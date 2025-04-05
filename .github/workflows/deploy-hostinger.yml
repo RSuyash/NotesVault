@@ -3,89 +3,64 @@ name: Deploy to Hostinger
 on:
   push:
     branches:
-      - master # Or 'main', depending on your default branch
+      - master # Or your main deployment branch (e.g., main)
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest # Use a standard Linux runner
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # --- Frontend Build ---
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20' # Specify your Node.js version
+        node-version: '20' # Use an appropriate LTS version
 
-    - name: Clean npm cache
+    - name: Install Frontend Dependencies
+      run: npm ci
       working-directory: ./notesvault-react-mvp
-      run: npm cache clean --force
 
-    - name: Install Frontend Dependencies (Clean Install)
-      working-directory: ./notesvault-react-mvp # Specify frontend directory
-      run: npm ci # Use clean install based on package-lock.json
-
-    - name: Remove previous build output
-      working-directory: ./notesvault-react-mvp
-      run: rm -rf dist # Ensure a completely fresh build
-
-    - name: Build Frontend
-      working-directory: ./notesvault-react-mvp # Specify frontend directory
-      env: # Set environment variables for this step
-        VITE_API_BASE_URL: /api # Revert API base URL
-      # The run command now uses the environment variable set above
+    - name: Build React App
       run: npm run build
-      # Note: We use /api assuming PHP scripts are in public_html/api
-      # If your final PHP API URL is different, adjust this build command accordingly.
+      working-directory: ./notesvault-react-mvp
 
-    # --- Prepare Deployment Files ---
-    # Create a temporary directory to gather all files for deployment
-    # Files will be copied directly into the 'deploy' directory
+    - name: Copy .htaccess to dist folder
+      run: cp .htaccess ./notesvault-react-mvp/dist/
 
-    # Copy built frontend files into a 'notesvault' subdirectory
-    - name: Copy frontend build to deploy directory
-      run: mkdir -p deploy && cp -r ./notesvault-react-mvp/dist/* ./deploy/
-
-    # Copy PHP API files
-    - name: Copy PHP API to deploy directory
-      run: cp -r ./api ./deploy/ # API files go into deploy/api/
-
-
-    # Copy .htaccess file
-    - name: Copy .htaccess to deploy directory
-      run: cp ./.htaccess ./deploy/
-
-    # --- Configure PHP Database ---
-    # Replace placeholders in config.php with secrets
-    # IMPORTANT: Ensure config.php in repo uses distinct placeholders
-    - name: Configure api/config.php
-      env:
-        DB_HOST_SECRET: ${{ secrets.DB_HOST }}
-        DB_USER_SECRET: ${{ secrets.DB_USER }}
-        DB_PASS_SECRET: ${{ secrets.DB_PASS }}
-        DB_NAME_SECRET: ${{ secrets.DB_NAME }}
-        JWT_SECRET_KEY_SECRET: ${{ secrets.JWT_SECRET_KEY }}
-      run: |
-        perl -pi -e 's{define\(\x27DB_HOST\x27, \x27.*\x27\);}{define(\x27DB_HOST\x27, \x27$ENV{DB_HOST_SECRET}\x27);}' ./deploy/api/config.php
-        perl -pi -e 's{define\(\x27DB_USER\x27, \x27.*\x27\);}{define(\x27DB_USER\x27, \x27$ENV{DB_USER_SECRET}\x27);}' ./deploy/api/config.php
-        perl -pi -e 's{define\(\x27DB_PASS\x27, \x27.*\x27\);}{define(\x27DB_PASS\x27, \x27$ENV{DB_PASS_SECRET}\x27);}' ./deploy/api/config.php
-        perl -pi -e 's{define\(\x27DB_NAME\x27, \x27.*\x27\);}{define(\x27DB_NAME\x27, \x27$ENV{DB_NAME_SECRET}\x27);}' ./deploy/api/config.php
-        perl -pi -e 's{define\(\x27JWT_SECRET_KEY\x27, \x27.*\x27\);}{define(\x27JWT_SECRET_KEY\x27, \x27$ENV{JWT_SECRET_KEY_SECRET}\x27);}' ./deploy/api/config.php
-
-        # Add sed command for frontend URL if needed in config.php
-
-    # --- Deploy React App via FTP (No Clean Slate, Exclude API) --- # Force redeploy
-    - name: FTP Deploy React App
+    - name: Deploy Frontend + .htaccess to Hostinger
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        local-dir: ./deploy/ # Source is the deploy directory
-        server-dir: /public_html/ # Target the web root
-        # No exclude needed, deploying the whole package
-        log-level: verbose # Add verbose logging for debugging file uploads
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp # Or ftps, sftp depending on your Hostinger setup
+        port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
+        local-dir: ./notesvault-react-mvp/dist/ # Source directory (now includes .htaccess)
+        server-dir: /public_html/ # Destination base directory on server
+        # Use dangerous-clean-slate: true if you want the action to remove files
+        # on the server that are NOT in the local-dir being uploaded.
+        # USE WITH CAUTION as it can delete unexpected files if paths are wrong.
+        # dangerous-clean-slate: true
+        exclude: | # Exclude patterns relative to local-dir
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
 
-        dangerous-clean-slate: false # Explicitly disable deleting extraneous server files
+    - name: Deploy API to Hostinger
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp # Or ftps, sftp depending on your Hostinger setup
+        port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
+        local-dir: ./api/ # Source directory
+        server-dir: /public_html/api/ # Destination directory on server
+        exclude: | # Exclude patterns relative to local-dir
+          **/config.prod.php
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/logs/** # Exclude logs directory if present
