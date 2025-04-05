@@ -64,18 +64,34 @@ function handleCors($allowed_origins) {
 }
 
 // --- JSON Response Function ---
-function sendJsonResponse($data, $statusCode = 200) {
-    // Clean any previous output buffer to prevent corruption
-    if (ob_get_level() > 0) {
-        ob_end_clean(); // Discard buffer content
+function sendJsonResponse(array $data, int $statusCode = 200) {
+    // Ensure no output has been sent yet and clean buffer if necessary
+    if (headers_sent($file, $line)) {
+        error_log("Headers already sent in $file on line $line before sendJsonResponse was called.");
+        // Attempt to clean buffer anyway, but it might be too late
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        // Cannot reliably send JSON now, maybe exit or log further
+        exit; // Exit to prevent further output
     }
-    // Ensure buffering is started again if needed, though exit should prevent issues
-    if (ob_get_level() == 0) { ob_start(); }
 
-    header('Content-Type: application/json; charset=utf-8'); // Specify charset
+    // Clean any existing output buffer content
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    // Set headers *after* cleaning buffer and checking headers_sent
     http_response_code($statusCode);
-    echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); // Add flags for better encoding/readability
-    exit; // Terminate script execution
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-cache, must-revalidate'); // Prevent caching issues
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+
+    // Encode and output JSON
+    echo json_encode($data, JSON_UNESCAPED_UNICODE); // Removed PRETTY_PRINT
+
+    // Terminate script
+    exit;
 }
 
 ?>
