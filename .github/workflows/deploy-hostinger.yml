@@ -71,7 +71,7 @@ jobs:
 
         # Add sed command for frontend URL if needed in config.php
 
-    # --- Deploy React App via FTP (Clean Slate, Exclude API) ---
+    # --- Deploy React App via FTP (No Clean Slate, Exclude API) --- # Force redeploy
     - name: FTP Deploy React App
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
