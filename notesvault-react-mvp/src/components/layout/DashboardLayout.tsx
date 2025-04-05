@@ -31,7 +31,7 @@ const DashboardLayout: React.FC = () => {
 
       <div className="flex flex-col flex-1 md:ml-64"> {/* Main content wrapper */}
         {/* Header Bar: Pass toggle function */}
-        <HeaderBar toggleSidebar={toggleSidebar} />
+        <HeaderBar />
         {/* FR1.3: Main Content Area */}
         {/* Main Content Area: Use Outlet */}
         {/* Assuming HeaderBar is h-16 (64px), add padding-top */}
