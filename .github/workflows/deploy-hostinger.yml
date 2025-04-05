@@ -54,10 +54,10 @@ jobs:
     # IMPORTANT: Ensure config.php in repo uses distinct placeholders
     - name: Configure api/config.php
       run: |
-        sed -i 's/YOUR_DATABASE_USERNAME/${{ secrets.DB_USER }}/g' ./deployment_package/api/config.php
-        sed -i 's/YOUR_DATABASE_PASSWORD/${{ secrets.DB_PASS }}/g' ./deployment_package/api/config.php
-        sed -i 's/YOUR_DATABASE_NAME/${{ secrets.DB_NAME }}/g' ./deployment_package/api/config.php
-        sed -i 's/YOUR_SUPER_SECRET_RANDOM_KEY_REPLACE_ME/${{ secrets.JWT_SECRET_KEY }}/g' ./deployment_package/api/config.php
+        sed -i "s|define('DB_USER', '.*');|define('DB_USER', '${{ secrets.DB_USER }}');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_PASS', '.*');|define('DB_PASS', '${{ secrets.DB_PASS }}');|g" ./deployment_package/api/config.php
+        sed -i "s|define('DB_NAME', '.*');|define('DB_NAME', '${{ secrets.DB_NAME }}');|g" ./deployment_package/api/config.php
+        sed -i "s|define('JWT_SECRET_KEY', '.*');|define('JWT_SECRET_KEY', '${{ secrets.JWT_SECRET_KEY }}');|g" ./deployment_package/api/config.php
 
         # Add sed command for frontend URL if needed in config.php
 
@@ -69,10 +69,10 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }} # Use existing secret name
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }} # Use existing secret name
         local-dir: ./deployment_package/ # Deploy contents of this temp dir
-        server-dir: / # Target the root directory the FTP user lands in
+        server-dir: /public_html # Target the public web root on Hostinger
         # Options:
         # exclude: | # Optional: exclude files/dirs
         #   **/.git*
         #   **/.git*/**
         #   **/node_modules/**
-        dangerous-clean-slate: true # IMPORTANT: Deletes everything in server-dir first! Use with caution. Set to false if you have other files there you want to keep.
+        dangerous-clean-slate: false # Safer option: only adds/overwrites files from local-dir
