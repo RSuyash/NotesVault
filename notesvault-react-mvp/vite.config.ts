@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+/// &lt;reference types="vitest/globals" /&gt;
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react-swc'
 
 // https://vite.dev/config/
@@ -9,11 +10,18 @@ export default defineConfig({ // Remove function form and conditional base
     proxy: {
       // Proxy requests starting with /api to the backend server
       // Proxy requests starting with /notesvault/api to the XAMPP server
-      '/notesvault/api': { 
+      '/notesvault/api': {
         target: 'http://localhost/NotesVault', // Target project folder within XAMPP
-        changeOrigin: true, 
+        changeOrigin: true,
         rewrite: (path) => path.replace(/^\/notesvault/, '') // Remove /notesvault prefix
       }
     }
-  }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts', // Path to setup file
+    // Optional: You might want to configure CSS handling if components import CSS directly
+    // css: true,
+  },
 });

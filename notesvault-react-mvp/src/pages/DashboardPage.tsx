@@ -1,70 +1,66 @@
+import styles from './DashboardPage.module.css';
+import React from 'react'; // Add React import
+import { useNavigate } from 'react-router-dom'; // Add useNavigate import
+// Removed feature component imports
 
-import { Link } from 'react-router-dom';
-import DashboardLayout from '../components/layout/DashboardLayout.js'; // Import the new layout
+const DashboardPage: React.FC = () => { // Add type annotation
+  // Add dashboard logic
+  const navigate = useNavigate();
+  const userName = "User"; // Placeholder
 
-const DashboardPage = () => {
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/login');
+  };
+
+  const handleSettingsClick = () => {
+    navigate('/settings');
+  };
+
   return (
-    <DashboardLayout>
-      {/* Main Content Area */}
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">Dashboard Overview</h1>
+    <div className={styles.pageContainer}> {/* Keep page container style */}
+      {/* Add Dashboard Header */}
+      <header className={styles.dashboardHeader}> {/* Add a class for header styling */}
+        <h1 className={styles.title}>Welcome, {userName}!</h1> {/* Use existing title style */}
+        <div className={styles.buttonGroup}> {/* Add a class for button group styling */}
+          <button onClick={handleSettingsClick} className={styles.buttonPrimary}> {/* Add button styles */}
+            Settings
+          </button>
+          <button onClick={handleLogout} className={styles.buttonSecondary}> {/* Add button styles */}
+            Logout
+          </button>
+        </div>
+      </header>
 
-      {/* TEST: Main content area displays feature icons. */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Feature Card: Generate Notes */}
-        <Link to="/dashboard/generate" className="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
-          <h2 className="text-lg font-semibold mb-2 text-blue-600">Generate Notes</h2>
-          <p className="text-sm text-gray-600">Create notes from topics or syllabus.</p>
-        </Link>
-
-        {/* Feature Card: Flashcards */}
-        <Link to="/dashboard/flashcards" className="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
-          <h2 className="text-lg font-semibold mb-2 text-green-600">Flashcards</h2>
-          <p className="text-sm text-gray-600">Review key concepts with flashcards.</p>
-        </Link>
-
-        {/* Feature Card: Knowledge Graph */}
-        <Link to="/dashboard/knowledge-graph" className="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
-          <h2 className="text-lg font-semibold mb-2 text-purple-600">Knowledge Graph</h2>
-          <p className="text-sm text-gray-600">Visualize connections between notes.</p>
-        </Link>
-
-        {/* Feature Card: Study Groups */}
-        <Link to="/dashboard/study-groups" className="block bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200">
-          <h2 className="text-lg font-semibold mb-2 text-yellow-600">Study Groups</h2>
-          <p className="text-sm text-gray-600">Collaborate and learn with peers.</p>
-        </Link>
+      {/* Placeholder for main dashboard content */}
+      <div className={styles.dashboardContent}> {/* Add a class for content area */}
+        <p>Dashboard content goes here...</p>
       </div>
 
-      {/* Widgets Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Widget: Recent Activity */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow">
-          {/* TEST: Recent activity widget displays relevant data. */}
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">Recent Activity</h2>
-          {/* Placeholder Content */}
-          <ul className="space-y-2">
-            <li className="text-sm text-gray-600 italic">No recent activity yet.</li>
-            {/* Example items:
-            <li>Generated notes for "Chapter 5: Thermodynamics"</li>
-            <li>Joined study group "Calculus Crew"</li>
-            <li>Accessed note "Quantum Physics Basics"</li>
-            */}
+      {/*
+        // Old list implementation removed:
+        <div className="container">
+          <ul className={styles.featureList}>
+            {featuresData.map((feature) => (
+                <li
+                  key={feature.id}
+                  className={styles.featureItem}
+                >
+                  {feature.isComingSoon && (
+                    <span className={styles.statusTag}>Coming Soon</span>
+                  )}
+                  <div className={styles.featureTitleWrapper}>
+                     <h2 className={styles.featureTitle}>{feature.title}</h2>
+                  </div>
+                  <p className={styles.featureDescription}>
+                  {feature.description}
+                </p>
+                </li>
+            ))}
           </ul>
         </div>
-
-        {/* Widget: Profile Overview/Settings Link */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">Profile & Settings</h2>
-          {/* Placeholder Content */}
-          <p className="text-sm text-gray-600 mb-4">Manage your account details and preferences.</p>
-          <Link to="/dashboard/settings" className="text-blue-600 hover:underline text-sm font-medium">
-            Go to Settings
-          </Link>
-        </div>
-      </div>
-
-      {/* TEST: Floating logo is present in the bottom-right corner. (Handled in DashboardLayout) */}
-    </DashboardLayout>
+      */}
+    </div>
   );
 };
 

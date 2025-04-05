@@ -1,6 +1,4 @@
-
-
-import { Routes, Route } from 'react-router-dom'; // Import routing components
+import { Routes, Route, useLocation } from 'react-router-dom'; // Import useLocation
 
 // Layout Components
 import Navbar from './components/layout/Navbar.js';
@@ -23,11 +21,14 @@ import DashboardPage from './pages/DashboardPage.js'; // Import Dashboard page
 import ProtectedRoute from './components/auth/ProtectedRoute.js'; // Import ProtectedRoute
 
 function App() {
+  const location = useLocation(); // Get current location
+  const isDashboardRoute = location.pathname.startsWith('/dashboard'); // Check if it's a dashboard route
+
   return (
     // Use a fragment or a div that doesn't interfere with body styles
     <>
       {/* <InteractiveBackground /> */} {/* Remove global background component */}
-      <Navbar />
+      {!isDashboardRoute && <Navbar />} {/* Conditionally render Navbar */}
       <main> {/* Keep main for semantic structure */}
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -52,7 +53,7 @@ function App() {
           {/* Add other protected routes later */}
         </Routes>
       </main>
-      <Footer />
+      {!isDashboardRoute && <Footer />} {/* Conditionally render Footer */}
     </>
   );
 }
