@@ -1,27 +1,26 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /
 
   # Optional: Redirect HTTP to HTTPS (Uncomment if needed)
   # RewriteCond %{HTTPS} off
   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # --- API Rules ---
-  # Allow direct access to PHP files/scripts in the /api/ directory.
-  # Stop processing rewrite rules if the request is for the API.
+  # --- API Rule ---
+  # Do not rewrite requests for the API directory
   RewriteRule ^api/ - [L]
 
-  # --- React App Rules (/notesvault/) ---
-  # If the request is NOT for an existing file physically on the server
+  # --- React App Rule (Handles SPA routing in /notesvault/) ---
+  # If the request is NOT for an existing file
   RewriteCond %{REQUEST_FILENAME} !-f
-  # And the request is NOT for an existing directory physically on the server
+  # And the request is NOT for an existing directory
   RewriteCond %{REQUEST_FILENAME} !-d
-  # And the request URI starts with /notesvault/
-  RewriteCond %{REQUEST_URI} ^/notesvault/
-  # Then rewrite the request to the React app's entry point
-  RewriteRule ^notesvault/ /notesvault/index.html [L]
+  # Then rewrite the request to the React app's entry point in the subdirectory
+  # This allows requests like /notesvault/dashboard to be handled by React Router
+  RewriteRule ^ /notesvault/index.html [L]
 
-  # Note: Requests for existing files/directories within /notesvault/
-  # (like /notesvault/assets/index-XYZ.js or /notesvault/logo.png)
+  # Note: Requests for existing files/directories (like /api/*, /notesvault/assets/*, /notesvault/logo.png)
   # will not match the RewriteCond conditions above and will be served directly by Apache.
+  # The ^api/ rule above explicitly prevents API requests from being rewritten.
 
 </IfModule>
