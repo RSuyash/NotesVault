@@ -20,7 +20,9 @@ The final solution utilizes a GitHub Actions workflow (`.github/workflows/deploy
 
 1.  **React Frontend:** Located in `notesvault-react-mvp/`. Built using `npm run build` which outputs static files to `notesvault-react-mvp/dist/`.
 2.  **PHP API:** Located in `api/`. Handles backend logic and database interaction.
-3.  **`.htaccess`:** Located at the project root (`./.htaccess`). Contains Apache rewrite rules necessary for routing requests correctly on Hostinger (serving the React app for non-API routes, directing API calls appropriately).
+3.  **`.htaccess`:** Located at the project root (`./.htaccess`). This file is crucial for the application to function correctly on the Hostinger Apache server. Its primary roles are:
+    *   **SPA Routing:** It rewrites requests for non-existent files/directories (like `/login`, `/dashboard`, etc.) to `/index.html`, allowing the React Router frontend application to handle the routing internally.
+    *   **API Exclusion:** It ensures that requests starting with `/api/` are *not* rewritten, allowing them to be correctly processed by the PHP scripts in the `api/` directory.
 4.  **Environment Configuration:**
     *   `api/config.php`: Contains default settings (suitable for local development) and logic to load production overrides.
     *   `api/config.prod.php`: **Generated dynamically during the workflow run.** Contains production-specific database credentials and JWT secret key, populated from GitHub Secrets. This file is **not** stored in the repository and is excluded via `.gitignore`.
@@ -40,18 +42,20 @@ The final solution utilizes a GitHub Actions workflow (`.github/workflows/deploy
     *   **Install Frontend Dependencies**: Runs `npm ci` in `notesvault-react-mvp/` to install necessary packages.
     *   **Build React App**: Runs `npm run build` in `notesvault-react-mvp/` to generate the production build in `notesvault-react-mvp/dist/`.
     *   **Generate Production Config for API**: Uses `echo` commands and GitHub secrets (`${{ secrets.DB_HOST }}`, etc.) to create the `api/config.prod.php` file within the runner's workspace.
-    *   **Prepare Staging Directory**:
-        *   Creates a temporary directory (`deploy_staging`).
-        *   Copies the React build output (`notesvault-react-mvp/dist/*`) into `deploy_staging/`.
-        *   Copies the root `.htaccess` file into `deploy_staging/`.
-        *   Copies the contents of the `api/` directory (excluding logs) into `deploy_staging/api/`.
-        *   Copies the *generated* `api/config.prod.php` into `deploy_staging/api/`.
-    *   **Deploy Staging Directory to Hostinger**:
+    *   **Prepare Staging Directory**: This step builds the complete desired structure of the `/public_html/` directory within the temporary `deploy_staging` folder inside the GitHub Actions runner:
+        *   Creates the `deploy_staging` directory.
+        *   Copies the entire React build output (`notesvault-react-mvp/dist/*`) into `deploy_staging/`.
+        *   Copies the essential root `.htaccess` file into `deploy_staging/`.
+        *   Copies the necessary contents of the `api/` directory (using `rsync` to handle exclusions like logs) into `deploy_staging/api/`.
+        *   Copies the *dynamically generated* `api/config.prod.php` (containing production secrets) into `deploy_staging/api/`.
+        *   **Why this is important:** By assembling the *complete and correct* file structure in `deploy_staging` first, we know exactly what should be on the server.
+    *   **Deploy Staging Directory to Hostinger**: This single deployment step uploads the *entire* contents of the prepared `deploy_staging` directory.
         *   Uses `SamKirkland/FTP-Deploy-Action`.
         *   Connects using the `HOSTINGER_FTP_*` secrets.
-        *   Sets `local-dir: ./deploy_staging/` (the source).
+        *   Sets `local-dir: ./deploy_staging/` (the fully prepared source).
         *   Sets `server-dir: /public_html/` (the destination).
-        *   Uses **`dangerous-clean-slate: true`**: This is crucial. It ensures that the `/public_html/` directory on the server is wiped clean and *exactly* matches the contents of the `deploy_staging` directory prepared in the previous step. This prevents leftover files and ensures a consistent deployment state.
+        *   Uses **`dangerous-clean-slate: true`**: This option tells the action to make the `server-dir` (`/public_html/`) an *exact mirror* of the `local-dir` (`./deploy_staging/`). It achieves this by deleting any file or folder present in `/public_html/` that is *not* present in `deploy_staging` before uploading the contents of `deploy_staging`.
+        *   **How this prevents deletions:** Unlike previous attempts with multiple deployment steps (where one step might delete files needed by another), this single step ensures that everything needed (including `.htaccess` and the generated `config.prod.php`) is present in the `deploy_staging` source. Therefore, the `dangerous-clean-slate` option will *not* delete these essential files because they exist in the source directory being deployed. It only deletes files left over from previous failed deployments or files not intended to be part of the current deployment.
 
 ### Why This Approach Works
 
