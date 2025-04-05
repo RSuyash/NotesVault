@@ -84,7 +84,7 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         local-dir: ./deploy/ # Source is the deploy directory
-        server-dir: /public_html/ # Target the web root
+        server-dir: /public_html/notesvault-web/ # Target the subdirectory
         # No exclude needed, deploying the whole package
         log-level: verbose # Add verbose logging for debugging file uploads
 
