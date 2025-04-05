@@ -17,7 +17,7 @@
   RewriteCond %{REQUEST_FILENAME} !-d
   # Then rewrite the request to the React app's entry point in the subdirectory
   # This allows requests like /notesvault/dashboard to be handled by React Router
-  RewriteRule ^ /notesvault/index.html [L]
+  RewriteRule ^ /index.html [L]
 
   # Note: Requests for existing files/directories (like /api/*, /notesvault/assets/*, /notesvault/logo.png)
   # will not match the RewriteCond conditions above and will be served directly by Apache.

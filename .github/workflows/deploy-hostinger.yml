@@ -46,10 +46,8 @@ jobs:
       run: mkdir deployment_package
 
     # Copy built frontend files into a 'notesvault' subdirectory
-    - name: Copy frontend build to deployment package
-      run: |
-        mkdir -p ./deployment_package/notesvault
-        cp -r ./notesvault-react-mvp/dist/* ./deployment_package/notesvault/
+    - name: Copy frontend build to deployment package root
+      run: cp -r ./notesvault-react-mvp/dist/* ./deployment_package/
 
     # Copy PHP API files
     - name: Copy PHP API to deployment package
