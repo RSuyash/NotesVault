@@ -19,9 +19,17 @@ jobs:
       with:
         node-version: '20' # Specify your Node.js version
 
-    - name: Install Frontend Dependencies
+    - name: Clean npm cache
+      working-directory: ./notesvault-react-mvp
+      run: npm cache clean --force
+
+    - name: Install Frontend Dependencies (Clean Install)
       working-directory: ./notesvault-react-mvp # Specify frontend directory
-      run: npm install
+      run: npm ci # Use clean install based on package-lock.json
+
+    - name: Remove previous build output
+      working-directory: ./notesvault-react-mvp
+      run: rm -rf dist # Ensure a completely fresh build
 
     - name: Build Frontend
       working-directory: ./notesvault-react-mvp # Specify frontend directory
