@@ -1,0 +1,21 @@
+# Ignore environment-specific configuration files
+api/config.prod.php
+
+# Ignore sensitive files
+JWT_SECRET_KEY
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor files
+.vscode/
+*.swp
+*.swo
+
+# Ignore dependency directories (if managed by composer/npm elsewhere)
+# vendor/
+# node_modules/
+
+# Ignore build artifacts (adjust if needed)
+# notesvault-react-mvp/dist/

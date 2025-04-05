@@ -5,13 +5,37 @@ if (ob_get_level() == 0) { ob_start(); }
 // Ensure errors are not displayed in the output, breaking JSON
 error_reporting(0);
 ini_set('display_errors', 0);
+// Attempt to load production config if it exists
+if (file_exists(__DIR__ . '/config.prod.php')) {
+    require_once __DIR__ . '/config.prod.php'; // Load production overrides
+} else {
+    // --- Default Development Database Configuration --- 
+    // IMPORTANT: Replace placeholders if your local setup differs
+    define('DB_HOST', 'localhost'); // Usually 'localhost'
+    define('DB_USER', 'root'); // Standard XAMPP user
+    define('DB_PASS', ''); // Standard XAMPP password (empty)
+    define('DB_NAME', 'notesvault_local');   // Your local database name
+
+    // --- Default Development JWT Configuration ---
+    // IMPORTANT: Replace with a strong, randomly generated secret key for production!
+    define('JWT_SECRET_KEY', 'local_dev_secret_key_please_replace_if_needed'); // Temporary key for local dev
+    define('JWT_EXPIRATION_TIME', 3600); // Token valid for 1 hour (in seconds)
+}
+
+// --- Shared Configuration (Applies to both dev and prod unless overridden in config.prod.php) ---
+
 // Database Configuration
 // IMPORTANT: Replace placeholders with your actual Hostinger MySQL credentials
 
+// These are now defaults for development, moved inside the 'else' block above
 define('DB_HOST', 'localhost'); // Usually 'localhost' on Hostinger shared hosting
+
 define('DB_USER', 'root'); // Standard XAMPP user // Replace with your DB username
+
 define('DB_PASS', ''); // Standard XAMPP password (empty) // Replace with your DB password
+
 define('DB_NAME', 'notesvault_local');   // Your local database name   // Replace with your DB name
+
 
 // Optional: Define allowed origins for CORS (adjust as needed)
 // Ensure your frontend domain is included for production
@@ -21,11 +45,17 @@ $allowed_origins = [
     "https://notesvault.in" // Replace with your actual frontend domain
 ];
 
+// These are now defaults for development, moved inside the 'else' block above
 // --- JWT Configuration ---
+
 // IMPORTANT: Replace with a strong, randomly generated secret key!
+
 // You can generate one using online tools or PHP's random_bytes function
+
 define('JWT_SECRET_KEY', 'local_dev_secret_key_please_replace_if_needed'); // Temporary key for local dev
+
 define('JWT_EXPIRATION_TIME', 3600); // Token valid for 1 hour (in seconds)
+
 
 
 // --- Database Connection Function (using MySQLi) ---
