@@ -1,6 +1,13 @@
 <?php
+// Attempt to display errors (might be overridden by server config)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+
+// Ensure errors are logged to a file
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/php_errors.log'); // Log errors to api/logs/php_errors.log
+
+// Report all errors
 error_reporting(E_ALL);
 
 // Database Configuration
