@@ -34,7 +34,7 @@ jobs:
     - name: Build Frontend
       working-directory: ./notesvault-react-mvp # Specify frontend directory
       env: # Set environment variables for this step
-        VITE_API_BASE_URL: /api
+        VITE_API_BASE_URL: /notesvault-web/api # Update API base URL for frontend
       # The run command now uses the environment variable set above
       run: npm run build
       # Note: We use /api assuming PHP scripts are in public_html/api
@@ -50,7 +50,7 @@ jobs:
 
     # Copy PHP API files
     - name: Copy PHP API to deploy directory
-      run: cp -r ./api ./deploy/
+      run: cp -r ./api ./deploy/ # API files go into deploy/api/
 
 
     # Copy .htaccess file

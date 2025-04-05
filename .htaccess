@@ -6,7 +6,9 @@
   # RewriteCond %{HTTPS} off
   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # API rule removed - not needed within this subdirectory's .htaccess
+  # --- API Rule (Relative to RewriteBase) ---
+  # Do not rewrite requests for the API directory within notesvault-web
+  RewriteRule ^api/ - [L]
 
   # --- React App Rule ---
   # If the request is NOT for an existing file within this directory
