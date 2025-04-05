@@ -20,7 +20,17 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v4
+      with:
+        path: ./notesvault-react-mvp/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('./notesvault-react-mvp/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Install Frontend Dependencies
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       run: npm ci
       working-directory: ./notesvault-react-mvp
 
@@ -70,8 +80,8 @@ jobs:
         server: ${{ secrets.HOSTINGER_FTP_SERVER }}
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        protocol: ftp # Or ftps, sftp
-        port: 21 # Or 22 for SFTP
+        protocol: ftp # Reverted to ftp based on user confirmation
+        port: 21 # Standard FTP port
         local-dir: ./deploy_staging/ # Source: The staging directory
         server-dir: /public_html/ # Destination: Server root
-        # Use clean slate to ensure server matches staging directory exactly
+        dangerous-clean-slate: true # Ensure server matches staging directory exactly
