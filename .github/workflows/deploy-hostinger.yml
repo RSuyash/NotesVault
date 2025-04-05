@@ -36,9 +36,11 @@ jobs:
     - name: Create deployment package directory
       run: mkdir deployment_package
 
-    # Copy built frontend files
+    # Copy built frontend files into a 'notesvault' subdirectory
     - name: Copy frontend build to deployment package
-      run: cp -r ./notesvault-react-mvp/dist/* ./deployment_package/
+      run: |
+        mkdir -p ./deployment_package/notesvault
+        cp -r ./notesvault-react-mvp/dist/* ./deployment_package/notesvault/
 
     # Copy PHP API files
     - name: Copy PHP API to deployment package
@@ -69,7 +71,7 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }} # Use existing secret name
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }} # Use existing secret name
         local-dir: ./deployment_package/ # Deploy contents of this temp dir
-        server-dir: /public_html # Target the public web root on Hostinger
+        server-dir: / # Target the web root relative to the FTP user's login directory
         # Options:
         # exclude: | # Optional: exclude files/dirs
         #   **/.git*

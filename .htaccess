@@ -1,14 +1,27 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # Redirect HTTP to HTTPS (Optional but recommended)
+
+  # Optional: Redirect HTTP to HTTPS (Uncomment if needed)
   # RewriteCond %{HTTPS} off
   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Don't rewrite requests for real files or directories
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
+  # --- API Rules ---
+  # Allow direct access to PHP files/scripts in the /api/ directory.
+  # Stop processing rewrite rules if the request is for the API.
+  RewriteRule ^api/ - [L]
 
-  # Rewrite all other requests to index.html to handle client-side routing
-  RewriteRule ^ index.html [L]
+  # --- React App Rules (/notesvault/) ---
+  # If the request is NOT for an existing file physically on the server
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # And the request is NOT for an existing directory physically on the server
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # And the request URI starts with /notesvault/
+  RewriteCond %{REQUEST_URI} ^/notesvault/
+  # Then rewrite the request to the React app's entry point
+  RewriteRule ^notesvault/ /notesvault/index.html [L]
+
+  # Note: Requests for existing files/directories within /notesvault/
+  # (like /notesvault/assets/index-XYZ.js or /notesvault/logo.png)
+  # will not match the RewriteCond conditions above and will be served directly by Apache.
+
 </IfModule>
