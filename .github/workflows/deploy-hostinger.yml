@@ -25,9 +25,9 @@ jobs:
 
     - name: Build Frontend
       working-directory: ./notesvault-react-mvp # Specify frontend directory
-      # Set the production backend URL during build (using placeholder for now)
-      # You might adjust this if your PHP API path is different
-      run: VITE_BACKEND_URL=/api npm run build
+      # Set the production API base URL during build
+      # This variable is accessed in the frontend code (e.g., LoginPage.tsx)
+      run: VITE_API_BASE_URL=/api npm run build
       # Note: We use /api assuming PHP scripts are in public_html/api
       # If your final PHP API URL is different, adjust this build command accordingly.
 
