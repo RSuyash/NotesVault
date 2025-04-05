@@ -26,7 +26,7 @@ jobs:
       run: npm run build
       working-directory: ./notesvault-react-mvp
 
-    - name: Copy .htaccess to dist folder # Ensure .htaccess is included with frontend build artifacts
+    - name: Copy .htaccess to dist folder # Add .htaccess to the build output
       run: cp .htaccess ./notesvault-react-mvp/dist/
 
     - name: Create Production Config for API
@@ -50,48 +50,32 @@ jobs:
         echo "?>" >> api/config.prod.php
       shell: bash
 
-    - name: Deploy Project Files to Hostinger
+    - name: Deploy Built Frontend + .htaccess to Hostinger
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.HOSTINGER_FTP_SERVER }}
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        protocol: ftp # Or ftps, sftp depending on your Hostinger setup
-        port: 21 # Default FTP port, change if needed (e.g., 22 for SFTP)
-        local-dir: ./ # Deploy from the project root
-        server-dir: /public_html/ # Deploy to public_html on server
-        # IMPORTANT: Ensure dangerous-clean-slate is false or omitted (default is false)
-        exclude: | # Exclude patterns relative to local-dir (project root)
+        protocol: ftp # Or ftps, sftp
+        port: 21 # Or 22 for SFTP
+        local-dir: ./notesvault-react-mvp/dist/ # Source: React build output (includes .htaccess now)
+        server-dir: /public_html/ # Destination: Server root
+        exclude: |
           **/.git*
           **/.git*/**
-          **/.github/**
-          **/node_modules/**
-          ./notesvault-react-mvp/src/**
-          ./notesvault-react-mvp/public/**
-          ./notesvault-react-mvp/node_modules/**
-          ./notesvault-react-mvp/.gitignore
-          ./notesvault-react-mvp/package.json
-          ./notesvault-react-mvp/package-lock.json
-          ./notesvault-react-mvp/tsconfig.json
-          ./notesvault-react-mvp/tsconfig.app.json
-          ./notesvault-react-mvp/tsconfig.node.json
-          ./notesvault-react-mvp/vite.config.ts
-          ./notesvault-react-mvp/README.md
-          ./notesvault-react-mvp/postcss.config.cjs
-          ./notesvault-react-mvp/tailwind.config.js
-          ./notesvault-react-mvp/eslint.config.js
-          # REMOVED: ./api/config.prod.php # Now we WANT to deploy the generated one
-          ./api/logs/**
-          ./backend/** # Exclude python backend if not needed on Hostinger
-          ./Architecture/**
-          ./Features/**
-          ./Finance/**
-          ./mvp_document_generator/**
-          ./MVP_Planning/**
-          ./Planning/**
-          ./Process/**
-          ./Technology/**
-          ./README.md
-          ./vercel.json # Not needed for Hostinger
-          ./JWT_SECRET_KEY # Should be ignored by .gitignore anyway, but good to be explicit
-          # Add any other files/dirs not needed on the server
+
+    - name: Deploy API to Hostinger (excluding logs, generated config)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+        username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+        password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        protocol: ftp # Or ftps, sftp
+        port: 21 # Or 22 for SFTP
+        local-dir: ./api/ # Source: API directory
+        server-dir: /public_html/api/ # Destination: API subdir on server
+        exclude: | # Exclude patterns relative to local-dir (./api/)
+          **/config.prod.php
+          **/logs/**
+          **/.git*
+          **/.git*/**
