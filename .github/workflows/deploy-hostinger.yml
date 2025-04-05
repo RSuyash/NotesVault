@@ -85,4 +85,4 @@ jobs:
         #   **/.git*
         #   **/.git*/**
         #   **/node_modules/**
-        dangerous-clean-slate: false # Safer option: only adds/overwrites files from local-dir
+        dangerous-clean-slate: true # Wipe server directory before upload to ensure clean state
