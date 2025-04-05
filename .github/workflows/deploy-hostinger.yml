@@ -97,4 +97,4 @@ jobs:
         port: 21 # Or 22 for SFTP
         local-dir: ./deploy_staging/
         server-dir: /public_html/
-        dangerous-clean-slate: true
+        # dangerous-clean-slate: true # Removed to prevent accidental deletion of non-repo files
