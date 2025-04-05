@@ -34,7 +34,7 @@ jobs:
     - name: Build Frontend
       working-directory: ./notesvault-react-mvp # Specify frontend directory
       env: # Set environment variables for this step
-        VITE_API_BASE_URL: /notesvault-web/api # Update API base URL for frontend
+        VITE_API_BASE_URL: /api # Revert API base URL
       # The run command now uses the environment variable set above
       run: npm run build
       # Note: We use /api assuming PHP scripts are in public_html/api
@@ -84,7 +84,7 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         local-dir: ./deploy/ # Source is the deploy directory
-        server-dir: /public_html/notesvault-web/ # Target the subdirectory
+        server-dir: /public_html/ # Target the web root
         # No exclude needed, deploying the whole package
         log-level: verbose # Add verbose logging for debugging file uploads
 

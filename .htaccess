@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /notesvault-web/
+  RewriteBase /
 
   # Optional: Redirect HTTP to HTTPS (Uncomment if needed)
   # RewriteCond %{HTTPS} off
@@ -16,7 +16,7 @@
   # And the request is NOT for an existing directory within this directory
   RewriteCond %{REQUEST_FILENAME} !-d
   # Then rewrite the request (relative to RewriteBase) to index.html
-  RewriteRule ^ index.html [L]
+  RewriteRule ^ /index.html [L]
 
   # Note: Requests for existing files/directories (like /api/*, /notesvault/assets/*, /notesvault/logo.png)
   # will not match the RewriteCond conditions above and will be served directly by Apache.
