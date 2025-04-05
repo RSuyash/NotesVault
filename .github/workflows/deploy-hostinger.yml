@@ -69,11 +69,11 @@ jobs:
         DB_NAME_SECRET: ${{ secrets.DB_NAME }}
         JWT_SECRET_KEY_SECRET: ${{ secrets.JWT_SECRET_KEY }}
       run: |
-        sed -i "s|define('DB_HOST', '.*');|define('DB_HOST', '$DB_HOST_SECRET');|g" ./deployment_package/api/config.php
-        sed -i "s|define('DB_USER', '.*');|define('DB_USER', '$DB_USER_SECRET');|g" ./deployment_package/api/config.php
-        sed -i "s|define('DB_PASS', '.*');|define('DB_PASS', '$DB_PASS_SECRET');|g" ./deployment_package/api/config.php
-        sed -i "s|define('DB_NAME', '.*');|define('DB_NAME', '$DB_NAME_SECRET');|g" ./deployment_package/api/config.php
-        sed -i "s|define('JWT_SECRET_KEY', '.*');|define('JWT_SECRET_KEY', '$JWT_SECRET_KEY_SECRET');|g" ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27DB_HOST\x27, \x27.*\x27\);}{define(\x27DB_HOST\x27, \x27$ENV{DB_HOST_SECRET}\x27);}' ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27DB_USER\x27, \x27.*\x27\);}{define(\x27DB_USER\x27, \x27$ENV{DB_USER_SECRET}\x27);}' ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27DB_PASS\x27, \x27.*\x27\);}{define(\x27DB_PASS\x27, \x27$ENV{DB_PASS_SECRET}\x27);}' ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27DB_NAME\x27, \x27.*\x27\);}{define(\x27DB_NAME\x27, \x27$ENV{DB_NAME_SECRET}\x27);}' ./deployment_package/api/config.php
+        perl -pi -e 's{define\(\x27JWT_SECRET_KEY\x27, \x27.*\x27\);}{define(\x27JWT_SECRET_KEY\x27, \x27$ENV{JWT_SECRET_KEY_SECRET}\x27);}' ./deployment_package/api/config.php
 
         # Add sed command for frontend URL if needed in config.php
 
