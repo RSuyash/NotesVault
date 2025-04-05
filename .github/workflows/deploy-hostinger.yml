@@ -80,7 +80,7 @@ jobs:
         username: ${{ secrets.HOSTINGER_FTP_USERNAME }} # Use existing secret name
         password: ${{ secrets.HOSTINGER_FTP_PASSWORD }} # Use existing secret name
         local-dir: ./deployment_package/ # Deploy contents of this temp dir
-        server-dir: / # Target the web root relative to the FTP user's login directory
+        server-dir: /public_html/ # Target the public web root directory on Hostinger
         # Options:
         # exclude: | # Optional: exclude files/dirs
         #   **/.git*
