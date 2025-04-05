@@ -1,11 +1,9 @@
 import React from 'react';
 
 // Define props interface
-interface HeaderBarProps {
-  toggleSidebar: () => void; // Function to toggle the sidebar
-}
+interface HeaderBarProps {}
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ toggleSidebar }) => {
+const HeaderBar: React.FC<HeaderBarProps> = () => {
   return (
     <></>
   );

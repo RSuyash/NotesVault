@@ -1,6 +1,5 @@
 import styles from './DashboardPage.module.css';
 import DashboardFeatureCard from '../components/dashboard/DashboardFeatureCard';
-import type { IconType } from '../components/ui/PlaceholderIcon.js';
 // Removed feature component imports
 import React, { useState, useEffect } from 'react';
 

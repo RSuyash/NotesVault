@@ -1,10 +1,9 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 // Assuming useAuth hook exists and provides logout function
 // import { useAuth } from '../../hooks/useAuth'; // Adjust path if needed - HOOK NOT FOUND
 
 const SidebarNav: React.FC = () => {
-  const navigate = useNavigate();
   // const { logout } = useAuth(); // Assuming useAuth returns { logout: () => void } - HOOK NOT FOUND
 
   // const handleLogout = async () => {
