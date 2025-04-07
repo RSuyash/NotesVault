@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile, UserProfile } from '../services/profileApi';
 
 const ProfilePage: React.FC = () => {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(true);
@@ -13,7 +12,6 @@ const ProfilePage: React.FC = () => {
     async function fetchProfile() {
       try {
         const data = await getProfile();
-        setProfile(data);
         setName(data.name);
         setEmail(data.email);
       } catch (err) {
