@@ -13,6 +13,7 @@ export async function getProfile(): Promise<UserProfile> {
     const response = await axios.get<UserProfile>(`${API_BASE_URL}/user.php`, {
       withCredentials: true,
     });
+    console.log('User profile fetch response:', response.data);
     return response.data;
   } catch (error: any) {
     console.error('Failed to fetch user profile:', error?.response?.status, error?.response?.data, error?.message);
