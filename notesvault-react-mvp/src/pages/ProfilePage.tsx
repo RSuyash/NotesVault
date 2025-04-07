@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProfile, updateProfile, UserProfile } from '../services/profileApi';
+import { getProfile, updateProfile } from '../services/profileApi';
 
 const ProfilePage: React.FC = () => {
   const [name, setName] = useState('');
