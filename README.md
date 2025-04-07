@@ -34,23 +34,6 @@ This MVP includes:
 
 ---
 
-## 🏗️ Overall Architecture (Fixed)
-
-```mermaid
-graph TD
-    A[React + Vite (Frontend)]
-    B[PHP API (Backend)]
-    C[FastAPI (Experimental Backend)]
-    D[(MySQL Database)]
-
-    A -->|REST API| B
-    A -->|Future AI| C
-    B --> D
-    C --> D
-```
-
----
-
 ## 🏗️ Overall Architecture
 
 ```mermaid
