@@ -9,10 +9,15 @@ export interface UserProfile {
 }
 
 export async function getProfile(): Promise<UserProfile> {
-  const response = await axios.get<UserProfile>(`${API_BASE_URL}/user.php`, {
-    withCredentials: true,
-  });
-  return response.data;
+  try {
+    const response = await axios.get<UserProfile>(`${API_BASE_URL}/user.php`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error('Failed to fetch user profile:', error?.response?.status, error?.response?.data, error?.message);
+    throw error;
+  }
 }
 
 export async function updateProfile(data: { name: string; email: string }): Promise<void> {
