@@ -84,4 +84,4 @@ jobs:
         port: 21 # Standard FTP port
         local-dir: ./deploy_staging/ # Source: The staging directory
         server-dir: /public_html/ # Destination: Server root
-        dangerous-clean-slate: true # Ensure server matches staging directory exactly
+        dangerous-clean-slate: false # Safer: do not delete existing server files, only add/update
