@@ -43,7 +43,7 @@ graph TD
     end
     subgraph Backend
         B[PHP API]
-        C[FastAPI (Experimental)]
+        C[FastAPI Experimental]
     end
     subgraph Database
         D[(MySQL)]
