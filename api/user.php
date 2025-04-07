@@ -1,24 +1,62 @@
 <?php
-header('Content-Type: application/json');
+require_once __DIR__ . '/config.php';
 
-// Simulate authentication check (optional)
-// if (!isset($_GET['token']) || $_GET['token'] !== 'valid_token') {
-//     http_response_code(401);
-//     echo json_encode(['error' => 'Unauthorized']);
-//     exit;
-// }
+// Handle CORS
+handleCors($allowed_origins);
 
-try {
-    // Dummy user data
-    $user = [
-        'id' => 1,
-        'name' => 'Test User',
-        'email' => 'testuser@example.com'
-    ];
-
-    echo json_encode($user);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Server error']);
+// Connect to DB
+$conn = getDbConnection();
+if (!$conn) {
+    sendJsonResponse(['error' => 'Database connection failed'], 500);
 }
+
+// Simulate authentication (replace with JWT auth later)
+$userId = 1; // TODO: extract from token
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Fetch user profile
+    $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($user = $result->fetch_assoc()) {
+            sendJsonResponse($user);
+        } else {
+            sendJsonResponse(['error' => 'User not found'], 404);
+        }
+    } else {
+        sendJsonResponse(['error' => 'Query failed'], 500);
+    }
+    $stmt->close();
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Update user profile
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (!$data) {
+        sendJsonResponse(['error' => 'Invalid JSON'], 400);
+    }
+
+    $name = $data['name'] ?? null;
+    $email = $data['email'] ?? null;
+
+    if (!$name || !$email) {
+        sendJsonResponse(['error' => 'Name and email required'], 400);
+    }
+
+    $stmt = $conn->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+    $stmt->bind_param("ssi", $name, $email, $userId);
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            sendJsonResponse(['success' => true]);
+        } else {
+            sendJsonResponse(['error' => 'No changes or user not found'], 400);
+        }
+    } else {
+        sendJsonResponse(['error' => 'Update failed'], 500);
+    }
+    $stmt->close();
+} else {
+    sendJsonResponse(['error' => 'Method not allowed'], 405);
+}
+
+$conn->close();
 ?>
