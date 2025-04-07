@@ -1,56 +1,65 @@
 <?php
-// Simple script to test the database connection defined in config.php
+require_once __DIR__ . '/config.php';
 
-// Include the configuration file
-require_once 'config.php';
+header('Content-Type: application/json');
 
-// Set content type to plain text for clear output in browser/curl
-header('Content-Type: text/plain');
-
-echo "Attempting to connect to database...\n";
-echo "Host: " . DB_HOST . "\n";
-echo "User: " . DB_USER . "\n";
-// Mask password for security, even in test scripts
-echo "Password: [HIDDEN]\n";
-echo "Database: " . DB_NAME . "\n";
-echo "------------------------------------\n";
-
-// Get the database connection
 $conn = getDbConnection();
-
-// Check if the connection was successful
-if ($conn) {
-    echo "SUCCESS: Database connection established successfully!\n";
-
-    // Optional: Perform a simple query to confirm interaction
-    $result = $conn->query("SELECT DATABASE()"); // Check which DB is selected
-    if ($result) {
-        $dbName = $result->fetch_row()[0];
-        echo "Verified connection to database: '" . $dbName . "'\n";
-        $result->close();
-    } else {
-        echo "WARNING: Could not execute simple verification query: " . $conn->error . "\n";
-    }
-
-    $conn->close(); // Close the connection
-    echo "Connection closed.\n";
-} else {
-    echo "ERROR: Failed to connect to the database using getDbConnection().\n";
-
-    // Attempt connection again directly to get specific error for debugging
-    // Be cautious about exposing detailed errors on a live server.
-    $conn_check = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); // Use @ to suppress default warning
-
-    if ($conn_check->connect_error) {
-         echo "Direct Connection Error Details: (" . $conn_check->connect_errno . ") " . $conn_check->connect_error . "\n";
-    } else {
-        // This case should ideally not happen if getDbConnection failed
-        echo "UNEXPECTED: Connection failed via getDbConnection() but a direct connection attempt succeeded now. Check config.php logic.\n";
-        $conn_check->close();
-    }
+if (!$conn) {
+    echo json_encode(['error' => 'DB connection failed']);
+    exit;
 }
 
-echo "------------------------------------\n";
-echo "Test script finished.\n";
+$output = [];
 
+// Count users
+$res = $conn->query("SELECT COUNT(*) as count FROM users");
+$row = $res ? $res->fetch_assoc() : null;
+$output['user_count'] = $row ? $row['count'] : 'error';
+
+// List first 5 users
+$res = $conn->query("SELECT id, name, email FROM users LIMIT 5");
+$users = [];
+if ($res) {
+    while ($user = $res->fetch_assoc()) {
+        $users[] = $user;
+    }
+}
+$output['sample_users'] = $users;
+
+// Parse JWT token if present
+$headers = getallheaders();
+$authHeader = $headers['Authorization'] ?? '';
+$output['auth_header'] = $authHeader;
+
+$userId = null;
+if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+    $jwt = $matches[1];
+    $output['jwt'] = $jwt;
+    $parts = explode('.', $jwt);
+    if (count($parts) === 3) {
+        $payload = json_decode(base64_decode(strtr($parts[1], '-_', '+/')), true);
+        $output['jwt_payload'] = $payload;
+        $userId = $payload['data']['userId'] ?? null;
+    }
+}
+$output['extracted_user_id'] = $userId;
+
+// Fetch profile for extracted user ID
+if ($userId) {
+    $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $profile = $result->fetch_assoc();
+        $output['profile_for_token_user'] = $profile ?: 'not found';
+    } else {
+        $output['profile_query_error'] = $stmt->error;
+    }
+    $stmt->close();
+} else {
+    $output['profile_for_token_user'] = 'no user id from token';
+}
+
+echo json_encode($output, JSON_PRETTY_PRINT);
+$conn->close();
 ?>
