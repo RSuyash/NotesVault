@@ -10,8 +10,12 @@ export interface UserProfile {
 
 export async function getProfile(): Promise<UserProfile> {
   try {
+    const token = localStorage.getItem('authToken');
     const response = await axios.get<UserProfile>(`${API_BASE_URL}/user.php`, {
       withCredentials: true,
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      }
     });
     console.log('User profile fetch response:', response.data);
     return response.data;
@@ -22,10 +26,12 @@ export async function getProfile(): Promise<UserProfile> {
 }
 
 export async function updateProfile(data: { name: string; email: string }): Promise<void> {
+  const token = localStorage.getItem('authToken');
   await axios.post(`${API_BASE_URL}/user.php`, data, {
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
     },
   });
 }
