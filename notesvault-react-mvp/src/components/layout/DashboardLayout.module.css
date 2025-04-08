@@ -21,13 +21,7 @@
 }
 
 /* Desktop styles for sidebar */
-@media (min-width: 768px) { /* md breakpoint */
-  .sidebarContainer {
-    position: static; /* Becomes part of flow */
-    transform: translateX(0); /* Always visible */
-    box-shadow: none; /* No shadow needed when static */
-  }
-}
+/* Removed desktop override, sidebar always fixed and toggleable */
 
 
 .mobileOverlay {
