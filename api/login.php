@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start session at the very beginning
 // Start output buffering immediately
 if (ob_get_level() == 0) { ob_start(); }
 
@@ -8,26 +9,9 @@ ini_set('display_errors', 0);
 
 require_once 'config.php';
 
-// --- IMPORTANT: Ensure JWT library is uploaded ---
-// Assumes library is in vendor/firebase/php-jwt/src relative to this script
-// You might need to adjust the path based on your upload location.
-require_once __DIR__ . '/vendor/firebase/php-jwt/BeforeValidException.php';
-require_once __DIR__ . '/vendor/firebase/php-jwt/ExpiredException.php';
-require_once __DIR__ . '/vendor/firebase/php-jwt/SignatureInvalidException.php';
-require_once __DIR__ . '/vendor/firebase/php-jwt/JWT.php';
-require_once __DIR__ . '/vendor/firebase/php-jwt/Key.php';
+// JWT library no longer needed
 
-// Use statements must be at the top level
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
-// Check if JWT Secret Key is defined *after* config include and JWT lib includes
-if (!defined('JWT_SECRET_KEY') || empty(JWT_SECRET_KEY)) {
-    error_log("Login Error: JWT_SECRET_KEY is not defined or empty. Check config.php and the key file.");
-    // Send JSON response immediately
-    sendJsonResponse(['success' => false, 'error' => 'Server configuration error preventing login. Please contact support.'], 500);
-    // The sendJsonResponse function includes an exit, so script stops here.
-}
+// JWT check no longer needed
 
 // Wrap subsequent logic in try-catch
 try {
@@ -94,53 +78,20 @@ try {
 
     // Verify password
     if (password_verify($password, $user['password_hash'])) {
-        // Password is correct
+        // Password is correct - Store user ID in session
+        $_SESSION['user_id'] = $user['id'];
         $conn->close(); // Close connection now we're done with DB
 
-        // --- Generate JWT Token ---
-        $issuedAt   = time();
-        $expire     = $issuedAt + JWT_EXPIRATION_TIME; // Use expiration from config
-        $serverName = $_SERVER['SERVER_NAME'] ?? 'notesvault.in'; // Use server name or default
-
-        $payload = [
-            'iat'  => $issuedAt,         // Issued at: time when the token was generated
-            'iss'  => $serverName,       // Issuer
-            'nbf'  => $issuedAt,         // Not before
-            'exp'  => $expire,           // Expire
-            'data' => [                  // Data related to the logged-in user
-                'userId'   => $user['id'], // User ID from database
+        // Send success response (no token needed)
+        sendJsonResponse([
+            'success' => true,
+            'message' => 'Login successful!',
+            'user' => [ // Return non-sensitive user info
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email']
             ]
-        ];
-
-        // Nested try-catch specifically for JWT generation/config issues
-        try {
-            // Ensure JWT_SECRET_KEY is defined and not empty
-            if (!defined('JWT_SECRET_KEY') || empty(JWT_SECRET_KEY) || JWT_SECRET_KEY === 'YOUR_SUPER_SECRET_RANDOM_KEY_REPLACE_ME' || JWT_SECRET_KEY === 'local_dev_secret_key_please_replace_if_needed') {
-                error_log("JWT Error: JWT_SECRET_KEY is not configured properly in config.php");
-                throw new Exception("Server configuration error for JWT."); // Don't expose details
-            }
-
-            $jwt = JWT::encode($payload, JWT_SECRET_KEY, 'HS256'); // Use secret from config
-
-            sendJsonResponse([
-                'success' => true,
-                'message' => 'Login successful!',
-                'access_token' => $jwt,
-                'token_type' => 'bearer',
-                'expires_in' => JWT_EXPIRATION_TIME,
-                'user' => [ // Return non-sensitive user info
-                    'id' => $user['id'],
-                    'name' => $user['name'],
-                    'email' => $user['email']
-                ]
-            ]);
-
-        } catch (Exception $jwtEx) {
-            // Log the detailed JWT error server-side
-            error_log("JWT Encoding/Configuration Error: " . $jwtEx->getMessage());
-            // Send generic error to client
-            sendJsonResponse(['success' => false, 'error' => 'Could not process login session. Please try again later.'], 500);
-        }
+        ]);
 
     } else {
         // Password incorrect

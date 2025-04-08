@@ -40,27 +40,11 @@ const LoginPage = () => {
 
       if (response.ok && data.success) {
         console.log('Login Success:', data);
-        // 1. Store the access token
-        localStorage.setItem('authToken', data.access_token);
-        console.log('Token stored:', data.access_token);
-
-        try {
-          const profileResponse = await fetch('https://notesvault.in/api/user.php', {
-            headers: {
-              'Authorization': `Bearer ${data.access_token}`,
-            },
-          });
-          const profileData = await profileResponse.json();
-          if (profileResponse.ok && profileData.success) {
-            const username = profileData.username || profileData.name || 'User';
-            localStorage.setItem('username', username);
-            console.log('Fetched username:', username);
-          } else {
-            console.warn('Failed to fetch user profile:', profileData.error);
-          }
-        } catch (profileErr) {
-          console.error('Error fetching user profile:', profileErr);
-        }
+        // Token is no longer stored in localStorage, session cookie is used instead.
+        // Username can be fetched from the login response or later from profile page.
+        const username = data.user?.name || 'User';
+        localStorage.setItem('username', username); // Still store username for display if needed
+        console.log('Login successful, username:', username);
 
         navigate('/dashboard');
       } else {

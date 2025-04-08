@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start session
 require_once __DIR__ . '/config.php';
 
 // Handle CORS
@@ -10,8 +11,13 @@ if (!$conn) {
     sendJsonResponse(['error' => 'Database connection failed'], 500);
 }
 
-// Simulate authentication (replace with JWT auth later)
-$userId = 1; // TODO: extract from token
+// Get user ID from session
+$userId = $_SESSION['user_id'] ?? null;
+
+// Check if user is logged in
+if (!$userId) {
+    sendJsonResponse(['error' => 'Unauthorized - Please log in'], 401);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Fetch user profile
