@@ -97,6 +97,35 @@
   flex-shrink: 0; /* Prevent icon shrinking */
   display: inline-block; /* Ensure proper alignment */
   text-align: center;
+  stroke: var(--color-text-secondary); /* Default icon color */
+  transition: stroke 0.2s ease;
+}
+
+.navLink:hover .navLinkIcon {
+  stroke: var(--color-primary); /* Color on hover */
+}
+
+.navLink.active .navLinkIcon {
+  stroke: white; /* White on active */
+}
+
+.footerButtonIcon {
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.9;
+  display: inline-block;
+  text-align: center;
+  stroke: var(--color-text-secondary);
+  transition: stroke 0.2s ease;
+}
+
+.footerButton:hover .footerButtonIcon {
+  stroke: var(--color-primary);
+}
+
+.footerButton.logout:hover .footerButtonIcon {
+  stroke: #b91c1c; /* Red on hover */
 }
 
 .navLink.active .navLinkIcon {
