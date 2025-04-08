@@ -27,9 +27,12 @@ if ($res) {
 $output['sample_users'] = $users;
 
 // Parse JWT token if present
-$headers = getallheaders();
-$authHeader = $headers['Authorization'] ?? '';
-$output['auth_header'] = $authHeader;
+// Try fetching headers using different methods
+$headers = function_exists('getallheaders') ? getallheaders() : [];
+$authHeader = $headers['Authorization'] ?? $_SERVER['HTTP_AUTHORIZATION'] ?? ''; // Check both common places
+$output['auth_header_getallheaders'] = $headers['Authorization'] ?? 'Not found via getallheaders';
+$output['auth_header_server'] = $_SERVER['HTTP_AUTHORIZATION'] ?? 'Not found via $_SERVER';
+$output['auth_header_used'] = $authHeader; // The one we will actually use
 
 $userId = null;
 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
