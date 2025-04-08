@@ -5,15 +5,51 @@ import SlideConfirm from '../ui/SlideConfirm';
 
 // --- Icons --- (Using simple text/emoji for now)
 // TODO: Replace with SVG icons
-const DashboardIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>🏠</span>;
-const ProfileIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>👤</span>;
-const NotesIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>📝</span>;
-const FlashcardsIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>🗂️</span>;
-const GroupsIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>👥</span>;
-const LeaderboardIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>🏆</span>;
-const DocsIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.navLinkIcon} ${className}`}>📄</span>;
-const SettingsIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.footerButtonIcon} ${className}`}>⚙️</span>;
-const LogoutIcon = ({ className = '' }: { className?: string }) => <span className={`${styles.footerButtonIcon} ${className}`}>🚪</span>;
+const DashboardIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m-4 0h4" />
+  </svg>
+);
+const ProfileIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+const NotesIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4h16v16H4V4z" />
+  </svg>
+);
+const FlashcardsIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h18M3 12h18M3 17h18" />
+  </svg>
+);
+const GroupsIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 3.13a4 4 0 110 7.75 4 4 0 010-7.75zM8 3.13a4 4 0 110 7.75 4 4 0 010-7.75z" />
+  </svg>
+);
+const LeaderboardIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h18v18H3V3z" />
+  </svg>
+);
+const DocsIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h10M7 11h10M7 15h10" />
+  </svg>
+);
+const SettingsIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.footerButtonIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+const LogoutIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={`${styles.footerButtonIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+  </svg>
+);
 const CloseIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
