@@ -37,7 +37,7 @@ const DashboardLayout: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <div className={styles.mainContentWrapper}>
+      <div className={`${styles.mainContentWrapper} ${isSidebarOpen ? styles.withSidebar : ''}`}>
 
         {/* Header Bar */}
         <HeaderBar onToggleSidebar={toggleSidebar} />

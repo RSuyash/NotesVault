@@ -43,6 +43,13 @@
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden; /* Prevent content overflow issues */
+  transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .mainContentWrapper.withSidebar {
+    margin-left: 16rem; /* Sidebar width */
+  }
 }
 
 /* Add margin on desktop to account for static sidebar */
