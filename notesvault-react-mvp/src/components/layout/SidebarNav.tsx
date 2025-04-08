@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
-import ConfirmModal from '../ui/ConfirmModal';
 import SlideConfirm from '../ui/SlideConfirm';
 
 // --- Icons --- (Using simple text/emoji for now)
@@ -30,9 +29,6 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [showConfirm, setShowConfirm] = React.useState(false);
-  const [confirmMessage, setConfirmMessage] = React.useState('');
-  const [onConfirmCallback, setOnConfirmCallback] = React.useState<() => void>(() => () => {});
 
   const [showSlideConfirm, setShowSlideConfirm] = React.useState(false);
   const [slideConfirmMessage, setSlideConfirmMessage] = React.useState('');
@@ -132,11 +128,11 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
           onCancel={() => setShowSlideConfirm(false)}
         />
       )}
-      {showConfirm && (
-        <ConfirmModal
-          message={confirmMessage}
-          onConfirm={onConfirmCallback}
-          onCancel={() => setShowConfirm(false)}
+      {showSlideConfirm && (
+        <SlideConfirm
+          message={slideConfirmMessage}
+          onConfirm={onSlideConfirmCallback}
+          onCancel={() => setShowSlideConfirm(false)}
         />
       )}
     </div>
