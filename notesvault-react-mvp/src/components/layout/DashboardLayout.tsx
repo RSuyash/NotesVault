@@ -35,13 +35,14 @@ const DashboardLayout: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      {/* Main Content Area (takes remaining space) */}
+      {/* Apply margin-left on desktop to account for static sidebar */}
+      <div className="flex flex-col flex-1 overflow-hidden md:ml-64">
 
-        {/* Header Bar */}
-        {/* Stays fixed at the top, takes full width remaining after sidebar on desktop */}
+        {/* Header Bar - Positioned within this container */}
         <HeaderBar onToggleSidebar={toggleSidebar} />
 
-        {/* Page Content */}
+        {/* Page Content - Scrolls independently */}
         {/* pt-16 ensures content starts below the fixed 64px (h-16) header */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 pt-16 p-4 md:p-6">
           <Outlet /> {/* Child routes defined in App.tsx will render here */}
