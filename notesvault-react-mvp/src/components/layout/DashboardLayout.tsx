@@ -26,6 +26,13 @@ const DashboardLayout: React.FC = () => {
           className={styles.mobileOverlay}
           onClick={toggleSidebar}
           aria-hidden="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            zIndex: 30,
+            cursor: 'pointer',
+          }}
         ></div>
       )}
 
