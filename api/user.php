@@ -16,10 +16,26 @@ $userId = $_SESSION['user_id'] ?? null;
 
 // Check if user is logged in
 if (!$userId) {
-    sendJsonResponse(['error' => 'Unauthorized - Please log in'], 401);
+    // If it's just a check (e.g., GET request with no specific action implied),
+    // return auth status instead of full error immediately.
+    // Specific actions below will still fail if no userId.
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['action'])) { // Simple check
+         sendJsonResponse(['authenticated' => false]);
+    } else {
+        sendJsonResponse(['error' => 'Unauthorized - Please log in'], 401);
+    }
 }
 
+// If we reach here, $userId is valid.
+
+// Handle different request methods or actions
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // If it's just a check, return authenticated status
+    if (!isset($_GET['action'])) {
+        sendJsonResponse(['authenticated' => true, 'userId' => $userId]);
+    }
+
+    // --- Fetch user profile (existing logic) ---
     // Fetch user profile
     $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
     $stmt->bind_param("i", $userId);
