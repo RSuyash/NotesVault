@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SidebarNav from './SidebarNav.tsx';
 import HeaderBar from './HeaderBar.tsx';
-import styles from './DashboardLayout.module.css'; // Import CSS Module
+import styles from './DashboardLayout.module.css';
 
 const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,40 +13,26 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <div className={styles.layoutContainer}>
-
       {/* Sidebar */}
-      {/* Apply conditional class for open state */}
       <div className={`${styles.sidebarContainer} ${isSidebarOpen ? styles.open : ''}`}>
-        <SidebarNav onClose={toggleSidebar} /> {/* Pass toggle function */}
+        <SidebarNav onClose={toggleSidebar} />
       </div>
 
-      {/* Overlay for mobile */}
+      {/* Overlay */}
       {isSidebarOpen && (
         <div
-          className={styles.mobileOverlay}
+          className={styles.overlay}
           onClick={toggleSidebar}
           aria-hidden="true"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            zIndex: 30,
-            cursor: 'pointer',
-          }}
         ></div>
       )}
 
-      {/* Main Content Area */}
-      <div className={`${styles.mainContentWrapper} ${isSidebarOpen ? styles.withSidebar : ''}`}>
-
-        {/* Header Bar */}
+      {/* Main Content */}
+      <div className={styles.mainContentWrapper}>
         <HeaderBar onToggleSidebar={toggleSidebar} />
-
-        {/* Page Content */}
         <main className={styles.pageContent}>
           <Outlet />
         </main>
-
       </div>
     </div>
   );

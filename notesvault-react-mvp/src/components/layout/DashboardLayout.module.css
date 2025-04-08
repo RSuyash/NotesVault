@@ -1,73 +1,53 @@
 .layoutContainer {
   display: flex;
   height: 100vh;
-  background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
+  background-color: #f3f4f6;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .sidebarContainer {
-  position: fixed; /* Mobile default */
-  inset: 0 auto 0 0; /* top, right, bottom, left */
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16rem;
+  background-color: #1f2937;
   z-index: 40;
-  width: 16rem; /* w-64 */
-  background-color: #1f2937; /* bg-gray-800 */
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-  transform: translateX(-100%); /* Hidden by default */
-  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
 .sidebarContainer.open {
   transform: translateX(0);
 }
 
-/* Desktop styles for sidebar */
-/* Removed desktop override, sidebar always fixed and toggleable */
-
-
-.mobileOverlay {
+.overlay {
   position: fixed;
   inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 30;
-  background-color: rgba(0, 0, 0, 0.5); /* bg-black opacity-50 */
-}
-
-/* Hide overlay on desktop */
-@media (min-width: 768px) { /* md breakpoint */
-  .mobileOverlay {
-    display: none;
-  }
 }
 
 .mainContentWrapper {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  overflow: hidden; /* Prevent content overflow issues */
-  transition: margin-left 0.3s ease;
+  overflow: hidden;
 }
-
-@media (min-width: 768px) {
-  .mainContentWrapper.withSidebar {
-    margin-left: 16rem; /* Sidebar width */
-  }
-}
-
-/* Add margin on desktop to account for static sidebar */
-
 
 .pageContent {
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #f3f4f6; /* bg-gray-100 */
-  padding-top: 4rem; /* pt-16 (assuming header is h-16 / 4rem) */
-  padding-left: 1rem; /* px-4 */
-  padding-right: 1rem; /* px-4 */
+  background-color: #f3f4f6;
+  padding-top: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-@media (min-width: 768px) { /* md breakpoint */
+@media (min-width: 768px) {
   .pageContent {
-    padding-left: 1.5rem; /* md:px-6 */
-    padding-right: 1.5rem; /* md:px-6 */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
