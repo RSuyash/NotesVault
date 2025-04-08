@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Default GET action: Fetch user profile
     // Default GET action: Fetch user profile (with new fields)
-    $stmt = $conn->prepare("SELECT id, first_name, last_name, email, profile_picture_url FROM users WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, username, first_name, last_name, email, profile_picture_url FROM users WHERE id = ?");
     if (!$stmt) {
          sendJsonResponse(['error' => 'DB prepare failed (profile fetch)'], 500);
     }
@@ -73,15 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Extract fields to update
+    $username = $data['username'] ?? null;
     $firstName = $data['first_name'] ?? null;
     $lastName = $data['last_name'] ?? null;
     $email = $data['email'] ?? null;
-    // Allow profile picture URL update (basic implementation)
     $profilePicUrl = $data['profile_picture_url'] ?? null;
 
     // Basic validation (adjust as needed)
-    if ($firstName === null || $lastName === null || $email === null) {
-         sendJsonResponse(['error' => 'First name, last name, and email are required'], 400);
+    if ($username === null || $firstName === null || $lastName === null || $email === null) {
+         sendJsonResponse(['error' => 'Username, first name, last name, and email are required'], 400);
     }
      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         sendJsonResponse(['error' => 'Invalid email format'], 400);
@@ -89,12 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Optional: Validate profilePicUrl format if provided
 
     // Prepare update statement
-    $stmt = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, profile_picture_url = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, profile_picture_url = ? WHERE id = ?");
      if (!$stmt) {
          sendJsonResponse(['error' => 'DB prepare failed (profile update)'], 500);
     }
     // Bind parameters (s = string, i = integer)
-    $stmt->bind_param("ssssi", $firstName, $lastName, $email, $profilePicUrl, $userId);
+    $stmt->bind_param("ssssi", $username, $firstName, $lastName, $email, $profilePicUrl, $userId);
 
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {

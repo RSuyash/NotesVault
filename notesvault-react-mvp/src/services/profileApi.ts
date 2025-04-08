@@ -80,23 +80,11 @@ export async function updateProfile(data: UpdateProfileData): Promise<UpdateProf
 // TODO: Implement Password Change API call
 export async function changePassword(data: ChangePasswordData): Promise<{ success: boolean; error?: string }> {
     try {
-        // Example: Assumes a new endpoint like /api/change_password.php
-        // const response = await axios.post<{ success: boolean; error?: string }>(`${API_BASE_URL}/change_password.php`, data, {
-        //     withCredentials: true,
-        //     headers: { 'Content-Type': 'application/json' },
-        // });
-        // return response.data;
-
-        // Placeholder until backend endpoint exists
-        console.warn("changePassword API call not implemented yet.");
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
-        // Simulate success for now, replace with actual API call
-        if (data.currentPassword === 'password123') { // Dummy check
-             return { success: true };
-        } else {
-             return { success: false, error: 'Incorrect current password (dummy check)' };
-        }
-
+        const response = await axios.post<{ success: boolean; error?: string }>(`${API_BASE_URL}/change_password.php`, data, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+        });
+        return response.data;
     } catch (error: any) {
         console.error('Failed to change password:', error?.response?.status, error?.response?.data, error?.message);
         throw error;

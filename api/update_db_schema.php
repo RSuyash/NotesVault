@@ -15,7 +15,8 @@ $success = [];
 
 // --- Step 1: Add new columns if they don't exist ---
 $columnsToAdd = [
-    'first_name' => 'VARCHAR(100) NULL AFTER id', // Add after id
+    'username' => 'VARCHAR(100) NULL AFTER id', // Add after id
+    'first_name' => 'VARCHAR(100) NULL AFTER username', // Add after username
     'last_name' => 'VARCHAR(100) NULL AFTER first_name', // Add after first_name
     'profile_picture_url' => 'VARCHAR(2048) NULL AFTER email' // Add after email
 ];
