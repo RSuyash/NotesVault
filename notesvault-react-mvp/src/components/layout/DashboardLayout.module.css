@@ -52,11 +52,6 @@
 }
 
 /* Add margin on desktop to account for static sidebar */
-@media (min-width: 768px) { /* md breakpoint */
-  .mainContentWrapper {
-     /* No margin, sidebar overlays content */
-  }
-}
 
 
 .pageContent {
