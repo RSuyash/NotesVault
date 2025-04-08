@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
-import axios from 'axios'; // Needed for logout potentially
+// import axios from 'axios'; // Removed unused import
 
 // --- Placeholder Icons ---
 // TODO: Replace with actual SVG icons or an icon library (e.g., react-icons)
