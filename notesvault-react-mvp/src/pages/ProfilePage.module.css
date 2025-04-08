@@ -1,0 +1,124 @@
+.pageContainer {
+  max-width: 800px; /* Limit width for better readability */
+  margin: 1rem auto; /* Center the content with some margin */
+  padding: 0 1rem; /* Add horizontal padding */
+}
+
+.pageTitle {
+  font-size: 1.75rem; /* text-2xl */
+  font-weight: 600; /* font-semibold */
+  color: var(--color-text-primary);
+  margin-bottom: 1.5rem; /* mb-6 */
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem; /* pb-3 */
+}
+
+.profileCard {
+  background-color: var(--color-surface);
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow */
+  padding: 1.5rem; /* p-6 */
+  margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.sectionTitle {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+  color: var(--color-text-primary);
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* space-y-5 */
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem; /* mb-2 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  color: var(--color-text-secondary);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  font-size: 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem; /* rounded-md */
+  background-color: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+.input:disabled {
+   opacity: 0.7;
+   cursor: not-allowed;
+}
+
+.buttonContainer {
+  margin-top: 1rem; /* mt-4 */
+  display: flex;
+  justify-content: flex-end; /* Align button to the right */
+}
+
+.submitButton {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.75rem 1.5rem; /* py-3 px-6 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: var(--color-primary-darker);
+}
+
+.submitButton:disabled {
+  background-color: var(--color-primary); /* Keep color but change opacity */
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loadingMessage,
+.errorMessage,
+.successMessage {
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.loadingMessage {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary-darker);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+.errorMessage {
+  background-color: #fee2e2; /* bg-red-100 */
+  color: #b91c1c; /* text-red-700 */
+  border: 1px solid #fecaca; /* border-red-300 */
+}
+
+.successMessage {
+  background-color: #dcfce7; /* bg-green-100 */
+  color: #15803d; /* text-green-700 */
+  border: 1px solid #bbf7d0; /* border-green-300 */
+}
