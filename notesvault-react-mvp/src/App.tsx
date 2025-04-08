@@ -25,6 +25,9 @@ import SettingsPage from './pages/SettingsPage.tsx';
 import NotesPage from './pages/NotesPage.tsx';
 import DocsPage from './pages/DocsPage.tsx';
 import StudyGroupsPage from './pages/StudyGroupsPage.tsx';
+import FlashcardsPage from './pages/FlashcardsPage.tsx';
+import LeaderboardPage from './pages/LeaderboardPage.tsx';
+import MindHackDocsPage from './pages/MindHackDocsPage.tsx';
 
 function App() {
   const location = useLocation(); // Get current location
@@ -64,6 +67,9 @@ function App() {
             <Route path="studygroups" element={<StudyGroupsPage />} />
             <Route path="docs" element={<DocsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="flashcards" element={<FlashcardsPage />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
+            <Route path="mindhackdocs" element={<MindHackDocsPage />} />
           </Route>
           {/* Add other top-level protected routes later if needed */}
         </Routes>
