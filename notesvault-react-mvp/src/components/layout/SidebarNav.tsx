@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
+import ConfirmModal from '../ui/ConfirmModal'; // Import modal
 
 // --- Icons --- (Using simple text/emoji for now)
 // TODO: Replace with SVG icons
@@ -25,6 +26,9 @@ interface SidebarNavProps {
 }
 
 const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => () => {});
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,22 +43,26 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
     { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
   ];
 
-  const handleLogout = async () => {
-    console.log('Logout clicked');
-    try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-      if (API_BASE_URL) {
-         await fetch(`${API_BASE_URL}/logout.php`, {
-            method: 'POST',
-            credentials: 'include',
-         });
+  const handleLogout = () => {
+    setConfirmMessage('Are you sure you want to logout?');
+    setOnConfirmCallback(() => async () => {
+      try {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+        if (API_BASE_URL) {
+           await fetch(`${API_BASE_URL}/logout.php`, {
+              method: 'POST',
+              credentials: 'include',
+           });
+        }
+      } catch (error) {
+          console.error("Logout API call failed:", error);
+      } finally {
+          localStorage.removeItem('username');
+          navigate('/login');
+          setShowConfirm(false);
       }
-    } catch (error) {
-        console.error("Logout API call failed:", error);
-    } finally {
-        localStorage.removeItem('username');
-        navigate('/login');
-    }
+    });
+    setShowConfirm(true);
   };
 
   return (
@@ -111,6 +119,13 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
            <span className={styles.footerButtonText}>Logout</span> {/* Make text visible */}
         </button>
       </div>
+      {showConfirm && (
+        <ConfirmModal
+          message={confirmMessage}
+          onConfirm={onConfirmCallback}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   );
 };
