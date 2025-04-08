@@ -15,14 +15,7 @@
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* shadow-sm */
 }
 
-/* Adjust left position on desktop when sidebar is static */
-@media (min-width: 768px) { /* md breakpoint */
-  .header {
-    left: 16rem; /* md:left-64 */
-    padding-left: 1.5rem; /* md:px-6 */
-    padding-right: 1.5rem; /* md:px-6 */
-  }
-}
+/* Removed left offset on desktop to allow full-width header */
 
 .leftSection {
   display: flex;
@@ -42,12 +35,7 @@
   color: #374151; /* focus:text-gray-700 */
 }
 
-/* Hide toggle button on desktop */
-@media (min-width: 768px) { /* md breakpoint */
-  .toggleButton {
-    display: none;
-  }
-}
+/* Always show toggle button on all screen sizes */
 
 .toggleButton svg {
   width: 1.5rem; /* w-6 */
