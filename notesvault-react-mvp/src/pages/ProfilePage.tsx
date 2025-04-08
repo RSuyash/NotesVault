@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile } from '../services/profileApi'; // Assuming updateProfile handles new fields
 import styles from './ProfilePage.module.css';
-import ConfirmModal from '../components/ui/ConfirmModal'; // Import custom modal
 
 
 // TODO: Add API call for password change
@@ -9,9 +8,6 @@ import ConfirmModal from '../components/ui/ConfirmModal'; // Import custom modal
 
 const ProfilePage: React.FC = () => {
   // --- Modal State ---
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState('');
-  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => () => {});
   // --- State for Profile Info ---
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -31,13 +27,6 @@ const ProfilePage: React.FC = () => {
   const [infoError, setInfoError] = useState<string | null>(null);
   const [infoSuccess, setInfoSuccess] = useState<string | null>(null);
 
-  // --- State for Password Change ---
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
 
   // --- Fetch Initial Profile ---
   useEffect(() => {
@@ -83,74 +72,27 @@ const ProfilePage: React.FC = () => {
     setInfoError(null);
     setInfoSuccess(null);
 
-    setConfirmMessage('Are you sure you want to update your profile info?');
-    setOnConfirmCallback(() => async () => {
-      setIsUpdatingInfo(true);
-      try {
-        const updatedData = {
-            username: username,
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            profile_picture_url: profilePictureUrl
-        };
-        const response = await updateProfile(updatedData);
-        setInfoSuccess('Profile updated successfully!');
-        setInitialFirstName(response.user?.first_name ?? '');
-        setInitialLastName(response.user?.last_name ?? '');
-        setInitialEmail(response.user?.email ?? '');
-        setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
-      } catch (err: any) {
-        setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
-        console.error("Profile update error:", err);
-      } finally {
-        setIsUpdatingInfo(false);
-        setShowConfirm(false);
-      }
-    });
-    setShowConfirm(true);
-  };
-
-  const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPasswordError(null);
-    setPasswordSuccess(null);
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError('All password fields are required.');
-      return;
+    setIsUpdatingInfo(true);
+    try {
+      const updatedData = {
+          username: username,
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          profile_picture_url: profilePictureUrl
+      };
+      const response = await updateProfile(updatedData);
+      setInfoSuccess('Profile updated successfully!');
+      setInitialFirstName(response.user?.first_name ?? '');
+      setInitialLastName(response.user?.last_name ?? '');
+      setInitialEmail(response.user?.email ?? '');
+      setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
+    } catch (err: any) {
+      setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
+      console.error("Profile update error:", err);
+    } finally {
+      setIsUpdatingInfo(false);
     }
-    if (newPassword !== confirmPassword) {
-      setPasswordError('New passwords do not match.');
-      return;
-    }
-    if (newPassword.length < 8) {
-      setPasswordError('New password must be at least 8 characters long.');
-      return;
-    }
-
-    setConfirmMessage('Are you sure you want to change your password?');
-    setOnConfirmCallback(() => async () => {
-      setIsUpdatingPassword(true);
-      try {
-        const resp = await import('../services/profileApi').then(m => m.changePassword({ currentPassword, newPassword }));
-        if (resp.success) {
-          setPasswordSuccess('Password changed successfully!');
-          setCurrentPassword('');
-          setNewPassword('');
-          setConfirmPassword('');
-        } else {
-          setPasswordError(resp.error || 'Failed to change password.');
-        }
-      } catch (err: any) {
-        setPasswordError(err.response?.data?.error || 'Failed to change password.');
-        console.error("Password change error:", err);
-      } finally {
-        setIsUpdatingPassword(false);
-        setShowConfirm(false);
-      }
-    });
-    setShowConfirm(true);
   };
 
 
