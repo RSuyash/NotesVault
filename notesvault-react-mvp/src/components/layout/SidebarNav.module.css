@@ -38,11 +38,7 @@
 }
 
 /* Hide close button on desktop where sidebar is static */
-@media (min-width: 768px) { /* md breakpoint */
-  .closeButton {
-    display: none;
-  }
-}
+/* Close button now always visible */
 
 .closeButton svg {
   width: 1.5rem;
