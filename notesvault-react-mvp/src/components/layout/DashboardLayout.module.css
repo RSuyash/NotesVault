@@ -22,7 +22,7 @@
     transform: translateX(0);
   }
 }
-}
+
 
 .sidebarContainer.open {
   transform: translateX(0);
