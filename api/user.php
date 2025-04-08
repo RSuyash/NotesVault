@@ -89,12 +89,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Optional: Validate profilePicUrl format if provided
 
     // Prepare update statement
-    $stmt = $conn->prepare("UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, profile_picture_url = ? WHERE id = ?");
-     if (!$stmt) {
+    $sql = "UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, profile_picture_url = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log("User.php - Profile update prepare failed: " . $conn->error . " | SQL: $sql");
          sendJsonResponse(['error' => 'DB prepare failed (profile update)'], 500);
     }
     // Bind parameters (s = string, i = integer)
-    $stmt->bind_param("ssssi", $username, $firstName, $lastName, $email, $profilePicUrl, $userId);
+    $stmt->bind_param("sssssi", $username, $firstName, $lastName, $email, $profilePicUrl, $userId);
 
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
@@ -124,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
          if ($conn->errno === 1062) { // MySQL error code for duplicate entry
              sendJsonResponse(['error' => 'Email address already in use.'], 409); // 409 Conflict
          } else {
+            error_log("User.php - Profile update execute failed: " . $stmt->error);
             sendJsonResponse(['error' => 'Profile update failed: ' . $stmt->error], 500);
          }
     }
