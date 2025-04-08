@@ -24,6 +24,7 @@ import ProfilePage from './pages/ProfilePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
 import NotesPage from './pages/NotesPage.tsx';
 import DocsPage from './pages/DocsPage.tsx';
+import StudyGroupsPage from './pages/StudyGroupsPage.tsx';
 
 function App() {
   const location = useLocation(); // Get current location
@@ -60,6 +61,7 @@ function App() {
             <Route index element={<DashboardPage />} /> {/* Default dashboard page at /dashboard */}
             <Route path="profile" element={<ProfilePage />} /> {/* Profile page at /dashboard/profile */}
             <Route path="notes" element={<NotesPage />} />
+            <Route path="studygroups" element={<StudyGroupsPage />} />
             <Route path="docs" element={<DocsPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
