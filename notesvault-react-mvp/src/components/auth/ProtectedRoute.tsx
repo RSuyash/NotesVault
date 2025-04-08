@@ -22,6 +22,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         const response = await axios.get<{ authenticated: boolean }>(`${API_BASE_URL}/user.php`, {
           withCredentials: true, // Send session cookie
         });
+        console.log('Auth check response:', response.data); // Log response
         setIsAuthenticated(response.data.authenticated);
       } catch (error) {
         console.error('Auth check failed:', error);
@@ -33,18 +34,23 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
     checkAuth();
   }, []); // Run only once on mount
+console.log(`ProtectedRoute rendering: isLoading=${isLoading}, isAuthenticated=${isAuthenticated}`); // Log state before check
 
-  if (isLoading) {
-    // Optional: Show a loading spinner or message
-    return <div>Loading authentication status...</div>;
+if (isLoading) {
+  // Optional: Show a loading spinner or message
+  console.log('ProtectedRoute: Rendering loading state');
+  return <div>Loading authentication status...</div>;
+// } // REMOVED EXTRA BRACE
   }
 
   if (!isAuthenticated) {
     // Redirect to login page if not authenticated
+    console.log('ProtectedRoute: Not authenticated, redirecting to /login');
     return <Navigate to="/login" replace />;
   }
 
   // Render the protected component if authenticated
+  console.log('ProtectedRoute: Authenticated, rendering children');
   return <>{children}</>;
 };
 
