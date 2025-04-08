@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile } from '../services/profileApi'; // Assuming updateProfile handles new fields
 import styles from './ProfilePage.module.css';
+import ConfirmModal from '../components/ui/ConfirmModal';
 
 
 // TODO: Add API call for password change
 // import { changePassword } from '../services/profileApi';
 
 const ProfilePage: React.FC = () => {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [onConfirmCallback, setOnConfirmCallback] = useState<() => void>(() => () => {});
   // --- Modal State ---
   // --- State for Profile Info ---
   const [username, setUsername] = useState('');
@@ -72,27 +76,32 @@ const ProfilePage: React.FC = () => {
     setInfoError(null);
     setInfoSuccess(null);
 
-    setIsUpdatingInfo(true);
-    try {
-      const updatedData = {
-          username: username,
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          profile_picture_url: profilePictureUrl
-      };
-      const response = await updateProfile(updatedData);
-      setInfoSuccess('Profile updated successfully!');
-      setInitialFirstName(response.user?.first_name ?? '');
-      setInitialLastName(response.user?.last_name ?? '');
-      setInitialEmail(response.user?.email ?? '');
-      setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
-    } catch (err: any) {
-      setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
-      console.error("Profile update error:", err);
-    } finally {
-      setIsUpdatingInfo(false);
-    }
+    setConfirmMessage('Are you sure you want to update your profile info?');
+    setOnConfirmCallback(() => async () => {
+      setIsUpdatingInfo(true);
+      try {
+        const updatedData = {
+            username: username,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            profile_picture_url: profilePictureUrl
+        };
+        const response = await updateProfile(updatedData);
+        setInfoSuccess('Profile updated successfully!');
+        setInitialFirstName(response.user?.first_name ?? '');
+        setInitialLastName(response.user?.last_name ?? '');
+        setInitialEmail(response.user?.email ?? '');
+        setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
+      } catch (err: any) {
+        setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
+        console.error("Profile update error:", err);
+      } finally {
+        setIsUpdatingInfo(false);
+        setShowConfirm(false);
+      }
+    });
+    setShowConfirm(true);
   };
 
 
@@ -195,6 +204,13 @@ const ProfilePage: React.FC = () => {
               required
               disabled={isUpdatingInfo}
             />
+            {showConfirm && (
+              <ConfirmModal
+                message={confirmMessage}
+                onConfirm={onConfirmCallback}
+                onCancel={() => setShowConfirm(false)}
+              />
+            )}
           </div>
 
           <div className={styles.buttonContainer}>
