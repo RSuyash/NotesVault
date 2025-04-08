@@ -23,10 +23,9 @@ $userId = $_SESSION['user_id'] ?? null;
 
 // Check if user is logged in
 if (!$userId) {
-    // If it's just a check (e.g., GET request with no specific action implied),
-    // return auth status instead of full error immediately.
-    // Specific actions below will still fail if no userId.
-    if ($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET['action'])) { // Simple check
+    // If the request is specifically for an auth check (e.g., from ProtectedRoute), return false
+    // Otherwise, for profile fetch/update attempts, return 401
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'check_auth') {
          sendJsonResponse(['authenticated' => false]);
     } else {
         sendJsonResponse(['error' => 'Unauthorized - Please log in'], 401);
@@ -36,13 +35,15 @@ if (!$userId) {
 // If we reach here, $userId is valid.
 
 // Handle different request methods or actions
+
+// --- GET Request: Fetch profile or check auth ---
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // If it's just a check, return authenticated status
-    if (!isset($_GET['action'])) {
+    // Specific action for auth check (used by ProtectedRoute)
+    if (isset($_GET['action']) && $_GET['action'] === 'check_auth') {
         sendJsonResponse(['authenticated' => true, 'userId' => $userId]);
     }
 
-    // --- Fetch user profile (existing logic) ---
+    // Default GET action: Fetch user profile
     // Fetch user profile
     $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
     $stmt->bind_param("i", $userId);

@@ -19,7 +19,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
           throw new Error('VITE_API_BASE_URL is not set');
         }
 
-        const response = await axios.get<{ authenticated: boolean }>(`${API_BASE_URL}/user.php`, {
+        // Add action=check_auth parameter for the specific auth check endpoint
+        const response = await axios.get<{ authenticated: boolean }>(`${API_BASE_URL}/user.php?action=check_auth`, {
           withCredentials: true, // Send session cookie
         });
         console.log('Auth check response:', response.data); // Log response
