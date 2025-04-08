@@ -267,69 +267,6 @@ const ProfilePage: React.FC = () => {
         </form>
       </div>
 
-      {/* --- Change Password Section --- */}
-      <div className={styles.profileCard}>
-        <h2 className={styles.sectionTitle}>Change Password</h2>
-         {passwordError && <div className={styles.errorMessage}>{passwordError}</div>}
-         {passwordSuccess && <div className={styles.successMessage}>{passwordSuccess}</div>}
-        <form onSubmit={handlePasswordSubmit} className={styles.form}>
-           <div className={styles.inputGroup}>
-             <label htmlFor="current-password" className={styles.label}>Current Password:</label>
-             <input
-               id="current-password"
-               type="password"
-               value={currentPassword}
-               onChange={(e) => setCurrentPassword(e.target.value)}
-               className={styles.input}
-               required
-               disabled={isUpdatingPassword}
-               autoComplete="current-password"
-             />
-           </div>
-           <div className={styles.inputGroup}>
-             <label htmlFor="new-password" className={styles.label}>New Password:</label>
-             <input
-               id="new-password"
-               type="password"
-               value={newPassword}
-               onChange={(e) => setNewPassword(e.target.value)}
-               className={styles.input}
-               required
-               disabled={isUpdatingPassword}
-               autoComplete="new-password"
-             />
-           </div>
-           <div className={styles.inputGroup}>
-             <label htmlFor="confirm-password" className={styles.label}>Confirm New Password:</label>
-             <input
-               id="confirm-password"
-               type="password"
-               value={confirmPassword}
-               onChange={(e) => setConfirmPassword(e.target.value)}
-               className={styles.input}
-               required
-               disabled={isUpdatingPassword}
-               autoComplete="new-password"
-             />
-             {showConfirm && (
-               <ConfirmModal
-                 message={confirmMessage}
-                 onConfirm={onConfirmCallback}
-                 onCancel={() => setShowConfirm(false)}
-               />
-             )}
-           </div>
-           <div className={styles.buttonContainer}>
-             <button
-               type="submit"
-               className={styles.submitButton}
-               disabled={isUpdatingPassword || !currentPassword || !newPassword || !confirmPassword}
-             >
-               {isUpdatingPassword ? 'Changing...' : 'Change Password'}
-             </button>
-           </div>
-        </form>
-      </div>
 
     </div>
   );
