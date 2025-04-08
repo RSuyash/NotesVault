@@ -17,8 +17,21 @@
   transition: transform 0.3s ease;
 }
 
+@media (min-width: 768px) {
+  .sidebarContainer {
+    transform: translateX(0);
+  }
+}
+}
+
 .sidebarContainer.open {
   transform: translateX(0);
+}
+
+@media (min-width: 768px) {
+  .sidebarContainer {
+    transform: translateX(0);
+  }
 }
 
 .overlay {
