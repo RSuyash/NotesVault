@@ -1,37 +1,29 @@
 import styles from './DashboardPage.module.css';
 import DashboardFeatureCard from '../components/dashboard/DashboardFeatureCard';
-// Removed feature component imports
+import { getProfile } from '../services/profileApi'; // Import session-based profile fetch
 import React, { useState, useEffect } from 'react';
 
 const DashboardPage: React.FC = () => {
   const [userName, setUserName] = useState('User');
 
+  // Fetch user profile using session-based API
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchUserName = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        if (!token) return;
-
-        const response = await fetch('https://notesvault.in/api/user.php', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        if (response.ok && data.success) {
-          const username = data.username || data.name || 'User';
-          setUserName(username);
-          localStorage.setItem('username', username);
-        } else {
-          console.warn('Failed to fetch user profile:', data.error);
+        const profileData = await getProfile(); // Uses session cookie via profileApi
+        if (profileData && profileData.name) {
+          setUserName(profileData.name);
+          // Optionally store username in localStorage if needed elsewhere, but not required for auth
+          // localStorage.setItem('username', profileData.name);
         }
-      } catch (err) {
-        console.error('Error fetching user profile:', err);
+      } catch (error) {
+        console.error('Dashboard: Failed to fetch user profile for name', error);
+        // Keep default 'User' name on error
       }
     };
 
-    fetchUserProfile();
-  }, []);
+    fetchUserName();
+  }, []); // Empty dependency array means run once on mount
 
   return (
     <div className={styles.pageContainer}> {/* Keep page container style */}
