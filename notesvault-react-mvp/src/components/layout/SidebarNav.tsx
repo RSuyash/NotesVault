@@ -10,16 +10,6 @@ const DashboardIcon = ({ className = '' }: { className?: string }) => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m-4 0h4" />
   </svg>
 );
-const ProfileIcon = ({ className = '' }: { className?: string }) => (
-  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-  </svg>
-);
-const NotesIcon = ({ className = '' }: { className?: string }) => (
-  <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4h16v16H4V4z" />
-  </svg>
-);
 const FlashcardsIcon = ({ className = '' }: { className?: string }) => (
   <svg className={`${styles.navLinkIcon} ${className}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7h18M3 12h18M3 17h18" />
