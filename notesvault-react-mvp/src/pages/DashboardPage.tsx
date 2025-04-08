@@ -27,16 +27,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className={styles.pageContainer}> {/* Keep page container style */}
-      {/* Add Dashboard Header */}
-      <header className={styles.dashboardHeader}>
-        <button className={styles.menuButton} aria-label="Toggle sidebar">
-          &#9776;
-        </button>
-        <h1 className={styles.title}>Welcome, {userName}!</h1>
-        <button className={styles.createButton}>
-          + New
-        </button>
-      </header>
+      {/* Header is now part of DashboardLayout */}
 
       {/* Placeholder for main dashboard content */}
       <div className={styles.dashboardContent}>
