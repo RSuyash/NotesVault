@@ -45,10 +45,11 @@ const CloseIcon = () => (
 );
 
 interface SidebarNavProps {
+  isOpen: boolean;
   onClose: () => void;
 }
 
-const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
+const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -87,62 +88,63 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   };
 
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.headerArea}>
-        <Link to="/" className={styles.logoText} title="Go to Homepage">
-          NotesVault
-        </Link>
-        <button onClick={onClose} className={styles.closeButton} aria-label="Close sidebar">
-          <CloseIcon />
-        </button>
-      </div>
-
-      <nav className={styles.nav}>
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
-          const IconComponent = item.icon;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`${styles.navLink} ${isActive ? styles.active : ''}`}
-              onClick={onClose}
-            >
-              <IconComponent />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className={styles.footerArea}>
-        <Link
-          to="/dashboard/settings"
-          className={`${styles.footerButton} ${location.pathname.startsWith('/dashboard/settings') ? styles.active : ''}`}
-          onClick={onClose}
-          title="Settings"
-        >
-          <SettingsIcon />
-          <span className={styles.footerButtonText}>Settings</span>
-        </Link>
-        <button
-          onClick={handleLogout}
-          className={`${styles.footerButton} ${styles.logout}`}
-          title="Logout"
-        >
-          <LogoutIcon />
-          <span className={styles.footerButtonText}>Logout</span>
-        </button>
-      </div>
-
-      {showSlideConfirm && (
-        <SlideConfirm
-          message={slideConfirmMessage}
-          onConfirm={onSlideConfirmCallback}
-          onCancel={() => setShowSlideConfirm(false)}
-        />
+    <>
+      {isOpen && (
+        <div className={styles.overlay} onClick={onClose} aria-hidden="true"></div>
       )}
-    </div>
+      <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+        <div className={styles.header}>
+          <Link to="/" className={styles.logo}>NotesVault</Link>
+          <button onClick={onClose} className={styles.closeButton} aria-label="Close sidebar">
+            <CloseIcon />
+          </button>
+        </div>
+
+        <nav className={styles.nav}>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+            const IconComponent = item.icon;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                onClick={onClose}
+              >
+                <IconComponent />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className={styles.footer}>
+          <Link
+            to="/dashboard/settings"
+            className={styles.footerButton}
+            onClick={onClose}
+          >
+            <SettingsIcon />
+            <span>Settings</span>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className={`${styles.footerButton} ${styles.logout}`}
+          >
+            <LogoutIcon />
+            <span>Logout</span>
+          </button>
+        </div>
+
+        {showSlideConfirm && (
+          <SlideConfirm
+            message={slideConfirmMessage}
+            onConfirm={onSlideConfirmCallback}
+            onCancel={() => setShowSlideConfirm(false)}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

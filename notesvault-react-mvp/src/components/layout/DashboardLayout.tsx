@@ -13,12 +13,10 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <div className={styles.layoutContainer}>
-      {/* Sidebar */}
       <div className={`${styles.sidebarContainer} ${isSidebarOpen ? styles.open : ''}`}>
-        <SidebarNav onClose={toggleSidebar} />
+        <SidebarNav isOpen={isSidebarOpen} onClose={toggleSidebar} />
       </div>
 
-      {/* Overlay */}
       {isSidebarOpen && (
         <div
           className={styles.overlay}
@@ -27,7 +25,6 @@ const DashboardLayout: React.FC = () => {
         ></div>
       )}
 
-      {/* Main Content */}
       <div className={styles.mainContentWrapper}>
         <HeaderBar onToggleSidebar={toggleSidebar} />
         <main className={styles.pageContent}>
