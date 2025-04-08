@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getProfile } from '../../services/profileApi';
 import styles from './HeaderBar.module.css'; // Import CSS Module
 
@@ -50,11 +51,11 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onToggleSidebar }) => {
          </button>
 
          <div className={styles.userMenuContainer}>
-           <button className={styles.userMenuButton} aria-label="User menu">
+           <Link to="/dashboard/profile" className={styles.userMenuButton} aria-label="Profile">
              <div className={styles.avatar}>
                {userName.charAt(0).toUpperCase()}
              </div>
-           </button>
+           </Link>
            {/* Dropdown menu would go here */}
          </div>
        </div>

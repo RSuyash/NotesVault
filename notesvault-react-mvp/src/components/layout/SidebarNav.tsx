@@ -73,12 +73,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   // Define navigation items with better icons
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
-    { path: '/dashboard/profile', label: 'Profile', icon: ProfileIcon },
-    { path: '/dashboard/notes', label: 'Smart Notes', icon: NotesIcon },
-    { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
     { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
-    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
-    { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
   ];
 
   const handleLogout = () => {
