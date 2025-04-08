@@ -2,9 +2,24 @@
 // Start output buffering immediately
 if (ob_get_level() == 0) { ob_start(); }
 
-// Ensure errors are not displayed in the output, breaking JSON
-error_reporting(0);
-ini_set('display_errors', 0);
+// --- Error Logging Configuration ---
+ini_set('log_errors', 1); // Enable error logging
+ini_set('display_errors', 0); // Disable displaying errors to users
+error_reporting(E_ALL); // Report all errors
+
+// Define log file path (relative to this config file)
+$logFilePath = __DIR__ . '/logs/php_error.log';
+ini_set('error_log', $logFilePath);
+
+// Attempt to create log directory if it doesn't exist
+$logDir = dirname($logFilePath);
+if (!is_dir($logDir)) {
+    // Attempt to create directory, suppress errors if it fails (e.g., permissions)
+    @mkdir($logDir, 0755, true);
+}
+
+// Log a startup message to verify logging works
+error_log("--- PHP error logging configured to: " . $logFilePath . " ---");
 // Attempt to load production config if it exists
 if (file_exists(__DIR__ . '/config.prod.php')) {
     require_once __DIR__ . '/config.prod.php'; // Load production overrides
