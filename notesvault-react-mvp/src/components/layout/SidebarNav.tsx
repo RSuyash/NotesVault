@@ -44,7 +44,10 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       if (API_BASE_URL) {
-         // await axios.post(`${API_BASE_URL}/logout.php`, {}, { withCredentials: true });
+         await fetch(`${API_BASE_URL}/logout.php`, {
+            method: 'POST',
+            credentials: 'include',
+         });
       }
     } catch (error) {
         console.error("Logout API call failed:", error);
