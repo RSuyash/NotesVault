@@ -63,6 +63,13 @@ if ($userId) {
     $output['profile_for_token_user'] = 'no user id from token';
 }
 
-echo json_encode($output, JSON_PRETTY_PRINT);
+// Add more diagnostics
+$output['all_server_vars'] = $_SERVER;
+$output['all_getallheaders'] = function_exists('getallheaders') ? getallheaders() : 'getallheaders not available';
+
+echo json_encode($output, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); // Added JSON_UNESCAPED_SLASHES for readability
 $conn->close();
+
+// Optionally, uncomment to see full PHP info (might expose sensitive data, use with caution)
+// phpinfo();
 ?>
