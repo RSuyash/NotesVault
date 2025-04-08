@@ -17,7 +17,7 @@ const DashboardLayout: React.FC = () => {
       {/* Sidebar */}
       {/* Apply conditional class for open state */}
       <div className={`${styles.sidebarContainer} ${isSidebarOpen ? styles.open : ''}`}>
-        <SidebarNav />
+        <SidebarNav onClose={toggleSidebar} /> {/* Pass toggle function */}
       </div>
 
       {/* Overlay for mobile */}
