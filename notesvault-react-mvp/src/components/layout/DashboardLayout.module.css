@@ -37,24 +37,7 @@
   transition: margin-left 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .sidebarContainer {
-    position: relative;
-    transform: translateX(0);
-  }
-  .overlay {
-    display: none;
-  }
-  .mainContentWrapper {
-    margin-left: 16rem;
-  }
-  .sidebarContainer.closed {
-    transform: translateX(-100%);
-  }
-  .mainContentWrapper.closed {
-    margin-left: 0;
-  }
-}
+/* Removed fixed sidebar on large screens to allow toggle on all sizes */
 
 .pageContent {
   flex-grow: 1;
