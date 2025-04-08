@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
 import SlideConfirm from '../ui/SlideConfirm';
+import { FiHome, FiUsers, FiBookOpen, FiFileText, FiSettings, FiLogOut } from 'react-icons/fi';
 
 // --- Icons --- (Using simple text/emoji for now)
 // TODO: Replace with SVG icons
