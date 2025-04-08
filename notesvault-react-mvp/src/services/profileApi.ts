@@ -5,11 +5,38 @@ if (!API_BASE_URL) {
   throw new Error('VITE_API_BASE_URL is not set in environment variables');
 }
 
+// Updated UserProfile interface
 export interface UserProfile {
   id: number;
-  name: string;
+  first_name?: string; // Optional or provide default ''
+  last_name?: string;  // Optional or provide default ''
   email: string;
+  profile_picture_url?: string | null; // Can be string URL or null
 }
+
+// Type for the data sent to update profile
+export interface UpdateProfileData {
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_picture_url?: string | null;
+}
+
+// Type for the response from the update endpoint
+interface UpdateProfileResponse {
+    success: boolean;
+    user?: UserProfile; // Backend returns updated user on success
+    error?: string;
+}
+
+// Type for password change data
+export interface ChangePasswordData {
+    currentPassword: string;
+    newPassword: string;
+}
+
+
+// --- API Functions ---
 
 export async function getProfile(): Promise<UserProfile> {
   try {
@@ -19,20 +46,59 @@ export async function getProfile(): Promise<UserProfile> {
       // headers: {} // Removed Authorization header
     });
     console.log('User profile fetch response:', response.data);
-    return response.data;
+    // Ensure required fields exist, provide defaults if necessary
+    return {
+        ...response.data,
+        first_name: response.data.first_name ?? '',
+        last_name: response.data.last_name ?? '',
+    };
   } catch (error: any) {
     console.error('Failed to fetch user profile:', error?.response?.status, error?.response?.data, error?.message);
+    // Re-throw or handle error appropriately for the caller
     throw error;
   }
 }
 
-export async function updateProfile(data: { name: string; email: string }): Promise<void> {
-  // No need to manually attach token, session cookie is handled by browser with withCredentials: true
-  await axios.post(`${API_BASE_URL}/user.php`, data, {
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-      // Removed Authorization header
-    },
-  });
+export async function updateProfile(data: UpdateProfileData): Promise<UpdateProfileResponse> {
+  try {
+      // No need to manually attach token, session cookie is handled by browser with withCredentials: true
+      const response = await axios.post<UpdateProfileResponse>(`${API_BASE_URL}/user.php`, data, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          // Removed Authorization header
+        },
+      });
+      return response.data; // Return the full response object
+  } catch (error: any) {
+       console.error('Failed to update profile:', error?.response?.status, error?.response?.data, error?.message);
+       // Rethrow or return error structure
+       throw error;
+  }
+}
+
+// TODO: Implement Password Change API call
+export async function changePassword(data: ChangePasswordData): Promise<{ success: boolean; error?: string }> {
+    try {
+        // Example: Assumes a new endpoint like /api/change_password.php
+        // const response = await axios.post<{ success: boolean; error?: string }>(`${API_BASE_URL}/change_password.php`, data, {
+        //     withCredentials: true,
+        //     headers: { 'Content-Type': 'application/json' },
+        // });
+        // return response.data;
+
+        // Placeholder until backend endpoint exists
+        console.warn("changePassword API call not implemented yet.");
+        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+        // Simulate success for now, replace with actual API call
+        if (data.currentPassword === 'password123') { // Dummy check
+             return { success: true };
+        } else {
+             return { success: false, error: 'Incorrect current password (dummy check)' };
+        }
+
+    } catch (error: any) {
+        console.error('Failed to change password:', error?.response?.status, error?.response?.data, error?.message);
+        throw error;
+    }
 }

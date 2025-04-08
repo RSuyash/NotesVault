@@ -44,44 +44,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Default GET action: Fetch user profile
-    // Fetch user profile
-    $stmt = $conn->prepare("SELECT id, name, email FROM users WHERE id = ?");
+    // Default GET action: Fetch user profile (with new fields)
+    $stmt = $conn->prepare("SELECT id, first_name, last_name, email, profile_picture_url FROM users WHERE id = ?");
+    if (!$stmt) {
+         sendJsonResponse(['error' => 'DB prepare failed (profile fetch)'], 500);
+    }
     $stmt->bind_param("i", $userId);
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($user = $result->fetch_assoc()) {
+            // Ensure nulls are handled if needed by frontend
+            $user['first_name'] = $user['first_name'] ?? '';
+            $user['last_name'] = $user['last_name'] ?? '';
+            $user['profile_picture_url'] = $user['profile_picture_url'] ?? null;
             sendJsonResponse($user);
         } else {
             sendJsonResponse(['error' => 'User not found'], 404);
         }
     } else {
-        sendJsonResponse(['error' => 'Query failed'], 500);
+        sendJsonResponse(['error' => 'Query failed (profile fetch)'], 500);
     }
     $stmt->close();
+// --- POST Request: Update profile (excluding password) ---
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Update user profile
     $data = json_decode(file_get_contents('php://input'), true);
     if (!$data) {
         sendJsonResponse(['error' => 'Invalid JSON'], 400);
     }
 
-    $name = $data['name'] ?? null;
+    // Extract fields to update
+    $firstName = $data['first_name'] ?? null;
+    $lastName = $data['last_name'] ?? null;
     $email = $data['email'] ?? null;
+    // Allow profile picture URL update (basic implementation)
+    $profilePicUrl = $data['profile_picture_url'] ?? null;
 
-    if (!$name || !$email) {
-        sendJsonResponse(['error' => 'Name and email required'], 400);
+    // Basic validation (adjust as needed)
+    if ($firstName === null || $lastName === null || $email === null) {
+         sendJsonResponse(['error' => 'First name, last name, and email are required'], 400);
     }
+     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        sendJsonResponse(['error' => 'Invalid email format'], 400);
+    }
+    // Optional: Validate profilePicUrl format if provided
 
-    $stmt = $conn->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
-    $stmt->bind_param("ssi", $name, $email, $userId);
+    // Prepare update statement
+    $stmt = $conn->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, profile_picture_url = ? WHERE id = ?");
+     if (!$stmt) {
+         sendJsonResponse(['error' => 'DB prepare failed (profile update)'], 500);
+    }
+    // Bind parameters (s = string, i = integer)
+    $stmt->bind_param("ssssi", $firstName, $lastName, $email, $profilePicUrl, $userId);
+
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
-            sendJsonResponse(['success' => true]);
+            // Fetch the updated profile to return it
+             $fetchStmt = $conn->prepare("SELECT id, first_name, last_name, email, profile_picture_url FROM users WHERE id = ?");
+             $fetchStmt->bind_param("i", $userId);
+             $fetchStmt->execute();
+             $result = $fetchStmt->get_result();
+             $updatedUser = $result->fetch_assoc();
+             $fetchStmt->close();
+            sendJsonResponse(['success' => true, 'user' => $updatedUser]);
         } else {
-            sendJsonResponse(['error' => 'No changes or user not found'], 400);
+            // Check if the email might already exist for another user
+            $checkEmailStmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+            $checkEmailStmt->bind_param("si", $email, $userId);
+            $checkEmailStmt->execute();
+            $emailResult = $checkEmailStmt->get_result();
+            if ($emailResult->num_rows > 0) {
+                 sendJsonResponse(['error' => 'Email address already in use by another account.'], 409); // 409 Conflict
+            } else {
+                 sendJsonResponse(['error' => 'No changes made or user not found'], 400); // Or maybe success if no changes needed?
+            }
+             $checkEmailStmt->close();
         }
     } else {
-        sendJsonResponse(['error' => 'Update failed'], 500);
+         // Check for duplicate email error specifically
+         if ($conn->errno === 1062) { // MySQL error code for duplicate entry
+             sendJsonResponse(['error' => 'Email address already in use.'], 409); // 409 Conflict
+         } else {
+            sendJsonResponse(['error' => 'Profile update failed: ' . $stmt->error], 500);
+         }
     }
     $stmt->close();
 } else {
