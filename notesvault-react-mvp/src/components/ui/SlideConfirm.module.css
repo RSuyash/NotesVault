@@ -1,12 +1,12 @@
 .container {
   position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 2rem;
+  left: 16rem; /* Sidebar width */
+  transform: translateX(0);
   z-index: 1000;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
   animation: slideUp 0.3s ease-out;
 }
 
