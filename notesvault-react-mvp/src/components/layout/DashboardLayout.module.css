@@ -11,27 +11,15 @@
   left: 0;
   bottom: 0;
   width: 16rem;
-  background-color: #1f2937;
+  background-color: #111827; /* Black sidebar */
   z-index: 40;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
+  height: 100vh;
 }
-
-@media (min-width: 768px) {
-  .sidebarContainer {
-    transform: translateX(0);
-  }
-}
-
 
 .sidebarContainer.open {
   transform: translateX(0);
-}
-
-@media (min-width: 768px) {
-  .sidebarContainer {
-    transform: translateX(0);
-  }
 }
 
 .overlay {
@@ -46,6 +34,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: margin-left 0.3s ease;
 }
 
 .pageContent {
@@ -59,8 +48,19 @@
 }
 
 @media (min-width: 768px) {
-  .pageContent {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+  .sidebarContainer {
+    transform: translateX(0);
+  }
+  .mainContentWrapper {
+    margin-left: 16rem;
+  }
+  .overlay {
+    display: none;
+  }
+  .sidebarContainer.closed {
+    transform: translateX(-100%);
+  }
+  .mainContentWrapper.closed {
+    margin-left: 0;
   }
 }
