@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
 import ConfirmModal from '../ui/ConfirmModal';
+import SlideConfirm from '../ui/SlideConfirm';
 
 // --- Icons --- (Using simple text/emoji for now)
 // TODO: Replace with SVG icons
@@ -33,6 +34,10 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   const [confirmMessage, setConfirmMessage] = React.useState('');
   const [onConfirmCallback, setOnConfirmCallback] = React.useState<() => void>(() => () => {});
 
+  const [showSlideConfirm, setShowSlideConfirm] = React.useState(false);
+  const [slideConfirmMessage, setSlideConfirmMessage] = React.useState('');
+  const [onSlideConfirmCallback, setOnSlideConfirmCallback] = React.useState<() => void>(() => () => {});
+
   // Define navigation items with better icons
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
@@ -45,8 +50,8 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   ];
 
   const handleLogout = () => {
-    setConfirmMessage('Are you sure you want to logout?');
-    setOnConfirmCallback(() => async () => {
+    setSlideConfirmMessage('Are you sure you want to logout?');
+    setOnSlideConfirmCallback(() => async () => {
       try {
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
         if (API_BASE_URL) {
@@ -60,10 +65,10 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
       } finally {
           localStorage.removeItem('username');
           navigate('/login');
-          setShowConfirm(false);
+          setShowSlideConfirm(false);
       }
     });
-    setShowConfirm(true);
+    setShowSlideConfirm(true);
   };
 
   return (
@@ -120,6 +125,13 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
            <span className={styles.footerButtonText}>Logout</span> {/* Make text visible */}
         </button>
       </div>
+      {showSlideConfirm && (
+        <SlideConfirm
+          message={slideConfirmMessage}
+          onConfirm={onSlideConfirmCallback}
+          onCancel={() => setShowSlideConfirm(false)}
+        />
+      )}
       {showConfirm && (
         <ConfirmModal
           message={confirmMessage}
