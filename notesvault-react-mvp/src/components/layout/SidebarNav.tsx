@@ -74,6 +74,9 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
     { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
+    { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
+    { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
+    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
   ];
 
   const handleLogout = () => {

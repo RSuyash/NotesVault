@@ -24,6 +24,9 @@ import ProfilePage from './pages/ProfilePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
 import NotesPage from './pages/NotesPage.tsx';
 import DocsPage from './pages/DocsPage.tsx';
+import FlashcardsPage from './pages/FlashcardsPage.tsx';
+import LeaderboardPage from './pages/LeaderboardPage.tsx';
+import MindHackDocsPage from './pages/MindHackDocsPage.tsx';
 
 function App() {
   const location = useLocation(); // Get current location
