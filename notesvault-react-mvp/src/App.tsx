@@ -22,6 +22,8 @@ import DashboardPage from './pages/DashboardPage.js'; // Import Dashboard page
 import ProtectedRoute from './components/auth/ProtectedRoute.js'; // Import ProtectedRoute
 import ProfilePage from './pages/ProfilePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
+import NotesPage from './pages/NotesPage.tsx';
+import DocsPage from './pages/DocsPage.tsx';
 
 function App() {
   const location = useLocation(); // Get current location
@@ -57,6 +59,8 @@ function App() {
             {/* Nested Dashboard Routes - Rendered via Outlet in DashboardLayout */}
             <Route index element={<DashboardPage />} /> {/* Default dashboard page at /dashboard */}
             <Route path="profile" element={<ProfilePage />} /> {/* Profile page at /dashboard/profile */}
+            <Route path="notes" element={<NotesPage />} />
+            <Route path="docs" element={<DocsPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
           {/* Add other top-level protected routes later if needed */}
