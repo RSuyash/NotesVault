@@ -1,62 +1,58 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-// Assuming useAuth hook exists and provides logout function
-// import { useAuth } from '../../hooks/useAuth'; // Adjust path if needed - HOOK NOT FOUND
+import { Link, useLocation } from 'react-router-dom';
+
+// Placeholder icons (replace with actual icons later if needed)
+const PlaceholderIcon = () => <span className="mr-3">▫️</span>;
 
 const SidebarNav: React.FC = () => {
-  // const { logout } = useAuth(); // Assuming useAuth returns { logout: () => void } - HOOK NOT FOUND
+  const location = useLocation(); // To highlight active link
 
-  // const handleLogout = async () => {
-  //   try {
-  //     // await logout(); // Call the logout function from the hook - HOOK NOT FOUND
-  //     navigate('/'); // Redirect to login or home page after logout
-  //   } catch (error) {
-  //     console.error("Logout failed:", error);
-  //     // Handle logout error (e.g., show a notification)
-  //   }
-  // };
-
-  // Placeholder links based on FR2.1
+  // Define navigation items
   const navItems = [
-    { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Notes', path: '/notes' },
-    { name: 'Flashcards', path: '/flashcards' },
-    { name: 'Study Groups', path: '/study-groups' },
-    { name: 'Settings', path: '/settings' },
+    { path: '/dashboard', label: 'Dashboard', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/profile', label: 'Profile', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/notes', label: 'Smart Notes', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/flashcards', label: 'Flashcards', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/studygroups', label: 'Study Groups', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: <PlaceholderIcon /> },
+    { path: '/dashboard/docs', label: 'MindHack Docs', icon: <PlaceholderIcon /> },
+    // Add more links as needed
+    { path: '/dashboard/settings', label: 'Settings', icon: <PlaceholderIcon /> },
   ];
 
-  // Define active link style
-  // Define active link style using CSS variables
-  const activeClassName = "bg-[var(--color-primary-lighter)] text-[var(--color-primary)] font-semibold";
-  const inactiveClassName = "text-[var(--color-text-secondary)] hover:bg-[var(--color-background-secondary)] hover:text-[var(--color-text-primary)]";
-
   return (
-    <div className="flex flex-col h-full p-4 bg-[var(--color-surface)] border-r border-[var(--color-border)]">
-      {/* Use flex column layout, apply surface background and primary text color */}
-      <h2 className="text-xl font-semibold mb-6 text-[var(--color-text-primary)]">NotesVault</h2>
-      <nav className="flex-grow"> {/* Nav takes available space */}
-        <ul>
-          {navItems.map((item) => (
-            <li key={item.name} className="mb-2"> {/* Reduced margin */}
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `block p-2 rounded transition-colors duration-150 ${isActive ? activeClassName : inactiveClassName}`
-                }
-              >
-                {item.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+    <div className="flex flex-col h-full text-gray-300">
+      {/* Logo/Brand Area */}
+      <div className="flex items-center justify-center h-16 border-b border-gray-700">
+        {/* Replace with your actual logo */}
+        <span className="text-white text-xl font-semibold">NotesVault</span>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex-1 mt-6 px-2 space-y-1">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out
+                ${isActive
+                  ? 'bg-gray-900 text-white' // Active link style
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white' // Inactive link style
+                }`}
+            >
+              {item.icon}
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
-      {/* Logout Button at the bottom */}
-      <div className="mt-auto"> {/* Pushes button to the bottom */}
-        <button
-          // onClick={handleLogout} // Re-enable when useAuth/logout is implemented
-          // Apply primary button styles using CSS variables and standard padding/text size
-          className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-darker)] text-white text-base font-medium py-3 px-6 rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-50 transition-colors duration-200"
-        >
+
+      {/* Optional Footer Area (e.g., Logout Button) */}
+      <div className="mt-auto p-4 border-t border-gray-700">
+        <button className="w-full flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-red-600 hover:text-white transition-colors duration-150 ease-in-out">
+          <PlaceholderIcon /> {/* Replace with logout icon */}
           Logout
         </button>
       </div>
