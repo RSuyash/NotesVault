@@ -17,7 +17,7 @@ const DashboardPage: React.FC = () => {
             iconType="brain"
             title="Smart Notes"
             description="Create, organize, and access your intelligent notes."
-            link="/notes"
+            link="/dashboard/notes"
             backgroundColor="var(--color-primary-lighter)"
             iconColor="var(--color-primary)"
           />
@@ -25,7 +25,7 @@ const DashboardPage: React.FC = () => {
             iconType="cards"
             title="Flashcards"
             description="Revise faster with AI-generated flashcards."
-            link="/flashcards"
+            link="/dashboard/flashcards"
             backgroundColor="#ecfdf5"
             iconColor="#22c55e"
           />
@@ -33,7 +33,7 @@ const DashboardPage: React.FC = () => {
             iconType="folder"
             title="Study Groups"
             description="Collaborate and learn with peers."
-            link="/studygroups"
+            link="/dashboard/studygroups"
             backgroundColor="#eef2ff"
             iconColor="#6366f1"
           />
@@ -41,7 +41,7 @@ const DashboardPage: React.FC = () => {
             iconType="graph"
             title="Leaderboard"
             description="Track your progress and compete."
-            link="/leaderboard"
+            link="/dashboard/leaderboard"
             backgroundColor="#fef9c3"
             iconColor="#eab308"
           />
@@ -49,7 +49,7 @@ const DashboardPage: React.FC = () => {
             iconType="time"
             title="MindHack Docs"
             description="Generate powerful documents effortlessly."
-            link="/docs"
+            link="/dashboard/docs"
             backgroundColor="#ffe4e6"
             iconColor="#db2777"
           />
