@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getProfile } from '../../services/profileApi'; // Import profile API
 
 // Define props interface
 interface HeaderBarProps {
@@ -6,8 +7,24 @@ interface HeaderBarProps {
 }
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ onToggleSidebar }) => {
-  // TODO: Fetch user name here or receive as prop if needed in header
-  const userName = localStorage.getItem('username') || 'User'; // Temporary fallback
+  const [userName, setUserName] = useState('User'); // State for user name
+
+  // Fetch user profile on component mount
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const profileData = await getProfile(); // Uses session cookie via profileApi
+        if (profileData && profileData.name) {
+          setUserName(profileData.name);
+        }
+      } catch (error) {
+        console.error('HeaderBar: Failed to fetch user profile for name', error);
+        // Keep default 'User' name on error
+      }
+    };
+
+    fetchUserName();
+  }, []); // Empty dependency array means run once on mount
 
   return (
     // Use fixed positioning and z-index to keep header above content
