@@ -1,32 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { getProfile, updateProfile } from '../services/profileApi';
-import styles from './ProfilePage.module.css'; // Import CSS Module
+import { getProfile, updateProfile } from '../services/profileApi'; // Assuming updateProfile handles new fields
+import styles from './ProfilePage.module.css';
+
+// TODO: Add API call for password change
+// import { changePassword } from '../services/profileApi';
 
 const ProfilePage: React.FC = () => {
-  const [name, setName] = useState('');
+  // --- State for Profile Info ---
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [initialEmail, setInitialEmail] = useState(''); // Store initial email for comparison
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null); // Store URL
 
+  // Store initial values to detect changes
+  const [initialFirstName, setInitialFirstName] = useState('');
+  const [initialLastName, setInitialLastName] = useState('');
+  const [initialEmail, setInitialEmail] = useState('');
+  const [initialProfilePictureUrl, setInitialProfilePictureUrl] = useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdatingInfo, setIsUpdatingInfo] = useState(false);
+  const [infoError, setInfoError] = useState<string | null>(null);
+  const [infoSuccess, setInfoSuccess] = useState<string | null>(null);
+
+  // --- State for Password Change ---
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
+
+  // --- Fetch Initial Profile ---
   useEffect(() => {
-    let isMounted = true; // Prevent state update on unmounted component
+    let isMounted = true;
     async function fetchProfile() {
       setIsLoading(true);
-      setError(null);
-      setSuccess(null);
+      setInfoError(null);
+      setInfoSuccess(null);
       try {
-        const data = await getProfile();
+        const data = await getProfile(); // API should return new fields
         if (isMounted) {
-          setName(data.name);
-          setEmail(data.email);
-          setInitialEmail(data.email); // Store initial email
+          setFirstName(data.first_name || '');
+          setLastName(data.last_name || '');
+          setEmail(data.email || '');
+          setProfilePictureUrl(data.profile_picture_url || null);
+
+          // Set initial values
+          setInitialFirstName(data.first_name || '');
+          setInitialLastName(data.last_name || '');
+          setInitialEmail(data.email || '');
+          setInitialProfilePictureUrl(data.profile_picture_url || null);
         }
       } catch (err: any) {
         if (isMounted) {
-          setError(err.response?.data?.error || 'Failed to load profile. Please try again.');
+          setInfoError(err.response?.data?.error || 'Failed to load profile. Please try again.');
         }
         console.error("Profile fetch error:", err);
       } finally {
@@ -36,39 +64,91 @@ const ProfilePage: React.FC = () => {
       }
     }
     fetchProfile();
-    return () => { isMounted = false }; // Cleanup function
+    return () => { isMounted = false };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // --- Handle Profile Info Update ---
+  const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
-    setIsUpdating(true);
+    setInfoError(null);
+    setInfoSuccess(null);
+    setIsUpdatingInfo(true);
 
-    // Basic validation
-    if (!name.trim() || !email.trim()) {
-        setError('Name and email cannot be empty.');
-        setIsUpdating(false);
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+        setInfoError('First name, last name, and email cannot be empty.');
+        setIsUpdatingInfo(false);
         return;
     }
-    // Optional: Add more robust email validation if needed
 
     try {
-      await updateProfile({ name, email });
-      setSuccess('Profile updated successfully!');
-      setInitialEmail(email); // Update initial email on successful save
-      // Optionally re-fetch profile to confirm, but usually not needed if API confirms success
+      // Pass all fields, including potentially null profile pic URL
+      const updatedData = {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          profile_picture_url: profilePictureUrl
+      };
+      const response = await updateProfile(updatedData); // API should handle these fields
+      setInfoSuccess('Profile updated successfully!');
+      // Update initial values on success
+      setInitialFirstName(response.user?.first_name ?? '');
+      setInitialLastName(response.user?.last_name ?? '');
+      setInitialEmail(response.user?.email ?? '');
+      setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
+
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to update profile. Please try again.');
+      setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
       console.error("Profile update error:", err);
     } finally {
-      setIsUpdating(false);
+      setIsUpdatingInfo(false);
     }
   };
 
-  // Determine if form has changes
-  const hasChanges = name !== '' && (email !== initialEmail || name !== ''); // Check against initial state
+  // --- Handle Password Change ---
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+     e.preventDefault();
+     setPasswordError(null);
+     setPasswordSuccess(null);
 
+     if (!currentPassword || !newPassword || !confirmPassword) {
+         setPasswordError('All password fields are required.');
+         return;
+     }
+     if (newPassword !== confirmPassword) {
+         setPasswordError('New passwords do not match.');
+         return;
+     }
+     if (newPassword.length < 8) { // Example minimum length
+        setPasswordError('New password must be at least 8 characters long.');
+        return;
+     }
+
+     setIsUpdatingPassword(true);
+     try {
+        // TODO: Implement changePassword API call
+        // await changePassword({ currentPassword, newPassword });
+        setPasswordSuccess('Password changed successfully!');
+        // Clear fields on success
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+     } catch (err: any) {
+        setPasswordError(err.response?.data?.error || 'Failed to change password.');
+        console.error("Password change error:", err);
+     } finally {
+        setIsUpdatingPassword(false);
+     }
+  };
+
+
+  // --- Change Detection ---
+  const infoHasChanges =
+    firstName !== initialFirstName ||
+    lastName !== initialLastName ||
+    email !== initialEmail ||
+    profilePictureUrl !== initialProfilePictureUrl;
+
+  // --- Render Logic ---
   if (isLoading) {
       return (
           <div className={styles.pageContainer}>
@@ -82,23 +162,57 @@ const ProfilePage: React.FC = () => {
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}>My Profile</h1>
 
-      {/* Display general error messages */}
-      {error && !isUpdating && <div className={styles.errorMessage}>{error}</div>}
-      {success && <div className={styles.successMessage}>{success}</div>}
-
+      {/* --- Profile Information Section --- */}
       <div className={styles.profileCard}>
         <h2 className={styles.sectionTitle}>Update Information</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        {infoError && <div className={styles.errorMessage}>{infoError}</div>}
+        {infoSuccess && <div className={styles.successMessage}>{infoSuccess}</div>}
+        <form onSubmit={handleInfoSubmit} className={styles.form}>
+          {/* Profile Picture Placeholder */}
           <div className={styles.inputGroup}>
-            <label htmlFor="profile-name" className={styles.label}>Name:</label>
+             <label className={styles.label}>Profile Picture</label>
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <img
+                    src={profilePictureUrl || '/default-avatar.png'} // Use placeholder if no URL
+                    alt="Profile"
+                    style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--color-border)' }}
+                    onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }} // Fallback image
+                />
+                {/* Basic URL input for now - Replace with file upload later */}
+                <input
+                    type="text"
+                    placeholder="Enter image URL (e.g., https://...)"
+                    value={profilePictureUrl || ''}
+                    onChange={(e) => setProfilePictureUrl(e.target.value || null)}
+                    className={styles.input}
+                    disabled={isUpdatingInfo}
+                />
+             </div>
+             <small style={{ marginTop: '0.5rem', color: 'var(--color-text-muted)'}}>Enter URL for profile picture (file upload coming soon).</small>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="profile-first-name" className={styles.label}>First Name:</label>
             <input
-              id="profile-name"
+              id="profile-first-name"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className={styles.input}
               required
-              disabled={isUpdating}
+              disabled={isUpdatingInfo}
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label htmlFor="profile-last-name" className={styles.label}>Last Name:</label>
+            <input
+              id="profile-last-name"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className={styles.input}
+              required
+              disabled={isUpdatingInfo}
             />
           </div>
           <div className={styles.inputGroup}>
@@ -110,27 +224,78 @@ const ProfilePage: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
               required
-              disabled={isUpdating}
+              disabled={isUpdatingInfo}
             />
-             {/* Optional: Add note if email change requires verification */}
           </div>
-
-          {/* Display update-specific errors */}
-          {error && isUpdating && <div className={styles.errorMessage}>{error}</div>}
 
           <div className={styles.buttonContainer}>
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={isUpdating || !hasChanges} // Disable if updating or no changes
+              disabled={isUpdatingInfo || !infoHasChanges}
             >
-              {isUpdating ? 'Saving...' : 'Save Changes'}
+              {isUpdatingInfo ? 'Saving...' : 'Save Info Changes'}
             </button>
           </div>
         </form>
       </div>
 
-      {/* Add other profile sections here later (e.g., Change Password, Profile Picture) */}
+      {/* --- Change Password Section --- */}
+      <div className={styles.profileCard}>
+        <h2 className={styles.sectionTitle}>Change Password</h2>
+         {passwordError && <div className={styles.errorMessage}>{passwordError}</div>}
+         {passwordSuccess && <div className={styles.successMessage}>{passwordSuccess}</div>}
+        <form onSubmit={handlePasswordSubmit} className={styles.form}>
+           <div className={styles.inputGroup}>
+             <label htmlFor="current-password" className={styles.label}>Current Password:</label>
+             <input
+               id="current-password"
+               type="password"
+               value={currentPassword}
+               onChange={(e) => setCurrentPassword(e.target.value)}
+               className={styles.input}
+               required
+               disabled={isUpdatingPassword}
+               autoComplete="current-password"
+             />
+           </div>
+           <div className={styles.inputGroup}>
+             <label htmlFor="new-password" className={styles.label}>New Password:</label>
+             <input
+               id="new-password"
+               type="password"
+               value={newPassword}
+               onChange={(e) => setNewPassword(e.target.value)}
+               className={styles.input}
+               required
+               disabled={isUpdatingPassword}
+               autoComplete="new-password"
+             />
+           </div>
+           <div className={styles.inputGroup}>
+             <label htmlFor="confirm-password" className={styles.label}>Confirm New Password:</label>
+             <input
+               id="confirm-password"
+               type="password"
+               value={confirmPassword}
+               onChange={(e) => setConfirmPassword(e.target.value)}
+               className={styles.input}
+               required
+               disabled={isUpdatingPassword}
+               autoComplete="new-password"
+             />
+           </div>
+           <div className={styles.buttonContainer}>
+             <button
+               type="submit"
+               className={styles.submitButton}
+               disabled={isUpdatingPassword || !currentPassword || !newPassword || !confirmPassword}
+             >
+               {isUpdatingPassword ? 'Changing...' : 'Change Password'}
+             </button>
+           </div>
+        </form>
+      </div>
 
     </div>
   );

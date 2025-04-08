@@ -13,8 +13,9 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ onToggleSidebar }) => {
     const fetchUserName = async () => {
       try {
         const profileData = await getProfile();
-        if (profileData && profileData.name) {
-          setUserName(profileData.name);
+        if (profileData) {
+          const fullName = `${profileData.first_name ?? ''} ${profileData.last_name ?? ''}`.trim();
+          setUserName(fullName || 'User');
         }
       } catch (error) {
         console.error('HeaderBar: Failed to fetch user profile for name', error);
