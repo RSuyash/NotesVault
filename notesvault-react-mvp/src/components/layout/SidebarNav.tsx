@@ -40,6 +40,9 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ onClose }) => {
   ];
 
   const handleLogout = async () => {
+    const confirmed = window.confirm('Are you sure you want to logout?');
+    if (!confirmed) return;
+
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       if (API_BASE_URL) {
