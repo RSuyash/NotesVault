@@ -1,29 +1,10 @@
 import styles from './DashboardPage.module.css';
 import DashboardFeatureCard from '../components/dashboard/DashboardFeatureCard';
-import { getProfile } from '../services/profileApi'; // Import session-based profile fetch
-import React, { useState, useEffect } from 'react';
+// Removed unused imports: getProfile, useState, useEffect
+import React from 'react';
 
 const DashboardPage: React.FC = () => {
-  const [userName, setUserName] = useState('User');
-
-  // Fetch user profile using session-based API
-  useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const profileData = await getProfile(); // Uses session cookie via profileApi
-        if (profileData && profileData.name) {
-          setUserName(profileData.name);
-          // Optionally store username in localStorage if needed elsewhere, but not required for auth
-          // localStorage.setItem('username', profileData.name);
-        }
-      } catch (error) {
-        console.error('Dashboard: Failed to fetch user profile for name', error);
-        // Keep default 'User' name on error
-      }
-    };
-
-    fetchUserName();
-  }, []); // Empty dependency array means run once on mount
+  // userName state and fetch logic removed as header is now in HeaderBar
 
   return (
     <div className={styles.pageContainer}> {/* Keep page container style */}
