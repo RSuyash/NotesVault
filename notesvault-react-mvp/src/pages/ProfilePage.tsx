@@ -7,12 +7,14 @@ import styles from './ProfilePage.module.css';
 
 const ProfilePage: React.FC = () => {
   // --- State for Profile Info ---
+  const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null); // Store URL
 
   // Store initial values to detect changes
+  const [initialUsername, setInitialUsername] = useState('');
   const [initialFirstName, setInitialFirstName] = useState('');
   const [initialLastName, setInitialLastName] = useState('');
   const [initialEmail, setInitialEmail] = useState('');
@@ -41,12 +43,14 @@ const ProfilePage: React.FC = () => {
       try {
         const data = await getProfile(); // API should return new fields
         if (isMounted) {
+          setUsername(data.username || '');
           setFirstName(data.first_name || '');
           setLastName(data.last_name || '');
           setEmail(data.email || '');
           setProfilePictureUrl(data.profile_picture_url || null);
 
           // Set initial values
+          setInitialUsername(data.username || '');
           setInitialFirstName(data.first_name || '');
           setInitialLastName(data.last_name || '');
           setInitialEmail(data.email || '');
@@ -74,15 +78,22 @@ const ProfilePage: React.FC = () => {
     setInfoSuccess(null);
     setIsUpdatingInfo(true);
 
-    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-        setInfoError('First name, last name, and email cannot be empty.');
-        setIsUpdatingInfo(false);
-        return;
+    if (!username.trim() || !firstName.trim() || !lastName.trim() || !email.trim()) {
+       setInfoError('Username, first name, last name, and email cannot be empty.');
+       setIsUpdatingInfo(false);
+       return;
     }
 
     try {
       // Pass all fields, including potentially null profile pic URL
+      const confirmed = window.confirm('Are you sure you want to update your profile info?');
+      if (!confirmed) {
+          setIsUpdatingInfo(false);
+          return;
+      }
+
       const updatedData = {
+          username: username,
           first_name: firstName,
           last_name: lastName,
           email: email,
@@ -125,13 +136,21 @@ const ProfilePage: React.FC = () => {
 
      setIsUpdatingPassword(true);
      try {
-        // TODO: Implement changePassword API call
-        // await changePassword({ currentPassword, newPassword });
-        setPasswordSuccess('Password changed successfully!');
-        // Clear fields on success
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
+        const confirmed = window.confirm('Are you sure you want to change your password?');
+        if (!confirmed) {
+            setIsUpdatingPassword(false);
+            return;
+        }
+
+        const resp = await import('../services/profileApi').then(m => m.changePassword({ currentPassword, newPassword }));
+        if (resp.success) {
+            setPasswordSuccess('Password changed successfully!');
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+        } else {
+            setPasswordError(resp.error || 'Failed to change password.');
+        }
      } catch (err: any) {
         setPasswordError(err.response?.data?.error || 'Failed to change password.');
         console.error("Password change error:", err);
@@ -143,6 +162,7 @@ const ProfilePage: React.FC = () => {
 
   // --- Change Detection ---
   const infoHasChanges =
+    username !== initialUsername ||
     firstName !== initialFirstName ||
     lastName !== initialLastName ||
     email !== initialEmail ||
@@ -189,6 +209,19 @@ const ProfilePage: React.FC = () => {
                 />
              </div>
              <small style={{ marginTop: '0.5rem', color: 'var(--color-text-muted)'}}>Enter URL for profile picture (file upload coming soon).</small>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="profile-username" className={styles.label}>Username:</label>
+            <input
+              id="profile-username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={styles.input}
+              required
+              disabled={isUpdatingInfo}
+            />
           </div>
 
           <div className={styles.inputGroup}>

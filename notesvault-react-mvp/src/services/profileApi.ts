@@ -8,6 +8,7 @@ if (!API_BASE_URL) {
 // Updated UserProfile interface
 export interface UserProfile {
   id: number;
+  username?: string; // Add username
   first_name?: string; // Optional or provide default ''
   last_name?: string;  // Optional or provide default ''
   email: string;
