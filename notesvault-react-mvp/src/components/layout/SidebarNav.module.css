@@ -14,12 +14,14 @@
   height: 4rem; /* Match header height */
   padding: 0 1rem; /* px-4 */
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .logoText {
   color: var(--color-text-primary); /* Use theme variable */
   font-size: 1.25rem; /* text-xl */
   font-weight: 600; /* font-semibold */
+  white-space: nowrap; /* Prevent wrapping */
 }
 
 .closeButton {
@@ -69,6 +71,7 @@
   color: var(--color-text-secondary); /* Use theme variable */
   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.1s ease;
   text-decoration: none;
+  white-space: nowrap; /* Prevent link text wrapping */
 }
 
 .navLink:hover {
@@ -92,10 +95,12 @@
 
 .navLinkIcon {
   margin-right: 0.875rem; /* mr-3.5 */
-  width: 1.125rem; /* w-4.5 */
-  height: 1.125rem; /* h-4.5 */
+  width: 1.25rem; /* w-5 */
+  height: 1.25rem; /* h-5 */
   opacity: 0.8;
   flex-shrink: 0; /* Prevent icon shrinking */
+  display: inline-block; /* Ensure proper alignment */
+  text-align: center;
 }
 
 .navLink.active .navLinkIcon {
@@ -111,6 +116,7 @@
   align-items: center;
   justify-content: space-between; /* Space out icons/buttons */
   gap: 0.5rem;
+  flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
 .footerButton {
@@ -125,6 +131,7 @@
   flex-grow: 1; /* Allow buttons to grow if needed */
   justify-content: center; /* Center icon+text */
   font-size: 0.875rem;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .footerButton:hover {
@@ -143,4 +150,11 @@
    width: 1.25rem; /* w-5 */
    height: 1.25rem; /* h-5 */
    opacity: 0.9;
+   display: inline-block; /* Ensure proper alignment */
+   text-align: center;
+}
+
+.footerButtonText {
+  /* Styles for visible text in footer buttons */
+  margin-left: 0.25rem; /* Add small space after icon */
 }
