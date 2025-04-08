@@ -1,5 +1,12 @@
 <?php
-session_start(); // Start session
+// Ensure session starts before any output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Log session status and user ID for debugging
+error_log("User.php - Session status: " . session_status());
+error_log("User.php - Session ID: " . session_id());
+error_log("User.php - User ID from session: " . ($_SESSION['user_id'] ?? 'Not Set'));
 require_once __DIR__ . '/config.php';
 
 // Handle CORS
