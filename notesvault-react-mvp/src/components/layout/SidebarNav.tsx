@@ -9,6 +9,7 @@ import {
   Squares2X2Icon,
   DocumentTextIcon,
   TrophyIcon,
+  AcademicCapIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
   XMarkIcon,
@@ -37,6 +38,11 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
+    {
+      path: '/studyboard',
+      label: 'Study Board',
+      icon: AcademicCapIcon,
+    },
     {
       label: 'Studyboard',
       icon: GroupsIcon, // You can customize the icon for Studyboard
