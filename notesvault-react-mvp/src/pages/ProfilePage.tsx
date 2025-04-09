@@ -1,3 +1,5 @@
+// Minor change to trigger push after full restore
+
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile, uploadProfilePicture } from '../services/profileApi'; // Added upload function
 import styles from './ProfilePage.module.css';
