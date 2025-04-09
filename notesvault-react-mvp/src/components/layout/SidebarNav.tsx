@@ -42,6 +42,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
+    { path: '/studyboard', label: 'Study Board', icon: GroupsIcon },
     {
       label: 'Studyboard',
       icon: StudyboardIcon,
