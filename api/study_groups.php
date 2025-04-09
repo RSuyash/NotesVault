@@ -20,6 +20,12 @@ if (!$userId) {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true);
+    if (!$data) {
+        $data = $_POST;
+    }
+    $action = $data['action'] ?? '';
 if ($method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $action = $data['action'] ?? '';
