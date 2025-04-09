@@ -64,11 +64,28 @@ if ($fileSize > $maxFileSize) {
 }
 
 // --- Create Upload Directory if it doesn't exist ---
-if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
-    http_response_code(500); // Internal Server Error
-    error_log("Failed to create upload directory: " . $uploadDir); // Log error server-side
-    echo json_encode(['success' => false, 'message' => 'Server error: Could not create upload directory.']);
-    exit;
+error_log("Upload script: Checking directory: " . $uploadDir);
+if (!is_dir($uploadDir)) {
+    error_log("Upload script: Directory does not exist. Attempting to create...");
+    if (!mkdir($uploadDir, 0775, true)) {
+        // Log detailed error if mkdir fails
+        $error = error_get_last();
+        error_log("Upload script: Failed to create upload directory: " . $uploadDir . " - Error: " . ($error['message'] ?? 'Unknown error'));
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['success' => false, 'message' => 'Server error: Could not create upload directory. Check permissions.']);
+        exit;
+    } else {
+         error_log("Upload script: Directory created successfully: " . $uploadDir);
+    }
+} else {
+     error_log("Upload script: Directory already exists: " . $uploadDir);
+}
+// Check writability just in case
+if (!is_writable($uploadDir)) {
+     error_log("Upload script: Upload directory is not writable: " . $uploadDir);
+     http_response_code(500); // Internal Server Error
+     echo json_encode(['success' => false, 'message' => 'Server error: Upload directory not writable.']);
+     exit;
 }
 
 // --- Generate Unique Filename ---
@@ -78,11 +95,15 @@ $destinationPath = $uploadDir . $uniqueFilename;
 $relativePath = 'uploads/avatars/' . $uniqueFilename; // Path to store in DB
 
 // --- Move Uploaded File ---
+error_log("Upload script: Attempting to move '$fileTmpPath' to '$destinationPath'");
 if (!move_uploaded_file($fileTmpPath, $destinationPath)) {
+    $error = error_get_last();
+    error_log("Upload script: Failed to move uploaded file. Error: " . ($error['message'] ?? 'Unknown error')); // Log detailed error
     http_response_code(500); // Internal Server Error
-    error_log("Failed to move uploaded file from $fileTmpPath to $destinationPath"); // Log error
     echo json_encode(['success' => false, 'message' => 'Server error: Could not save uploaded file.']);
     exit;
+} else {
+    error_log("Upload script: File moved successfully to '$destinationPath'");
 }
 
 // --- Update Database ---
