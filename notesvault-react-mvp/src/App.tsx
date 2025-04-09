@@ -72,7 +72,7 @@ function App() {
             <Route path="flashcards" element={<FlashcardsPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="mindhackdocs" element={<MindHackDocsPage />} />
-          <Route path="/studyboard" element={<StudyBoardPage />} />
+          <Route path="studyboard" element={<StudyBoardPage />} />
           </Route>
           {/* Add other top-level protected routes later if needed */}
         </Routes>
