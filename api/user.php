@@ -110,19 +110,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
              $result = $fetchStmt->get_result();
              $updatedUser = $result->fetch_assoc();
              $fetchStmt->close();
-            sendJsonResponse(['success' => true, 'user' => $updatedUser]);
-        } else {
-            // Check if the email might already exist for another user
-            $checkEmailStmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
-            $checkEmailStmt->bind_param("si", $email, $userId);
-            $checkEmailStmt->execute();
-            $emailResult = $checkEmailStmt->get_result();
-            if ($emailResult->num_rows > 0) {
-                 sendJsonResponse(['error' => 'Email address already in use by another account.'], 409); // 409 Conflict
-            } else {
-                 sendJsonResponse(['error' => 'No changes made or user not found'], 400); // Or maybe success if no changes needed?
-            }
-             $checkEmailStmt->close();
+            // Also return success even if no rows were affected (data was the same)
+            // Fetch the current user data to return
+             $fetchStmt = $conn->prepare("SELECT id, username, first_name, last_name, email, profile_picture_path FROM users WHERE id = ?");
+             $fetchStmt->bind_param("i", $userId);
+             $fetchStmt->execute();
+             $result = $fetchStmt->get_result();
+             $currentUser = $result->fetch_assoc();
+             $fetchStmt->close();
+            sendJsonResponse(['success' => true, 'user' => $currentUser, 'message' => 'No changes detected.']);
         }
     } else {
          // Check for duplicate email error specifically
