@@ -35,6 +35,8 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const [onSlideConfirmCallback, setOnSlideConfirmCallback] = React.useState<() => void>(() => () => {});
   const [spinning, setSpinning] = React.useState(false);
 
+  const [isStudyBoardOpen, setIsStudyBoardOpen] = React.useState(true);
+
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
     {
