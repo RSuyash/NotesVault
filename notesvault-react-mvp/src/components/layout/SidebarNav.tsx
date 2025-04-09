@@ -9,7 +9,7 @@ import {
   Squares2X2Icon,
   DocumentTextIcon,
   TrophyIcon,
-  Cog6ToothIcon,
+  // Removed unused Cog6ToothIcon
   ArrowRightOnRectangleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -18,7 +18,7 @@ const GroupsIcon = () => <UsersIcon className={styles.navLinkIcon} />;
 const FlashcardsIcon = () => <Squares2X2Icon className={styles.navLinkIcon} />;
 const DocsIcon = () => <DocumentTextIcon className={styles.navLinkIcon} />;
 const LeaderboardIcon = () => <TrophyIcon className={styles.navLinkIcon} />;
-const SettingsIcon = () => <Cog6ToothIcon className={styles.footerButtonIcon} />;
+// Removed unused SettingsIcon component
 const LogoutIcon = () => <ArrowRightOnRectangleIcon className={styles.footerButtonIcon} />;
 const CloseIcon = () => <XMarkIcon className="w-6 h-6" />;
 interface SidebarNavProps {

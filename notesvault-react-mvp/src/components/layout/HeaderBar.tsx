@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+// Removed unused Link import
 import { getProfile } from '../../services/profileApi';
 import styles from './HeaderBar.module.css'; // Import CSS Module
 import UserMenuDropdown from './UserMenuDropdown'; // Import the new dropdown
