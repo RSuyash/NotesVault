@@ -23,6 +23,19 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error creating users table: " . $conn->error . "\n";
 }
+// Add profile_picture_path column if it doesn't exist
+$alterSql = "ALTER TABLE users ADD COLUMN profile_picture_path VARCHAR(255) NULL DEFAULT NULL AFTER email";
+if ($conn->query($alterSql) === TRUE) {
+    echo "Column 'profile_picture_path' added or already exists.\n";
+} else {
+    // Check if the error is 'Duplicate column name' (Error code 1060)
+    if ($conn->errno == 1060) {
+        echo "INFO: Column 'profile_picture_path' already exists.\n";
+    } else {
+        echo "Error adding column 'profile_picture_path': " . $conn->error . "\n";
+    }
+}
+
 
 // Optionally insert a test user if table is empty
 $result = $conn->query("SELECT COUNT(*) as count FROM users");
