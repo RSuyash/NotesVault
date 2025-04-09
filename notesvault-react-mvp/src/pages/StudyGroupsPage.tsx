@@ -60,8 +60,8 @@ const StudyGroupsPage: React.FC = () => {
     try {
       const response = await fetch('/api/study_groups.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'create', name: groupName, description: groupDesc }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ action: 'create', name: groupName, description: groupDesc }).toString(),
         credentials: 'include',
       });
       const data = await response.json();
