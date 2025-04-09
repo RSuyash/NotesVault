@@ -7,13 +7,13 @@
   margin: 0 auto;
 }
 
-.leftColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+@media (max-width: 768px) {
+  .dashboardContainer {
+    grid-template-columns: 1fr;
+  }
 }
 
-.rightColumn {
+.leftColumn, .rightColumn {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -33,21 +33,16 @@
   color: #374151;
 }
 
-.summaryCards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.welcomeCard {
+  background: #f9fafb;
+  text-align: center;
 }
 
-.card {
-  flex: 1 1 120px;
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  text-align: center;
+.profilePrompt {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #b91c1c;
   font-weight: 500;
-  color: #374151;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .activityFeed p {
@@ -57,31 +52,30 @@
 }
 
 .toolsGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 1rem;
 }
 
 .toolItem {
-  flex: 1 1 100px;
-  min-width: 100px;
-  max-width: 120px;
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  text-align: center;
-  text-decoration: none;
-  color: #374151;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #f9fafb;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 100px;
 }
 
 .toolItem:hover {
-  background-color: #f3f4f6;
+  background-color: #e5e7eb;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
@@ -93,7 +87,6 @@
 
 .toolName {
   font-size: 0.9rem;
-  font-weight: 500;
 }
 
 .publicLinkSection {
@@ -116,7 +109,7 @@
 }
 
 .publicLink:hover {
-  background-color: #f3f4f6;
+  background-color: #e5e7eb;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
