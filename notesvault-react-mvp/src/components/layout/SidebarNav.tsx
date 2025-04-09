@@ -41,13 +41,13 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
     {
-      path: '/studyboard',
+      path: '/dashboard/studyboard', // Update path to match nested route
       label: 'Study Board',
       icon: GroupsIcon,
       children: [
         { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
         { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
-        { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
+        { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon }, // Assuming this is different from MindHackDocsPage
         { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
       ],
     },
@@ -113,7 +113,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
                     >
                       {/* Link wraps the content, navigates without closing sidebar */}
                       <Link
-                        to={item.path ?? '#'}
+                        to={item.path ?? '#'} // Ensure this uses the updated path from navItems
                         className={styles.navToggleContent}
                         onClick={() => { // Remove unused 'e' parameter
                           // Optional: Prevent button toggle if clicking the link itself
