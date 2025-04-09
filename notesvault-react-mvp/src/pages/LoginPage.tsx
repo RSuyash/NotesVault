@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 import styles from './AuthPage.module.css';
 
-// Removed BACKEND_URL constant, assuming API is relative path..
+// Removed BACKEND_URL constant, assuming API is relative path.
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

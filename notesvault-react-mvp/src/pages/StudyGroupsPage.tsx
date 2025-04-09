@@ -45,12 +45,29 @@ const StudyGroupsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   // TODO: Fetch user's groups on component mount
+  const fetchGroups = async () => {
+    try {
+      const response = await fetch('/api/study_groups.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' }),
+        credentials: 'include',
+      });
+      const data = await response.json();
+      if (response.ok && data.success && Array.isArray(data.groups)) {
+        setMyGroups(data.groups.map((g: any) => ({ id: g.id, name: g.name })));
+      } else {
+        console.error('Failed to fetch groups:', data.error);
+        setMyGroups([]);
+      }
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+      setMyGroups([]);
+    }
+  };
+
   useEffect(() => {
-    // Placeholder data
-    setMyGroups([
-      { id: 1, name: 'Physics Study Group' },
-      { id: 2, name: 'React Devs' },
-    ]);
+    fetchGroups();
   }, []);
 
   const handleCreateGroup = async (e: React.FormEvent) => {
@@ -72,9 +89,11 @@ const StudyGroupsPage: React.FC = () => {
         throw new Error(data.error || 'Failed to create group');
       }
       setCreatedGroupInfo({ id: data.group_id, code: data.invite_code });
+      setMyGroups(prevGroups => [...prevGroups, { id: data.group_id, name: groupName }]);
       // Reset form, keep modal open to show info
       setGroupName('');
       setGroupDesc('');
+      fetchGroups();
     } catch (error: any) {
       alert(`Error: ${error.message}`); // Simple alert for now
     } finally {
