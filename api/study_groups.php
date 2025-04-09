@@ -1,110 +1,174 @@
 <?php
-require_once __DIR__ . '/config.php';
+// Enable error reporting for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 session_start();
 header('Content-Type: application/json');
 
-$conn = getDbConnection();
-if (!$conn) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database connection failed']);
+// --- Configuration and Dependencies ---
+require_once 'config.php'; // Ensure this path is correct and contains $pdo
+
+// --- Input Handling ---
+$input = json_decode(file_get_contents('php://input'), true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Invalid JSON input']);
     exit;
 }
+$action = $input['action'] ?? null;
 
-$userId = $_SESSION['user_id'] ?? null;
-if (!$userId) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Unauthorized']);
+// --- Authentication Check ---
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401); // Unauthorized
+    echo json_encode(['success' => false, 'error' => 'Not authenticated']);
     exit;
 }
+$user_id = $_SESSION['user_id'];
 
-$method = $_SERVER['REQUEST_METHOD'];
-
-    $raw = file_get_contents('php://input');
-    $data = json_decode($raw, true);
-    if (!$data) {
-        $data = $_POST;
+// --- Action Routing ---
+try {
+    switch ($action) {
+        case 'list':
+            handleListAction($pdo, $user_id);
+            break;
+        case 'create':
+            handleCreateAction($pdo, $user_id, $input);
+            break;
+        case 'join':
+            handleJoinAction($pdo, $user_id, $input);
+            break;
+        default:
+            http_response_code(400); // Bad Request
+            echo json_encode(['success' => false, 'error' => 'Invalid action specified']);
+            break;
     }
-    $action = $data['action'] ?? '';
-if ($method === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $action = $data['action'] ?? '';
+} catch (PDOException $e) {
+    // Log the detailed PDO error: error_log("Database Error: " . $e->getMessage());
+    http_response_code(500); // Internal Server Error
+    echo json_encode(['success' => false, 'error' => 'A database error occurred. Please try again later.']);
+} catch (Exception $e) {
+    // Log the general error: error_log("General Error: " . $e->getMessage());
+    http_response_code(500); // Internal Server Error
+    echo json_encode(['success' => false, 'error' => 'An unexpected error occurred. Please try again later.']);
+}
 
-    if ($action === 'create') {
-        $name = trim($data['name'] ?? '');
-        $description = trim($data['description'] ?? '');
+exit; // Ensure script termination after handling action
 
-        if (!$name) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Group name required']);
-            exit;
-        }
+// --- Action Handler Functions ---
 
-        $inviteCode = bin2hex(random_bytes(4)); // 8-char code
+function handleListAction(PDO $pdo, int $user_id): void {
+    $stmt = $pdo->prepare('
+        SELECT g.id, g.name
+        FROM groups g
+        JOIN group_members gm ON gm.group_id = g.id
+        WHERE gm.user_id = ?
+        ORDER BY g.name ASC
+    ');
+    $stmt->execute([$user_id]);
+    $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode(['success' => true, 'groups' => $groups ?: []]); // Return empty array if no groups
+}
 
-        $stmt = $conn->prepare("INSERT INTO study_groups (name, description, invite_code, created_by) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("sssi", $name, $description, $inviteCode, $userId);
-        if ($stmt->execute()) {
-            $groupId = $stmt->insert_id;
-            // Add creator as member
-            $stmt2 = $conn->prepare("INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)");
-            $stmt2->bind_param("ii", $groupId, $userId);
-            $stmt2->execute();
-            $stmt2->close();
+function handleCreateAction(PDO $pdo, int $user_id, array $input): void {
+    $name = trim($input['name'] ?? '');
+    $description = trim($input['description'] ?? '');
 
-            echo json_encode(['success' => true, 'group_id' => $groupId, 'invite_code' => $inviteCode]);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to create group']);
-        }
-        $stmt->close();
-    } elseif ($action === 'join') {
-        $inviteCode = trim($data['invite_code'] ?? '');
-        if (!$inviteCode) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Invite code required']);
-            exit;
-        }
-
-        $stmt = $conn->prepare("SELECT id FROM study_groups WHERE invite_code = ?");
-        $stmt->bind_param("s", $inviteCode);
-        $stmt->execute();
-        $stmt->bind_result($groupId);
-        if ($stmt->fetch()) {
-            $stmt->close();
-            // Add user as member if not already
-            $stmt2 = $conn->prepare("SELECT id FROM study_group_members WHERE group_id = ? AND user_id = ?");
-            $stmt2->bind_param("ii", $groupId, $userId);
-            $stmt2->execute();
-            $stmt2->store_result();
-            if ($stmt2->num_rows === 0) {
-                $stmt2->close();
-                $stmt3 = $conn->prepare("INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)");
-                $stmt3->bind_param("ii", $groupId, $userId);
-                if ($stmt3->execute()) {
-                    echo json_encode(['success' => true, 'message' => 'Joined group']);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => 'Failed to join group']);
-                }
-                $stmt3->close();
-            } else {
-                $stmt2->close();
-                echo json_encode(['success' => true, 'message' => 'Already a member']);
-            }
-        } else {
-            $stmt->close();
-            http_response_code(404);
-            echo json_encode(['error' => 'Invalid invite code']);
-        }
-    } else {
+    if (empty($name)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid action']);
+        echo json_encode(['success' => false, 'error' => 'Group name cannot be empty']);
+        exit;
     }
-} else {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
+    if (mb_strlen($name) > 100) { // Example length limit
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Group name is too long (max 100 characters)']);
+        exit;
+    }
+     if (mb_strlen($description) > 500) { // Example length limit
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Description is too long (max 500 characters)']);
+        exit;
+    }
+
+
+    // Generate unique invite code (retry if collision, though highly unlikely)
+    $max_retries = 5;
+    $invite_code = '';
+    for ($i = 0; $i < $max_retries; $i++) {
+        $invite_code = bin2hex(random_bytes(4)); // 8-char hex
+        $stmt_check = $pdo->prepare('SELECT 1 FROM groups WHERE invite_code = ?');
+        $stmt_check->execute([$invite_code]);
+        if ($stmt_check->fetch() === false) {
+            break; // Code is unique
+        }
+        if ($i === $max_retries - 1) {
+             throw new Exception("Failed to generate a unique invite code after {$max_retries} attempts.");
+        }
+    }
+
+
+    $pdo->beginTransaction();
+
+    // Insert group
+    $stmt_insert_group = $pdo->prepare('INSERT INTO groups (name, description, invite_code, created_by, created_at) VALUES (?, ?, ?, ?, NOW())');
+    if (!$stmt_insert_group->execute([$name, $description, $invite_code, $user_id])) {
+         $pdo->rollBack();
+         throw new PDOException("Failed to insert group.");
+    }
+    $group_id = $pdo->lastInsertId();
+
+    // Add creator as member
+    $stmt_add_member = $pdo->prepare('INSERT INTO group_members (group_id, user_id, joined_at) VALUES (?, ?, NOW())');
+     if (!$stmt_add_member->execute([$group_id, $user_id])) {
+         $pdo->rollBack();
+         throw new PDOException("Failed to add creator to group members.");
+    }
+
+    $pdo->commit();
+
+    echo json_encode(['success' => true, 'group_id' => (int)$group_id, 'invite_code' => $invite_code]);
 }
 
-$conn->close();
+function handleJoinAction(PDO $pdo, int $user_id, array $input): void {
+    $invite_code = trim($input['invite_code'] ?? '');
+
+    if (empty($invite_code)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Invite code cannot be empty']);
+        exit;
+    }
+
+    // Find group by invite code
+    $stmt_find = $pdo->prepare('SELECT id FROM groups WHERE invite_code = ?');
+    $stmt_find->execute([$invite_code]);
+    $group = $stmt_find->fetch(PDO::FETCH_ASSOC);
+
+    if (!$group) {
+        http_response_code(404); // Not Found
+        echo json_encode(['success' => false, 'error' => 'Invalid or expired invite code']);
+        exit;
+    }
+    $group_id = $group['id'];
+
+    // Check if already a member
+    $stmt_check = $pdo->prepare('SELECT 1 FROM group_members WHERE group_id = ? AND user_id = ?');
+    $stmt_check->execute([$group_id, $user_id]);
+    if ($stmt_check->fetch()) {
+        // Consider this a success or specific status? For now, treat as error.
+        http_response_code(409); // Conflict
+        echo json_encode(['success' => false, 'error' => 'You are already a member of this group']);
+        exit;
+    }
+
+    // Add user to group
+    $stmt_join = $pdo->prepare('INSERT INTO group_members (group_id, user_id, joined_at) VALUES (?, ?, NOW())');
+    if (!$stmt_join->execute([$group_id, $user_id])) {
+         throw new PDOException("Failed to add user to group members.");
+    }
+
+
+    echo json_encode(['success' => true, 'message' => 'Successfully joined the group!']);
+}
+
 ?>

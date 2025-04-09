@@ -19,3 +19,7 @@ Thumbs.db
 
 # Ignore build artifacts (adjust if needed)
 # notesvault-react-mvp/dist/
+
+# Local Docker Development Environment
+/local-deployment/
+/start-local.bat
