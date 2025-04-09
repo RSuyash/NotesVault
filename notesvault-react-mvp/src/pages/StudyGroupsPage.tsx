@@ -45,24 +45,25 @@ const StudyGroupsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   // TODO: Fetch user's groups on component mount
-  useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const response = await fetch('/api/study_groups.php?action=list', {
-          credentials: 'include',
-        });
-        const data = await response.json();
-        if (response.ok && data.success && Array.isArray(data.groups)) {
-          setMyGroups(data.groups.map((g: any) => ({ id: g.id, name: g.name })));
-        } else {
-          console.error('Failed to fetch groups:', data.error);
-          setMyGroups([]);
-        }
-      } catch (error) {
-        console.error('Error fetching groups:', error);
+  const fetchGroups = async () => {
+    try {
+      const response = await fetch('/api/study_groups.php?action=list', {
+        credentials: 'include',
+      });
+      const data = await response.json();
+      if (response.ok && data.success && Array.isArray(data.groups)) {
+        setMyGroups(data.groups.map((g: any) => ({ id: g.id, name: g.name })));
+      } else {
+        console.error('Failed to fetch groups:', data.error);
         setMyGroups([]);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+      setMyGroups([]);
+    }
+  };
+
+  useEffect(() => {
     fetchGroups();
   }, []);
 
@@ -89,6 +90,7 @@ const StudyGroupsPage: React.FC = () => {
       // Reset form, keep modal open to show info
       setGroupName('');
       setGroupDesc('');
+      fetchGroups();
     } catch (error: any) {
       alert(`Error: ${error.message}`); // Simple alert for now
     } finally {
