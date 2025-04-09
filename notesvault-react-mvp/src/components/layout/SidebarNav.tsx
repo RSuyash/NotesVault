@@ -33,6 +33,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const [showSlideConfirm, setShowSlideConfirm] = React.useState(false);
   const [slideConfirmMessage, setSlideConfirmMessage] = React.useState('');
   const [onSlideConfirmCallback, setOnSlideConfirmCallback] = React.useState<() => void>(() => () => {});
+  const [spinning, setSpinning] = React.useState(false);
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
@@ -70,6 +71,11 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
       }
     });
     setShowSlideConfirm(true);
+  };
+
+  const toggleSpin = () => {
+    setSpinning(true);
+    setTimeout(() => setSpinning(false), 1000); // spin for 1s
   };
 
   return (
@@ -139,9 +145,9 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
           <Link
             to="/dashboard/settings"
             className={styles.footerButton}
-            onClick={onClose}
+            onClick={(e) => { onClose(); toggleSpin(); }}
           >
-            <Cog6ToothIcon className={styles.footerButtonIcon} />
+            <Cog6ToothIcon className={`${styles.footerButtonIcon} ${spinning ? 'spin-on-click' : ''}`} />
           </Link>
           <button
             onClick={handleLogout}
