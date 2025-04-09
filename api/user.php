@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Default GET action: Fetch user profile
     // Default GET action: Fetch user profile (with new fields)
-    $stmt = $conn->prepare("SELECT id, username, first_name, last_name, email, profile_picture_url FROM users WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, username, first_name, last_name, email, profile_picture_path FROM users WHERE id = ?"); // Fetch path now
     if (!$stmt) {
          sendJsonResponse(['error' => 'DB prepare failed (profile fetch)'], 500);
     }
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Ensure nulls are handled if needed by frontend
             $user['first_name'] = $user['first_name'] ?? '';
             $user['last_name'] = $user['last_name'] ?? '';
-            $user['profile_picture_url'] = $user['profile_picture_url'] ?? null;
+            $user['profile_picture_path'] = $user['profile_picture_path'] ?? null; // Return path
             sendJsonResponse($user);
         } else {
             sendJsonResponse(['error' => 'User not found'], 404);
