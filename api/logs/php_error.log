@@ -1,0 +1,114 @@
+[09-Apr-2025 16:34:07 Europe/Berlin] --- PHP error logging configured to: D:\NotesVault\NotesVault\api/logs/php_error.log ---
+[09-Apr-2025 16:34:24 Europe/Berlin] --- PHP error logging configured to: D:\NotesVault\NotesVault\api/logs/php_error.log ---
+[09-Apr-2025 15:15:31 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:15:31 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:05 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:05 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:06 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:06 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:06 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:06 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:06 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:06 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:15 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:15 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:16:15 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:16:15 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:32:27 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:32:27 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:32:28 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:32:28 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:32:29 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:32:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:32:29 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:32:29 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:33:48 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:33:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:33:48 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:33:48 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:35:44 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:35:44 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:39:04 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:39:04 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57
+[09-Apr-2025 15:39:04 UTC] --- PHP error logging configured to: /var/www/html/api/logs/php_error.log ---
+[09-Apr-2025 15:39:04 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /var/www/html/api/config.php:57
+Stack trace:
+#0 /var/www/html/api/config.php(57): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'notesvault_loca...')
+#1 /var/www/html/api/user.php(16): getDbConnection()
+#2 {main}
+  thrown in /var/www/html/api/config.php on line 57

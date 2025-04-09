@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.2-apache
+    container_name: notesvault_php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./api:/var/www/html/api
+      - ./notesvault-react-mvp/dist:/var/www/html/react
+    depends_on:
+      - db
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    command: >
+      bash -c "docker-php-ext-install mysqli && apache2-foreground"
+
+  db:
+    image: mysql:5.7
+    container_name: notesvault_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: notesvault_local
+      MYSQL_USER: notesvault_user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db_dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+volumes:
+  db_data:

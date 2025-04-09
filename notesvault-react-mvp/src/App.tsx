@@ -1,4 +1,4 @@
-// Minor change to trigger push
+// Minor change to test git push
 import { Routes, Route, useLocation } from 'react-router-dom'; // Import useLocation
 
 // Layout Components
@@ -29,14 +29,12 @@ import StudyGroupsPage from './pages/StudyGroupsPage.tsx';
 import FlashcardsPage from './pages/FlashcardsPage.tsx';
 import LeaderboardPage from './pages/LeaderboardPage.tsx';
 import MindHackDocsPage from './pages/MindHackDocsPage.tsx';
-import StudyBoardPage from './pages/StudyBoardPage';
 
 function App() {
   const location = useLocation(); // Get current location
   const isDashboardRoute = location.pathname.startsWith('/dashboard'); // Check if it's a dashboard route
 
   return (
-    // Use a fragment or a div that doesn't interfere with body styles
     <>
       {/* <InteractiveBackground /> */} {/* Remove global background component */}
       {!isDashboardRoute && <Navbar />} {/* Conditionally render Navbar */}
@@ -72,7 +70,6 @@ function App() {
             <Route path="flashcards" element={<FlashcardsPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="mindhackdocs" element={<MindHackDocsPage />} />
-          <Route path="studyboard" element={<StudyBoardPage />} />
           </Route>
           {/* Add other top-level protected routes later if needed */}
         </Routes>
