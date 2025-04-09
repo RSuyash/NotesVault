@@ -146,6 +146,28 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       )}
+    </>
+  );
+};
+
+export default SidebarNav;
+          <div style={{
+            background: '#fff',
+            borderRadius: '0.5rem',
+            padding: '1rem',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+            width: '90%',
+            maxWidth: '320px',
+            margin: 'auto'
+          }}>
+            <SlideConfirm
+              message={slideConfirmMessage}
+              onConfirm={onSlideConfirmCallback}
+              onCancel={() => setShowSlideConfirm(false)}
+            />
+          </div>
+        </div>
+      )}
       </div>
     </>
   );
