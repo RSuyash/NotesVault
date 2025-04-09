@@ -46,11 +46,24 @@ const StudyGroupsPage: React.FC = () => {
 
   // TODO: Fetch user's groups on component mount
   useEffect(() => {
-    // Placeholder data
-    setMyGroups([
-      { id: 1, name: 'Physics Study Group' },
-      { id: 2, name: 'React Devs' },
-    ]);
+    const fetchGroups = async () => {
+      try {
+        const response = await fetch('/api/study_groups.php?action=list', {
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (response.ok && data.success && Array.isArray(data.groups)) {
+          setMyGroups(data.groups.map((g: any) => ({ id: g.id, name: g.name })));
+        } else {
+          console.error('Failed to fetch groups:', data.error);
+          setMyGroups([]);
+        }
+      } catch (error) {
+        console.error('Error fetching groups:', error);
+        setMyGroups([]);
+      }
+    };
+    fetchGroups();
   }, []);
 
   const handleCreateGroup = async (e: React.FormEvent) => {
