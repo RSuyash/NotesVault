@@ -35,19 +35,13 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const [onSlideConfirmCallback, setOnSlideConfirmCallback] = React.useState<() => void>(() => () => {});
   const [spinning, setSpinning] = React.useState(false);
 
-  const [isStudyBoardOpen, setIsStudyBoardOpen] = React.useState(true);
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
     {
       path: '/studyboard',
       label: 'Study Board',
-      icon: () => (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={styles.navLinkIcon}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422A12.083 12.083 0 0112 21.5a12.083 12.083 0 01-6.16-10.922L12 14z" />
-        </svg>
-      ),
+      icon: GroupsIcon,
       children: [
         { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
         { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
