@@ -72,6 +72,7 @@ const StudyGroupsPage: React.FC = () => {
         throw new Error(data.error || 'Failed to create group');
       }
       setCreatedGroupInfo({ id: data.group_id, code: data.invite_code });
+      setMyGroups(prevGroups => [...prevGroups, { id: data.group_id, name: groupName }]);
       // Reset form, keep modal open to show info
       setGroupName('');
       setGroupDesc('');
