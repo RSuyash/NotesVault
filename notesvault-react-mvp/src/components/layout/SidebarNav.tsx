@@ -36,10 +36,16 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: DashboardIcon },
-    { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
-    { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
-    { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
-    { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
+    {
+      label: 'Studyboard',
+      icon: GroupsIcon, // You can customize the icon for Studyboard
+      children: [
+        { path: '/dashboard/studygroups', label: 'Study Groups', icon: GroupsIcon },
+        { path: '/dashboard/flashcards', label: 'Flashcards', icon: FlashcardsIcon },
+        { path: '/dashboard/docs', label: 'MindHack Docs', icon: DocsIcon },
+        { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
+      ],
+    },
   ];
 
   console.log("SidebarNav: navItems array", navItems);
@@ -83,21 +89,49 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
         </div>
 
         <nav className={styles.nav}>
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
-            const IconComponent = item.icon;
-            console.log("Rendering icon for:", item.label, IconComponent);
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`${styles.navLink} ${isActive ? styles.active : ''}`}
-                onClick={onClose}
-              >
-                <IconComponent />
-                <span>{item.label}</span>
-              </Link>
-            );
+          {navItems.map((item, idx) => {
+            if (item.children) {
+              // Parent item with nested children
+              return (
+                <div key={idx} className={styles.navGroup}>
+                  <div className={styles.navGroupLabel}>
+                    {item.icon && <item.icon />}
+                    <span>{item.label}</span>
+                  </div>
+                  <div className={styles.navGroupChildren}>
+                    {item.children.map((child) => {
+                      const isActive = location.pathname === child.path || (child.path !== '/dashboard' && location.pathname.startsWith(child.path));
+                      const ChildIcon = child.icon;
+                      return (
+                        <Link
+                          key={child.path}
+                          to={child.path}
+                          className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                          onClick={onClose}
+                        >
+                          <ChildIcon />
+                          <span>{child.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            } else {
+              const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+              const IconComponent = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                  onClick={onClose}
+                >
+                  <IconComponent />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            }
           })}
         </nav>
 
