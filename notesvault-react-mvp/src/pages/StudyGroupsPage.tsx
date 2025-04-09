@@ -1,7 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import styles from './StudyGroupsPage.module.css';
 import { PlusIcon, UserPlusIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
-import Modal from '../../components/ui/ModalWrapper'; // Assuming a Modal component exists
+
+interface ModalProps {
+  title: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+      backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+    }}>
+      <div style={{ backgroundColor: '#fff', padding: 20, borderRadius: 8, maxWidth: 500, width: '80%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+          <h3>{title}</h3>
+          <button onClick={onClose} style={{ fontSize: 20, background: 'none', border: 'none', cursor: 'pointer' }}>&times;</button>
+        </div>
+        <div>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 interface Group {
   id: number;
