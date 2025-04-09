@@ -193,8 +193,6 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-// Removed duplicate handlePictureUpload function
-
   // --- Change Detection ---
   const infoHasChanges =
     username !== initialUsername ||
@@ -323,7 +321,7 @@ const ProfilePage: React.FC = () => {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={isUploadingPic || isUpdatingInfo || (!infoHasChanges && !selectedFile)} // Corrected typo: isUploadingPic
+              disabled={isUploadingPic || isUpdatingInfo || !infoHasChanges} // Disable if uploading pic, saving info, or no TEXT changes
             >
               {isUpdatingInfo ? 'Saving...' : 'Save Info Changes'}
             </button>
