@@ -17,12 +17,14 @@ const SlideConfirm: React.FC<SlideConfirmProps> = ({
   cancelText = 'Cancel',
 }) => {
   return (
-    <div className={styles.container}>
-      <div className={styles.toast}>
-        <p className={styles.message}>{message}</p>
-        <div className={styles.buttonGroup}>
-          <button className={styles.cancelButton} onClick={onCancel}>{cancelText}</button>
-          <button className={styles.confirmButton} onClick={onConfirm}>{confirmText}</button>
+    <div className={styles.overlay} onClick={onCancel}>
+      <div className={styles.container} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.toast}>
+          <p className={styles.message}>{message}</p>
+          <div className={styles.buttonGroup}>
+            <button className={styles.cancelButton} onClick={onCancel}>{cancelText}</button>
+            <button className={styles.confirmButton} onClick={onConfirm}>{confirmText}</button>
+          </div>
         </div>
       </div>
     </div>
