@@ -3,47 +3,24 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './SidebarNav.module.css';
 import SlideConfirm from '../ui/SlideConfirm';
 
-const DashboardIcon = () => (
-  <svg className={styles.navLinkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m-4 0h4" />
-  </svg>
-);
-const GroupsIcon = () => (
-  <svg className={styles.navLinkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M12 4a4 4 0 110 8 4 4 0 010-8z" />
-  </svg>
-);
-const FlashcardsIcon = () => (
-  <svg className={styles.navLinkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-  </svg>
-);
-const DocsIcon = () => (
-  <svg className={styles.navLinkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h10M7 11h10M7 15h10" />
-  </svg>
-);
-const LeaderboardIcon = () => (
-  <svg className={styles.navLinkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-  </svg>
-);
-const SettingsIcon = () => (
-  <svg className={styles.footerButtonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m0 14v1m8-8h1M4 12H3m15.364-6.364l.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-  </svg>
-);
-const LogoutIcon = () => (
-  <svg className={styles.footerButtonIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-  </svg>
-);
-const CloseIcon = () => (
-  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
-
+import {
+  HomeIcon,
+  UsersIcon,
+  Squares2X2Icon,
+  DocumentTextIcon,
+  TrophyIcon,
+  Cog6ToothIcon,
+  ArrowRightOnRectangleIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+const DashboardIcon = () => <HomeIcon className={styles.navLinkIcon} />;
+const GroupsIcon = () => <UsersIcon className={styles.navLinkIcon} />;
+const FlashcardsIcon = () => <Squares2X2Icon className={styles.navLinkIcon} />;
+const DocsIcon = () => <DocumentTextIcon className={styles.navLinkIcon} />;
+const LeaderboardIcon = () => <TrophyIcon className={styles.navLinkIcon} />;
+const SettingsIcon = () => <Cog6ToothIcon className={styles.footerButtonIcon} />;
+const LogoutIcon = () => <ArrowRightOnRectangleIcon className={styles.footerButtonIcon} />;
+const CloseIcon = () => <XMarkIcon className="w-6 h-6" />;
 interface SidebarNavProps {
   isOpen: boolean;
   onClose: () => void;
