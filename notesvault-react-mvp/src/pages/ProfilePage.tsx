@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProfile, updateProfile } from '../services/profileApi'; // Assuming updateProfile handles new fields
+import { getProfile, updateProfile, uploadProfilePicture } from '../services/profileApi'; // Added upload function
 import styles from './ProfilePage.module.css';
 import ConfirmModal from '../components/ui/ConfirmModal';
 
@@ -32,6 +32,9 @@ const ProfilePage: React.FC = () => {
   const [isUpdatingInfo, setIsUpdatingInfo] = useState(false);
   const [infoError, setInfoError] = useState<string | null>(null);
   const [infoSuccess, setInfoSuccess] = useState<string | null>(null);
+  const [isUploadingPic, setIsUploadingPic] = useState(false);
+  const [picUploadError, setPicUploadError] = useState<string | null>(null);
+  const [picUploadSuccess, setPicUploadSuccess] = useState<string | null>(null);
 
 
   // --- Fetch Initial Profile ---
@@ -144,6 +147,53 @@ const ProfilePage: React.FC = () => {
     setShowConfirm(true);
   };
 
+  // --- Handle Picture Upload ---
+  const handlePictureUpload = async () => {
+    if (!selectedFile) {
+      setPicUploadError("No file selected.");
+      return;
+    }
+
+    setIsUploadingPic(true);
+    setPicUploadError(null);
+    setPicUploadSuccess(null);
+    setInfoError(null); // Clear other messages
+    setInfoSuccess(null);
+
+    const formData = new FormData();
+    formData.append('profilePic', selectedFile);
+
+    try {
+      const response = await uploadProfilePicture(formData);
+      if (response.success && response.filePath) {
+        setPicUploadSuccess('Picture uploaded successfully!');
+        setSelectedFile(null); // Clear selection
+        if (previewUrl) URL.revokeObjectURL(previewUrl); // Clear preview
+        setPreviewUrl(null);
+
+        // TODO: Update user context/global state with the new relative path
+        // This part depends on how user state is managed globally.
+        // Example (if using a simple context):
+        // updateUserProfile({ profile_picture_path: response.filePath });
+
+        // For now, just update local state to reflect change immediately
+        // (though ideally global state update should trigger this)
+         const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+         setProfilePictureUrl(`${baseUrl}/${response.filePath}`);
+
+
+      } else {
+        throw new Error(response.message || 'Upload failed.');
+      }
+    } catch (err: any) {
+      setPicUploadError(err.message || 'Failed to upload picture. Please try again.');
+      console.error("Picture upload error:", err);
+    } finally {
+      setIsUploadingPic(false);
+    }
+  };
+
+// Removed duplicate handlePictureUpload function
 
   // --- Change Detection ---
   const infoHasChanges =
@@ -171,8 +221,12 @@ const ProfilePage: React.FC = () => {
       {/* --- Profile Information Section --- */}
       <div className={styles.profileCard}>
         <h2 className={styles.sectionTitle}>Update Information</h2>
-        {infoError && <div className={styles.errorMessage}>{infoError}</div>}
-        {infoSuccess && <div className={styles.successMessage}>{infoSuccess}</div>}
+        {/* Display general info messages */}
+        {infoError && !picUploadError && <div className={styles.errorMessage}>{infoError}</div>}
+        {infoSuccess && !picUploadSuccess && <div className={styles.successMessage}>{infoSuccess}</div>}
+        {/* Display picture upload specific messages */}
+        {picUploadError && <div className={styles.errorMessage}>{picUploadError}</div>}
+        {picUploadSuccess && <div className={styles.successMessage}>{picUploadSuccess}</div>}
         <form onSubmit={handleInfoSubmit} className={styles.form}>
           {/* Profile Picture Placeholder */}
           <div className={styles.inputGroup}>
@@ -195,7 +249,15 @@ const ProfilePage: React.FC = () => {
                   style={{ display: 'none' }} // Hide default input
                   disabled={isUpdatingInfo} // Disable while info is saving
                 />
-                {/* TODO: Add button to trigger upload API call */}
+                <button
+                  type="button"
+                  onClick={handlePictureUpload}
+                  className={styles.uploadButton} // Reuse or create new style
+                  disabled={!selectedFile || isUploadingPic || isUpdatingInfo}
+                  style={{ marginLeft: '1rem' }} // Add some space
+                >
+                  {isUploadingPic ? 'Uploading...' : 'Upload Picture'}
+                </button>
              </div>
              {selectedFile && <small style={{ marginTop: '0.5rem', color: 'var(--color-text-muted)'}}>Selected: {selectedFile.name}</small>}
           </div>
@@ -261,7 +323,7 @@ const ProfilePage: React.FC = () => {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={isUpdatingInfo || (!infoHasChanges && !selectedFile)} // Disable if no text changes AND no file selected
+              disabled={isUploadingPic || isUpdatingInfo || (!infoHasChanges && !selectedFile)} // Corrected typo: isUploadingPic
             >
               {isUpdatingInfo ? 'Saving...' : 'Save Info Changes'}
             </button>

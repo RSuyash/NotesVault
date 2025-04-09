@@ -91,3 +91,27 @@ export async function changePassword(data: ChangePasswordData): Promise<{ succes
         throw error;
     }
 }
+
+// --- Upload Profile Picture ---
+export async function uploadProfilePicture(formData: FormData): Promise<{ success: boolean; filePath?: string; message?: string }> {
+  try {
+    const response = await axios.post<{ success: boolean; filePath?: string; message?: string }>(
+      `${API_BASE_URL}/upload_profile_picture.php`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          // 'Content-Type': 'multipart/form-data' // Axios sets this automatically for FormData
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error('Failed to upload profile picture:', error?.response?.status, error?.response?.data, error?.message);
+    // Return a structured error object
+    return {
+      success: false,
+      message: error?.response?.data?.message || 'Upload failed. Please try again.'
+    };
+  }
+}
