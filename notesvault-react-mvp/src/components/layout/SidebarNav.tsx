@@ -12,6 +12,7 @@ import {
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
   XMarkIcon,
+  ChevronDownIcon, // Add ChevronDownIcon
 } from '@heroicons/react/24/outline';
 const DashboardIcon = () => <HomeIcon className={styles.navLinkIcon} />;
 const GroupsIcon = () => <UsersIcon className={styles.navLinkIcon} />;
@@ -34,6 +35,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
   const [slideConfirmMessage, setSlideConfirmMessage] = React.useState('');
   const [onSlideConfirmCallback, setOnSlideConfirmCallback] = React.useState<() => void>(() => () => {});
   const [spinning, setSpinning] = React.useState(false);
+  const [isStudyBoardOpen, setIsStudyBoardOpen] = React.useState(false); // State for dropdown
 
 
   const navItems = [
@@ -99,35 +101,88 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
         <nav className={styles.nav}>
           {navItems.map((item, idx) => {
             if (item.children) {
-              return (
-                <div key={idx} className={styles.navGroup}>
-                  <Link
-                    to={item.path ?? '#'}
-                    className={styles.navGroupLabel}
-                    onClick={onClose}
-                  >
-                    {item.icon && <item.icon />}
-                    <span>{item.label}</span>
-                  </Link>
-                  <div className={styles.navGroupChildren}>
-                    {item.children.map((child) => {
-                      const isActive = location.pathname === child.path || (child.path !== '/dashboard' && location.pathname.startsWith(child.path));
-                      const ChildIcon = child.icon;
-                      return (
-                        <Link
-                          key={child.path}
-                          to={child.path ?? '#'}
-                          className={`${styles.navLink} ${isActive ? styles.active : ''}`}
-                          onClick={onClose}
-                        >
-                          <ChildIcon />
-                          <span>{child.label}</span>
-                        </Link>
-                      );
-                    })}
+              // Specific handling for Study Board dropdown
+              if (item.label === 'Study Board') {
+                return (
+                  <div key={idx} className={styles.navGroup}>
+                    <button
+                      type="button"
+                      className={`${styles.navGroupLabel} ${styles.navToggle}`} // Add navToggle class for styling
+                      onClick={() => setIsStudyBoardOpen(!isStudyBoardOpen)}
+                      aria-expanded={isStudyBoardOpen}
+                    >
+                      {/* Link wraps the content, navigates without closing sidebar */}
+                      <Link
+                        to={item.path ?? '#'}
+                        className={styles.navToggleContent}
+                        onClick={() => { // Remove unused 'e' parameter
+                          // Optional: Prevent button toggle if clicking the link itself
+                          // e.stopPropagation(); // Keep commented for now
+                          // Decide if we want clicking the link to also toggle the dropdown.
+                          // Let's allow it for now. If it feels weird, add stopPropagation.
+                          setIsStudyBoardOpen(!isStudyBoardOpen); // Toggle on link click too
+                        }}
+                      >
+                        {item.icon && <item.icon />}
+                        <span>{item.label}</span>
+                      </Link>
+                      {/* Chevron remains part of the button for separate toggle */}
+                      <ChevronDownIcon
+                        className={`${styles.chevronIcon} ${isStudyBoardOpen ? styles.chevronOpen : ''}`}
+                      />
+                    </button>
+                    {/* Apply collapsed class based on state */}
+                    <div className={`${styles.navGroupChildren} ${!isStudyBoardOpen ? styles.collapsed : ''}`}>
+                      {item.children.map((child) => {
+                        const isActive = location.pathname === child.path || (child.path !== '/dashboard' && location.pathname.startsWith(child.path));
+                        const ChildIcon = child.icon;
+                        return (
+                          <Link
+                            key={child.path}
+                            to={child.path ?? '#'}
+                            className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                            onClick={onClose} // Close sidebar when child is clicked
+                          >
+                            <ChildIcon />
+                            <span>{child.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
+                );
+              } else {
+                // Fallback for other potential groups (though none exist now)
+                return (
+                  <div key={idx} className={styles.navGroup}>
+                    <Link
+                      to={item.path ?? '#'}
+                      className={styles.navGroupLabel}
+                      onClick={onClose}
+                    >
+                      {item.icon && <item.icon />}
+                      <span>{item.label}</span>
+                    </Link>
+                    <div className={styles.navGroupChildren}>
+                      {item.children.map((child) => {
+                        const isActive = location.pathname === child.path || (child.path !== '/dashboard' && location.pathname.startsWith(child.path));
+                        const ChildIcon = child.icon;
+                        return (
+                          <Link
+                            key={child.path}
+                            to={child.path ?? '#'}
+                            className={`${styles.navLink} ${isActive ? styles.active : ''}`}
+                            onClick={onClose}
+                          >
+                            <ChildIcon />
+                            <span>{child.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
             } else {
               const isActive = item.path ? (location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path))) : false;
               const IconComponent = item.icon;

@@ -56,6 +56,7 @@
   flex-direction: column;
 }
 
+/* Style for non-toggle group labels (if any) */
 .navGroupLabel {
   display: flex;
   align-items: center;
@@ -66,34 +67,85 @@
   font-weight: 600;
   color: #374151;
   border-radius: 0.75rem;
+  text-decoration: none; /* Added for consistency if used as Link */
+}
+.navGroupLabel:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+
+/* Style for the toggle button (Study Board) */
+.navToggle {
+  background: none;
+  border: none;
+  width: calc(100% - 1rem); /* Account for margin */
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  border-radius: 0.75rem;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navToggle:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.navToggleContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chevronIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  transition: transform 0.3s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Container for dropdown children */
 .navGroupChildren {
   display: flex;
   flex-direction: column;
-  margin-left: 1.5rem;
+  margin-left: 1.5rem; /* Indent children */
   gap: 0.5rem;
   margin-top: 0.25rem;
-.collapsed {
+  max-height: 500px; /* Allow space for content when open */
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, margin-top 0.3s ease-out, padding-top 0.3s ease-out, padding-bottom 0.3s ease-out;
+  padding-left: 1rem; /* Add some padding to align with parent icon */
+}
+
+/* Collapsed state for dropdown */
+.navGroupChildren.collapsed {
   max-height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
 }
 
-.navGroupChildren {
-  max-height: 500px;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-}
-
+/* Regular nav links (Dashboard and dropdown children) */
 .navLink {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem; /* Slightly reduced padding for children */
   margin: 0 0.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem; /* Slightly smaller font for children */
   font-weight: 500;
   color: #374151;
   text-decoration: none;
@@ -101,6 +153,12 @@
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 0 rgba(0,0,0,0);
 }
+/* Adjust padding for top-level link (Dashboard) */
+.nav > .navLink {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+}
+
 
 .navLink:hover {
   background-color: #f3f4f6;
@@ -108,40 +166,52 @@
 }
 
 .navLink.active {
-  background-color: var(--color-primary, #f97316);
-  color: white;
+  background-color: var(--color-primary-light, #fff7ed); /* Lighter active bg */
+  color: var(--color-primary, #f97316);
+  font-weight: 600;
 }
+/* Keep icon color consistent on active */
+.navLink.active .navLinkIcon {
+ color: var(--color-primary, #f97316);
+}
+
 
 .navLinkIcon {
   width: 1.25rem;
   height: 1.25rem;
   flex-shrink: 0;
+  color: #6b7280; /* Default icon color */
+  transition: color 0.2s ease;
+}
+/* Ensure icons in active links inherit active color */
+.navLink.active > svg {
+    color: var(--color-primary, #f97316);
 }
 
+
 .footer {
-  padding: 0.75rem 1rem; /* Reduced padding */
+  padding: 0.75rem 1rem;
   border-top: 1px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: flex; /* Changed back for row layout */
+  flex-direction: row; /* Icons side-by-side */
+  justify-content: center; /* Center icons */
+  gap: 1rem; /* Space between icons */
 }
 
 .footerButton {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  margin: 0 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+  justify-content: center; /* Center icon within button */
+  padding: 0.75rem; /* Smaller padding for icon buttons */
+  /* margin: 0 0.5rem; */ /* Removed margin */
   color: #374151;
   background: none;
   border: none;
   border-radius: 0.75rem;
   transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   text-decoration: none;
-  justify-content: center;
   box-shadow: 0 0 0 rgba(0,0,0,0);
+  cursor: pointer; /* Ensure cursor indicates clickability */
 }
 
 .footerButton:hover {
@@ -158,12 +228,41 @@
   width: 1.25rem;
   height: 1.25rem;
   flex-shrink: 0;
+}
+
+/* Define spin-on-click separately */
 .spin-on-click {
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear; /* Removed infinite for single spin */
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Overlay for closing sidebar on mobile/smaller screens */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 30; /* Below sidebar */
+}
+
+/* Responsive adjustments if needed */
+@media (min-width: 768px) { /* Example breakpoint */
+  .sidebar {
+    transform: translateX(0); /* Keep sidebar open on larger screens */
+  }
+  .overlay {
+    display: none; /* No overlay needed */
+  }
+  .closeButton {
+    display: none; /* Hide close button */
+  }
+  .header {
+     justify-content: center; /* Center logo when close button is hidden */
+  }
 }
