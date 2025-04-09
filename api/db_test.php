@@ -61,6 +61,35 @@ if ($userId) {
     $stmt->close();
 } else {
     $output['profile_for_token_user'] = 'no user id from token';
+
+// Study Groups diagnostics
+try {
+    $res = $conn->query("SELECT COUNT(*) as count FROM study_groups");
+    $row = $res ? $res->fetch_assoc() : null;
+    $output['study_groups_count'] = $row ? $row['count'] : 'error';
+
+    $res = $conn->query("SELECT id, name, invite_code FROM study_groups LIMIT 5");
+    $groups = [];
+    if ($res) {
+        while ($group = $res->fetch_assoc()) {
+            $groups[] = $group;
+        }
+    }
+    $output['sample_study_groups'] = $groups;
+
+    // Group memberships for user ID 3 (example)
+    $res = $conn->query("SELECT sgm.user_id, sgm.group_id, sg.name FROM study_group_members sgm JOIN study_groups sg ON sgm.group_id = sg.id WHERE sgm.user_id = 3");
+    $memberships = [];
+    if ($res) {
+        while ($m = $res->fetch_assoc()) {
+            $memberships[] = $m;
+        }
+    }
+    $output['memberships_for_user_3'] = $memberships;
+} catch (Exception $e) {
+    $output['study_groups_error'] = $e->getMessage();
+}
+
 }
 
 // Add more diagnostics
