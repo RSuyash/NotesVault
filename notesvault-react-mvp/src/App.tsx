@@ -74,7 +74,7 @@ function App() {
             <Route path="mindhackdocs" element={<MindHackDocsPage />} />
           <Route path="studyboard" element={<StudyBoardPage />} />
           </Route>
-          {/* Add other top-level protected routes later if needed */}
+          {/* Add other top-level protected routes lsater if needed */}
         </Routes>
       </main>
       {!isDashboardRoute && <Footer />} {/* Conditionally render Footer */}
