@@ -102,13 +102,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
         </nav>
 
         <div className={styles.footer} style={{ flexDirection: 'row', justifyContent: 'center', gap: '1rem' }}>
-          <Link
-            to="/dashboard/settings"
-            className={styles.footerButton}
-            onClick={onClose}
-          >
-            <SettingsIcon />
-          </Link>
+          {/* Settings link moved to UserMenuDropdown */}
           <button
             onClick={handleLogout}
             className={`${styles.footerButton} ${styles.logout}`}
