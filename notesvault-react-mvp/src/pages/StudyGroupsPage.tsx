@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './StudyGroupsPage.module.css';
 import { PlusIcon, UserPlusIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
-import Modal from '../../components/ui/Modal'; // Assuming a Modal component exists
+import Modal from '../../components/ui/ModalWrapper'; // Assuming a Modal component exists
 
 interface Group {
   id: number;
