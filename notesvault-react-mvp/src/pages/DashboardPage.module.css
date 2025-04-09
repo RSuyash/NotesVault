@@ -1,165 +1,127 @@
-/* Page specific styles */
-.pageContainer {
-  padding: 2rem 1.5rem; /* Reduced top/bottom padding */
-  min-height: calc(100vh - 60px - 73px);
-  /* Add flexbox for centering */
-  display: flex; /* Keep flex if needed for other layout aspects */
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leftColumn {
+  display: flex;
   flex-direction: column;
-  /* Removed justify-content: center; */
-  /* Removed align-items: center; */
+  gap: 2rem;
 }
 
-.title {
-  font-size: 2.5rem; /* Slightly smaller page title */
-  font-weight: 700;
-  color: var(--color-text-primary);
-  margin-bottom: 1.5rem; /* Further reduce margin below title */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.summaryCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  flex: 1 1 120px;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1rem;
   text-align: center;
-  border-bottom: none; /* Remove border */
-  padding-bottom: 0; /* Remove padding */
+  font-weight: 500;
+  color: #374151;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-/* Styles for the FeaturesOverviewSection component when used on this page */
-/* (These styles are applied via the component's own module CSS) */
-
-/* Wrapper to control spacing of the nested section */
-.featuresSectionWrapper {
-  max-width: 1100px; /* Match container width */
-  width: 100%;
-  margin: 0 auto; /* Center */
+.activityFeed p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #4b5563;
 }
 
-/* Override top padding of the FeaturesOverviewSection when inside the wrapper */
-.featuresSectionWrapper > section {
-    padding-top: 1.5rem !important; /* Reduce top padding significantly */
-    /* Ensure other overrides are not needed or applied correctly */
-    border-top: none !important; /* Ensure no top border from section */
-}
-
-
-/* Remove card styles as they are defined in FeaturesOverviewSection.module.css */
-/*
-.featureList { ... }
-.featureItem { ... }
-.featureItem:hover { ... }
-.iconContainer { ... }
-.icon { ... }
-.featureTitleWrapper { ... }
-.featureTitle { ... }
-.featureDescription { ... }
-.statusTag { ... }
-*/
-
-/* Dashboard Specific Styles */
-.dashboardHeader {
+.toolsGrid {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.toolItem {
+  flex: 1 1 100px;
+  min-width: 100px;
+  max-width: 120px;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  color: #374151;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-border);
+  gap: 0.5rem;
 }
 
-.buttonGroup {
-  display: flex;
-  gap: 0.75rem; /* Spacing between buttons */
+.toolItem:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Basic Button Styles (can be refined) */
-.buttonPrimary,
-.buttonSecondary {
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+.toolIcon {
+  width: 24px;
+  height: 24px;
+  color: #6b7280;
+}
+
+.toolName {
   font-size: 0.9rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  border: 1px solid transparent;
 }
 
-.buttonPrimary {
-  background-color: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
+.publicLinkSection {
+  display: flex;
+  justify-content: center;
 }
 
-.buttonPrimary:hover {
-  background-color: var(--color-primary-darker);
-  border-color: var(--color-primary-darker);
-}
-
-.buttonSecondary {
-  background-color: white;
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-}
-
-.buttonSecondary:hover {
-  background-color: var(--color-background-secondary);
-  border-color: var(--color-border-hover);
-}
-
-.dashboardContent {
-  width: 100%;
-  margin-top: 1rem;
-  text-align: left; /* Adjust as needed */
-}
-
-/* Dashboard Feature Grid */
-.dashboardGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-/* Redesigned Dashboard Header */
-.dashboardHeader {
+.publicLink {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
+  background: #f9fafb;
+  border-radius: 0.75rem;
   padding: 0.75rem 1rem;
-  background: white;
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.menuButton {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  transition: background-color 0.2s ease;
-}
-
-.menuButton:hover {
-  background-color: var(--color-background-secondary);
-  border-radius: 6px;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.createButton {
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
+  text-decoration: none;
+  color: #374151;
   font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.createButton:hover {
-  background-color: var(--color-primary-darker);
+.publicLink:hover {
+  background-color: #f3f4f6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.publicLinkIcon {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
 }

@@ -19,7 +19,7 @@ import CopyrightPolicyPage from './pages/CopyrightPolicyPage.js'; // Import new 
 import TermsOfServicePage from './pages/TermsOfServicePage.js'; // Import new page
 import PricingPage from './pages/PricingPage.js'; // Import new page
 import BlogPage from './pages/BlogPage.js'; // Import new page
-import DashboardPage from './pages/DashboardPage.js'; // Import Dashboard page
+import DashboardPage from './pages/DashboardPage.tsx'; // Correcting import extension
 import ProtectedRoute from './components/auth/ProtectedRoute.js'; // Import ProtectedRoute
 import ProfilePage from './pages/ProfilePage.tsx';
 import SettingsPage from './pages/SettingsPage.tsx';
@@ -72,7 +72,7 @@ function App() {
             <Route path="flashcards" element={<FlashcardsPage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="mindhackdocs" element={<MindHackDocsPage />} />
-            {/* Nest StudyBoardPage under /dashboard */}
+            {/* Re-nest StudyBoardPage under /dashboard */}
             <Route path="studyboard" element={<StudyBoardPage />} />
           </Route>
           {/* Add other top-level protected routes lsater if needed */}
@@ -84,3 +84,4 @@ function App() {
 }
 
 export default App;
+
