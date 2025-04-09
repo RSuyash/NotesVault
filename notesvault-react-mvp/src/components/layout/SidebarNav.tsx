@@ -145,7 +145,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
           <Link
             to="/dashboard/settings"
             className={styles.footerButton}
-            onClick={(e) => { onClose(); toggleSpin(); }}
+            onClick={() => { onClose(); toggleSpin(); }}
           >
             <Cog6ToothIcon className={`${styles.footerButtonIcon} ${spinning ? 'spin-on-click' : ''}`} />
           </Link>
