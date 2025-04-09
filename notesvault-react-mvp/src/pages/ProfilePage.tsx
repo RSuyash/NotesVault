@@ -17,14 +17,16 @@ const ProfilePage: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null); // Store URL
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null); // Store URL/path from DB
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // Store selected file object
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null); // Store local preview URL
 
   // Store initial values to detect changes
   const [initialUsername, setInitialUsername] = useState('');
   const [initialFirstName, setInitialFirstName] = useState('');
   const [initialLastName, setInitialLastName] = useState('');
   const [initialEmail, setInitialEmail] = useState('');
-  const [initialProfilePictureUrl, setInitialProfilePictureUrl] = useState<string | null>(null);
+  // const [initialProfilePictureUrl, setInitialProfilePictureUrl] = useState<string | null>(null); // No longer needed for change detection
 
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdatingInfo, setIsUpdatingInfo] = useState(false);
@@ -46,14 +48,17 @@ const ProfilePage: React.FC = () => {
           setFirstName(data.first_name || '');
           setLastName(data.last_name || '');
           setEmail(data.email || '');
-          setProfilePictureUrl(data.profile_picture_url || null);
+          // Construct full URL if path is relative and base URL is known
+          const baseUrl = import.meta.env.VITE_API_BASE_URL || ''; // Assuming API base URL is where uploads are served
+          const picturePath = data.profile_picture_path || null; // Use the new path field
+          setProfilePictureUrl(picturePath ? `${baseUrl}/${picturePath}` : null);
 
           // Set initial values
           setInitialUsername(data.username || '');
           setInitialFirstName(data.first_name || '');
           setInitialLastName(data.last_name || '');
           setInitialEmail(data.email || '');
-          setInitialProfilePictureUrl(data.profile_picture_url || null);
+          // setInitialProfilePictureUrl(picturePath ? `${baseUrl}/${picturePath}` : null); // No longer needed
         }
       } catch (err: any) {
         if (isMounted) {
@@ -70,6 +75,40 @@ const ProfilePage: React.FC = () => {
     return () => { isMounted = false };
   }, []);
 
+  // --- Handle File Selection ---
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+
+      // Create and set preview URL
+      const newPreviewUrl = URL.createObjectURL(file);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl); // Clean up previous preview URL
+      }
+      setPreviewUrl(newPreviewUrl);
+      setInfoError(null); // Clear previous errors
+      setInfoSuccess(null);
+    } else {
+      // Clear selection if no file is chosen
+      setSelectedFile(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      setPreviewUrl(null);
+    }
+  };
+
+  // Clean up preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+
   // --- Handle Profile Info Update ---
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,15 +123,16 @@ const ProfilePage: React.FC = () => {
             username: username,
             first_name: firstName,
             last_name: lastName,
-            email: email,
-            profile_picture_url: profilePictureUrl
+            email: email
+            // profile_picture_url is handled separately via file upload
         };
         const response = await updateProfile(updatedData);
         setInfoSuccess('Profile updated successfully!');
         setInitialFirstName(response.user?.first_name ?? '');
         setInitialLastName(response.user?.last_name ?? '');
         setInitialEmail(response.user?.email ?? '');
-        setInitialProfilePictureUrl(response.user?.profile_picture_url ?? null);
+        // Profile picture path is updated via separate upload API call
+        // We might need to refetch profile or update context after upload success
       } catch (err: any) {
         setInfoError(err.response?.data?.error || 'Failed to update profile. Please try again.');
         console.error("Profile update error:", err);
@@ -111,7 +151,8 @@ const ProfilePage: React.FC = () => {
     firstName !== initialFirstName ||
     lastName !== initialLastName ||
     email !== initialEmail ||
-    profilePictureUrl !== initialProfilePictureUrl;
+    // profilePictureUrl !== initialProfilePictureUrl; // Change detection for picture is handled by selectedFile state
+    !!selectedFile; // Consider changes if a new file is selected
 
   // --- Render Logic ---
   if (isLoading) {
@@ -138,22 +179,25 @@ const ProfilePage: React.FC = () => {
              <label className={styles.label}>Profile Picture</label>
              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <img
-                    src={profilePictureUrl || '/default-avatar.png'} // Use placeholder if no URL
+                    src={previewUrl || profilePictureUrl || '/default-avatar.png'} // Show preview, then DB image, then default
                     alt="Profile"
                     style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--color-border)' }}
                     onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }} // Fallback image
                 />
-                {/* Basic URL input for now - Replace with file upload later */}
+                <label htmlFor="profile-picture-upload" className={styles.uploadButton}>
+                  Change Picture
+                </label>
                 <input
-                    type="text"
-                    placeholder="Enter image URL (e.g., https://...)"
-                    value={profilePictureUrl || ''}
-                    onChange={(e) => setProfilePictureUrl(e.target.value || null)}
-                    className={styles.input}
-                    disabled={isUpdatingInfo}
+                  id="profile-picture-upload"
+                  type="file"
+                  accept="image/jpeg, image/png, image/gif, image/webp"
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }} // Hide default input
+                  disabled={isUpdatingInfo} // Disable while info is saving
                 />
+                {/* TODO: Add button to trigger upload API call */}
              </div>
-             <small style={{ marginTop: '0.5rem', color: 'var(--color-text-muted)'}}>Enter URL for profile picture (file upload coming soon).</small>
+             {selectedFile && <small style={{ marginTop: '0.5rem', color: 'var(--color-text-muted)'}}>Selected: {selectedFile.name}</small>}
           </div>
 
           <div className={styles.inputGroup}>
@@ -217,7 +261,7 @@ const ProfilePage: React.FC = () => {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={isUpdatingInfo || !infoHasChanges}
+              disabled={isUpdatingInfo || (!infoHasChanges && !selectedFile)} // Disable if no text changes AND no file selected
             >
               {isUpdatingInfo ? 'Saving...' : 'Save Info Changes'}
             </button>

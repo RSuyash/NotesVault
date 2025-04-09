@@ -12,7 +12,7 @@ export interface UserProfile {
   first_name?: string; // Optional or provide default ''
   last_name?: string;  // Optional or provide default ''
   email: string;
-  profile_picture_url?: string | null; // Can be string URL or null
+  profile_picture_path?: string | null; // Relative path from backend
 }
 
 // Type for the data sent to update profile
@@ -20,7 +20,7 @@ export interface UpdateProfileData {
     first_name: string;
     last_name: string;
     email: string;
-    profile_picture_url?: string | null;
+    // profile_picture_url is removed, handled by separate upload endpoint
 }
 
 // Type for the response from the update endpoint
