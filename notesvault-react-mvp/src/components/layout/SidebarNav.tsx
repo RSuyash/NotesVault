@@ -65,6 +65,8 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
     { path: '/dashboard/leaderboard', label: 'Leaderboard', icon: LeaderboardIcon },
   ];
 
+  console.log("SidebarNav: navItems array", navItems);
+
   const handleLogout = () => {
     setSlideConfirmMessage('Are you sure you want to logout?');
     setOnSlideConfirmCallback(() => async () => {
@@ -104,6 +106,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
             const IconComponent = item.icon;
+            console.log("Rendering icon for:", item.label, IconComponent);
             return (
               <Link
                 key={item.path}
