@@ -20,11 +20,6 @@ const DocsIcon = () => <DocumentTextIcon className={styles.navLinkIcon} />;
 const LeaderboardIcon = () => <TrophyIcon className={styles.navLinkIcon} />;
 // Removed unused SettingsIcon component
 const LogoutIcon = () => <ArrowRightOnRectangleIcon className={styles.footerButtonIcon} />;
-const StudyboardIcon = () => (
-  <span style={{ width: '1.25rem', height: '1.25rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-    <GroupsIcon />
-  </span>
-);
 const CloseIcon = () => <XMarkIcon className="w-6 h-6" />;
 interface SidebarNavProps {
   isOpen: boolean;
