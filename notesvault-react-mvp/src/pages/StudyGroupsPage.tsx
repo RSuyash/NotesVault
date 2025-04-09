@@ -47,7 +47,10 @@ const StudyGroupsPage: React.FC = () => {
   // TODO: Fetch user's groups on component mount
   const fetchGroups = async () => {
     try {
-      const response = await fetch('/api/study_groups.php?action=list', {
+      const response = await fetch('/api/study_groups.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' }),
         credentials: 'include',
       });
       const data = await response.json();
