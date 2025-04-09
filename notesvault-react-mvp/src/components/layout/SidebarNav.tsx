@@ -105,10 +105,14 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
             if (item.children) {
               return (
                 <div key={idx} className={styles.navGroup}>
-                  <div className={styles.navGroupLabel}>
+                  <Link
+                    to={item.path ?? '#'}
+                    className={styles.navGroupLabel}
+                    onClick={onClose}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.label}</span>
-                  </div>
+                  </Link>
                   <div className={styles.navGroupChildren}>
                     {item.children.map((child) => {
                       const isActive = location.pathname === child.path || (child.path !== '/dashboard' && location.pathname.startsWith(child.path));
