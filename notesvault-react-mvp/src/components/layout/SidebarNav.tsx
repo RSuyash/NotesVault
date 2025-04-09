@@ -9,7 +9,7 @@ import {
   Squares2X2Icon,
   DocumentTextIcon,
   TrophyIcon,
-  // Removed unused Cog6ToothIcon
+  Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -136,7 +136,13 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ isOpen, onClose }) => {
         </nav>
 
         <div className={styles.footer} style={{ flexDirection: 'row', justifyContent: 'center', gap: '1rem' }}>
-          {/* Settings link moved to UserMenuDropdown */}
+          <Link
+            to="/dashboard/settings"
+            className={styles.footerButton}
+            onClick={onClose}
+          >
+            <Cog6ToothIcon className={styles.footerButtonIcon} />
+          </Link>
           <button
             onClick={handleLogout}
             className={`${styles.footerButton} ${styles.logout}`}
