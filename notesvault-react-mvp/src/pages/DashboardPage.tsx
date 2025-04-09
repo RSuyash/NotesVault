@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './DashboardPage.module.css';
 import {
@@ -18,19 +18,59 @@ const tools = [
   { name: 'MindHack Docs', path: '/dashboard/docs', icon: DocumentTextIcon },
 ];
 
+interface UserProfile {
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_picture_path: string | null;
+}
+
 const DashboardPage: React.FC = () => {
-  const userName = 'User'; // Placeholder, replace with actual user data
-  const isProfileComplete = false; // Placeholder, replace with actual profile status
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/user.php', { credentials: 'include' });
+        if (!response.ok) throw new Error('Failed to fetch user');
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const missingFields: string[] = [];
+  if (user) {
+    if (!user.first_name || !user.last_name) missingFields.push('Complete your name');
+    if (!user.profile_picture_path) missingFields.push('Upload a profile picture');
+  }
 
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.leftColumn}>
         <section className={`${styles.section} ${styles.welcomeCard}`}>
-          <h2 className={styles.sectionTitle}>Welcome, {userName}!</h2>
-          {!isProfileComplete && (
-            <p className={styles.profilePrompt}>
-              Please complete your profile to get the best experience.
-            </p>
+          <h2 className={styles.sectionTitle}>
+            {loading
+              ? 'Loading...'
+              : `Welcome, ${user ? user.first_name + ' ' + user.last_name : 'User'}!`}
+          </h2>
+          {!loading && missingFields.length > 0 && (
+            <div className={styles.profileNotifications}>
+              {missingFields.map((msg, idx) => (
+                <div key={idx} className={styles.profileNote}>
+                  {msg}
+                </div>
+              ))}
+            </div>
           )}
         </section>
 
