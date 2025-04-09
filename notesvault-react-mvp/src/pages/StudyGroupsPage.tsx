@@ -57,6 +57,7 @@ const StudyGroupsPage: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setCreatedGroupInfo(null);
+      console.log('Creating group with:', { name: groupName, description: groupDesc });
     try {
       const response = await fetch('/api/study_groups.php', {
         method: 'POST',
@@ -64,7 +65,9 @@ const StudyGroupsPage: React.FC = () => {
         body: new URLSearchParams({ action: 'create', name: groupName, description: groupDesc }).toString(),
         credentials: 'include',
       });
+      console.log('Create group response status:', response.status);
       const data = await response.json();
+      console.log('Create group response data:', data);
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to create group');
       }
