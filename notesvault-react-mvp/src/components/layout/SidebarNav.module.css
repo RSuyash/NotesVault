@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 0.75rem 1rem; /* Reduced padding */
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .footer {
-  padding: 1rem;
+  padding: 0.75rem 1rem; /* Reduced padding */
   border-top: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
