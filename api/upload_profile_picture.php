@@ -87,20 +87,37 @@ if (!move_uploaded_file($fileTmpPath, $destinationPath)) {
 
 // --- Update Database ---
 try {
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4", DB_USER, DB_PASSWORD);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = getDbConnection(); // Use the function from config.php
+    if (!$conn) {
+        // Log the specific connection error if possible, using mysqli_connect_error() before throwing
+        $connectError = mysqli_connect_error();
+        error_log("Database connection failed in upload_profile_picture: " . $connectError);
+        throw new Exception("Database connection failed.");
+    }
 
     // Optional: Delete old profile picture file if it exists and is different
-    $stmtSelect = $pdo->prepare("SELECT profile_picture_path FROM users WHERE id = ?");
-    $stmtSelect->execute([$userId]);
-    $oldPath = $stmtSelect->fetchColumn();
+    $stmtSelect = $conn->prepare("SELECT profile_picture_path FROM users WHERE id = ?");
+    if (!$stmtSelect) throw new Exception("Prepare failed (SELECT): " . $conn->error);
+    $stmtSelect->bind_param("i", $userId);
+    if (!$stmtSelect->execute()) throw new Exception("Execute failed (SELECT): " . $stmtSelect->error);
+    $result = $stmtSelect->get_result();
+    $row = $result->fetch_assoc();
+    $oldPath = $row ? $row['profile_picture_path'] : null;
+    $stmtSelect->close();
+
     if ($oldPath && $oldPath !== $relativePath && file_exists(__DIR__ . '/' . $oldPath)) {
-        unlink(__DIR__ . '/' . $oldPath);
+        @unlink(__DIR__ . '/' . $oldPath); // Suppress error if file deletion fails
     }
 
     // Update user record
-    $stmtUpdate = $pdo->prepare("UPDATE users SET profile_picture_path = ? WHERE id = ?");
-    $stmtUpdate->execute([$relativePath, $userId]);
+    $stmtUpdate = $conn->prepare("UPDATE users SET profile_picture_path = ? WHERE id = ?");
+    if (!$stmtUpdate) throw new Exception("Prepare failed (UPDATE): " . $conn->error);
+    $stmtUpdate->bind_param("si", $relativePath, $userId);
+    if (!$stmtUpdate->execute()) {
+         throw new Exception("Database update failed: " . $stmtUpdate->error);
+    }
+    $stmtUpdate->close();
+    $conn->close();
 
     // --- Success Response ---
     http_response_code(200); // OK
@@ -110,22 +127,18 @@ try {
         'filePath' => $relativePath // Send back the relative path
     ]);
 
-} catch (PDOException $e) {
+} catch (Exception $e) { // Catch mysqli errors or general exceptions
     http_response_code(500); // Internal Server Error
-    error_log("Database error updating profile picture for user $userId: " . $e->getMessage()); // Log error
+    error_log("Error updating profile picture for user $userId: " . $e->getMessage()); // Log error
     // Attempt to delete the newly uploaded file if DB update failed
     if (file_exists($destinationPath)) {
-        unlink($destinationPath);
+        @unlink($destinationPath); // Suppress error if file deletion fails
     }
-    echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
-    exit;
-} catch (Exception $e) {
-    http_response_code(500); // Internal Server Error
-    error_log("General error updating profile picture for user $userId: " . $e->getMessage()); // Log error
-    if (file_exists($destinationPath)) {
-        unlink($destinationPath);
+    // Ensure connection is closed if it was opened
+    if (isset($conn) && $conn instanceof mysqli && $conn->thread_id) {
+        $conn->close();
     }
-    echo json_encode(['success' => false, 'message' => 'An unexpected server error occurred.']);
+    echo json_encode(['success' => false, 'message' => 'An error occurred while updating the profile picture.']);
     exit;
 }
 ?>
